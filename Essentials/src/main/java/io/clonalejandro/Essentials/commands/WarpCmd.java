@@ -48,7 +48,7 @@ public class WarpCmd implements CommandExecutor {
         final String query = "SELECT name FROM Warps;";
 
         try {
-            final ResultSet result = MysqlManager.getStatement().executeQuery(query);
+            final ResultSet result = MysqlManager.getConnection().createStatement().executeQuery(query);
             final List<String> warps = new ArrayList<>();
 
             while (result.next()){
@@ -81,7 +81,7 @@ public class WarpCmd implements CommandExecutor {
             );
 
             try {
-                MysqlManager.getStatement().executeUpdate(query);
+                MysqlManager.getConnection().createStatement().executeUpdate(query);
                 player.sendMessage(Main.translate(String.format("&9&lServer> &fHas creado el warp &e%s", args[0])));
             }
             catch (SQLException throwables) {
@@ -102,7 +102,7 @@ public class WarpCmd implements CommandExecutor {
             final String query = String.format("SELECT * FROM Warps WHERE name=\"%s\";", args[0]);
 
             try {
-                final ResultSet result = MysqlManager.getStatement().executeQuery(query);
+                final ResultSet result = MysqlManager.getConnection().createStatement().executeQuery(query);
 
                 result.next();
 
@@ -135,7 +135,7 @@ public class WarpCmd implements CommandExecutor {
             final String query = String.format("DELETE FROM Warps WHERE name=\"%s\";", args[0]);
 
             try {
-                MysqlManager.getStatement().executeUpdate(query);
+                MysqlManager.getConnection().createStatement().executeUpdate(query);
                 player.sendMessage(Main.translate(String.format("&9&lServer> &fSe ha borrado el warp &e%s", args[0])));
             }
             catch (SQLException throwables) {

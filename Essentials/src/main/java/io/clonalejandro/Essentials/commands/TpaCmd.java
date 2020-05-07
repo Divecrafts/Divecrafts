@@ -112,7 +112,6 @@ public class TpaCmd implements CommandExecutor {
                 new BukkitRunnable() {
                     @Override
                     public void run() {
-                        Bukkit.broadcastMessage("a");
                         if (timeA.get() != 0) timeA.getAndDecrement();
                         else {
                             new TeleportWithDelay(teleporter, accepter.getLocation(), 0, "&9&lServer> &fTeletransportando...", true);

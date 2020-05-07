@@ -45,7 +45,7 @@ public class TeleportWithDelay {
 
     public TeleportWithDelay(final Player player, final Location location, final int time, final String msg, final boolean byPassTime){
         addToLastLocation(player);
-        if (time > 0 && !byPassTime)
+        if (time > 0 || !byPassTime)
             Bukkit.getScheduler().runTaskLater(Main.instance, () -> {
                 player.sendMessage(Main.translate(msg));
                 player.teleport(location);

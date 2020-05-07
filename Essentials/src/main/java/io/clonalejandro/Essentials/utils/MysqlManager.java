@@ -26,14 +26,12 @@ import java.sql.Statement;
 
 public class MysqlManager {
 
-    private Connection connection;
-    private static Statement statement;
+    private static Connection connection;
 
     public MysqlManager(String host, int port, String database, String username, String password){
         Bukkit.getScheduler().runTaskAsynchronously(Main.instance, () -> {
             try {
                 open(host, port, database, username, password);
-                statement = connection.createStatement();
             }
             catch (Exception ex) {
                 ex.printStackTrace();
@@ -52,8 +50,8 @@ public class MysqlManager {
         }
     }
 
-    public static Statement getStatement(){
-        return statement;
+    public static Connection getConnection() {
+        return connection;
     }
 
     public static String secureQuery(String str){

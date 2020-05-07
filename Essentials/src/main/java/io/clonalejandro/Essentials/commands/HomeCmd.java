@@ -49,7 +49,7 @@ public class HomeCmd implements CommandExecutor {
             final String query = String.format("SELECT * FROM Homes WHERE uuid=\"%s\" AND name=\"%s\"", player.getUniqueId().toString(), args[0]);
 
             try {
-                final ResultSet result = MysqlManager.getStatement().executeQuery(query);
+                final ResultSet result = MysqlManager.getConnection().createStatement().executeQuery(query);
 
                 result.next();
 
@@ -73,7 +73,7 @@ public class HomeCmd implements CommandExecutor {
             final String query = String.format("SELECT * FROM Homes WHERE uuid=\"%s\"", player.getUniqueId().toString());
 
             try {
-                final ResultSet result = MysqlManager.getStatement().executeQuery(query);
+                final ResultSet result = MysqlManager.getConnection().createStatement().executeQuery(query);
                 final List<String> homes = new ArrayList<>();
 
                 while (result.next())
@@ -108,7 +108,7 @@ public class HomeCmd implements CommandExecutor {
             );
 
             try {
-                MysqlManager.getStatement().executeUpdate(query);
+                MysqlManager.getConnection().createStatement().executeUpdate(query);
                 player.sendMessage(Main.translate(String.format("&9&lServer> &fSe ha creado un home llamado: &e%s", args[0])));
             }
             catch (SQLException throwables) {
@@ -133,7 +133,7 @@ public class HomeCmd implements CommandExecutor {
             );
 
             try {
-                MysqlManager.getStatement().executeUpdate(query);
+                MysqlManager.getConnection().createStatement().executeUpdate(query);
                 player.sendMessage(Main.translate(String.format("&9&lServer> &fSe ha borrado el home &e%s", args[0])));
             }
             catch (SQLException throwables) {
