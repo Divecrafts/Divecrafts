@@ -1,0 +1,23 @@
+{
+  "game": "GAME",
+  "maxPlayers": 5,
+  "minPlayers": 2,
+  "lobbyTime": 30,
+  "gameTime": 500,
+  "deathMatchTime": 120,
+  "lobbyArea": "world%0.0%100%0.0;world%0.0%100%0.0",
+  "lobby": "world%0.0%100%0.0",
+  "borders": "world%0.0%100%0.0;world%0.0%100%0.0",
+  "spawns": [
+    "world%0.0%100%0.0",
+    "world%0.0%100%0.0",
+    "world%0.0%100%0.0",
+    "world%0.0%100%0.0",
+    "world%0.0%100%0.0"
+  ],
+  "worlds": [
+    "world1",
+    "world2",
+    "world3"
+  ]
+}
