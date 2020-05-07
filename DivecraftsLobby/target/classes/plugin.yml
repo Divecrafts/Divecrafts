@@ -1,9 +1,0 @@
-name: DivecraftsLobby
-main: io.clonalejandro.DivecraftsLobby.Main
-version: 1.0
-author: clonalejandro
-depend:
-  - DivecraftsCore
-commands:
-  clearchat:
-    usage: /<command>

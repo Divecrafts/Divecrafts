@@ -1,0 +1,264 @@
+{
+  "Global": {
+    "Aceptar": "&a&lACEPTAR",
+    "Cancelar": "&c&lCANCELAR",
+    "noconectado": "&c&lServer> Ese jugador no esta conectado.",
+    "cmdnopuedes": "&c&lServer> &fTu no puedes usar este comando.",
+    "portalcambiando": "&9&lPortal> &fCambiando de &e%desde% &fa &e%hasta%",
+    "portalnodispo": "&c&lPortal> &fEse servidor no esta disponible en este momento.",
+    "portalyaenlobby": "&c&lPortal> &fYa estas en un &eLobby."
+  },
+  "Bug": {
+    "Uso": "&9&lServer> &fUsa: &b/bug &e<bug a reportar>",
+    "Gracias": "&a&lServer> &fMuchas gracias por ayudarnos a mejorar."
+  },
+  "Find": {
+    "Uso": "&9&lServer> &fUsa: &b/find &e<nombre>",
+    "ir": "\u21ac CLICK AQUI PARA IR CON EL! \u21ab",
+    "usuario": "&fUsuario: &e",
+    "servidor": "&fServidor: &e",
+    "ping": "&fPing: &e%ping%ms"
+  },
+  "Color": {
+    "Uso": "&9&lServer> &fUsa &b/color &11,&22,&33,&44,&55,&66,&77,&88,&99,&aa,&bb,&cc,&dd,&ee,&ff",
+    "notvalid": "&c&lServer> &fEse color no es valido!"
+  },
+  "BungeeAlert": {
+    "NoMsg": "&c&lServer> Tienes que añadir un mensaje!"
+  },
+  "Clanes": {
+    "NoActivados": "&eNo tienes activados los Clanes!",
+    "NoPerteneces": "&eNo perteneces a ningun clan!",
+    "infotitulo": "&e- Informacion De Tu Clan -",
+    "infolider": "&eLider: &b",
+    "infoplayers": "&eJugadores:",
+    "creado": "&eTu clan ha sido creado.",
+    "existe": "&eEste Clan ya existe.",
+    "eliminado": "&eEl Clan ha sido eliminado.",
+    "nolider": "&eNo eres el lider del Clan.",
+    "noconectado": "&eEse jugador no esta conectado.",
+    "aceptar": "&eAcabas de aceptar la solicitud del Clan.",
+    "cancelar": "&eAcabas de cancelar la solicitud del Clan.",
+    "entuclan": "&eEste jugador ya esta en tu clan.",
+    "hasinvitado": "&eHas invitado: &a",
+    "invitacionno": "&eNo tienes ninguna invitacion de este Clan.",
+    "noentuclan": "&eEste jugador no esta en tu clan.",
+    "hassidoinvitadopor": "&eHas sido invitado por &a%lider% &ea su Clan.",
+    "hassidoexpulsado": "&eHas sido expulsado del clan."
+  },
+  "Goto": {
+    "Uso": "&9&lServer> &fUso &b/goto &e<nombre>",
+    "ConectandoA": "&a&lServer> &fConectando a: &e"
+  },
+  "MSG": {
+    "Uso": "&9&lServer> &fUso &b/msg &e<player> <msg>"
+  },
+  "Request": {
+    "Uso": "&9&lServer> &fUso &b/request &e<razon>"
+  },
+  "Network": {
+    "Uso": "&9&lServer> &fUso &b/network info &e<servidor>",
+    "svnoexist": "&c&lServer> &fEse servidor no existe.",
+    "nombre": "&fNombre: &e",
+    "online": "&fOnline: &e",
+    "porcentaje": "&fPorcentaje: &b"
+  },
+  "Party": {
+    "NoActivados": "&eNo tienes activadas las Partys!",
+    "NoPerteneces": "&cNo perteneces a ninguna Party!",
+    "infotitulo": "&e- Informacion De Tu Party -",
+    "infolider": "&eLider: &b",
+    "infoplayers": "&eJugadores:",
+    "creado": "&eTu Party ha sido creada.",
+    "existe": "&eEsta Party ya existe.",
+    "eliminado": "&eLa Party ha sido eliminado.",
+    "nolider": "&eNo eres el lider de la Party.",
+    "noconectado": "&eEse jugador no esta conectado.",
+    "aceptar": "&eAcabas de aceptar la solicitud de la Party.",
+    "cancelar": "&eAcabas de cancelar la solicitud de la Party.",
+    "entuparty": "&eEste jugador ya esta en tu Party.",
+    "hasinvitado": "&eHas invitado a: &a",
+    "invitacionno": "&eNo tienes ninguna invitacion de esta Party.",
+    "noentuparty": "&eEste jugador no esta en tu Party.",
+    "hassidoinvitadopor": "&eHas sido invitado por &a%lider% &ea su Party.",
+    "hassidoexpulsado": "&eHas sido expulsado de la Party.",
+    "cambiandosv": "&eLa Party esta entrando en un servidor."
+  },
+  "Ping": {
+    "tuping": "&9&lServer> &fTu ping actual es de &e%ping%ms.",
+    "elpingde": "&9&lServer> &fEl ping actual de &e%player% &fes de &e%ping%ms."
+  },
+  "Report": {
+    "gracias": "&c&lReportes> &fGracias por ayudarnos a mejorar!.",
+    "noestesv": "&c&lReportes> &fEse jugador no está en este Servidor",
+    "noonline": "&c&lReportes> &fEse jugador no está Online",
+    "uso": "&9&lServer> &fUsa &b/report &e<jugador> <razon>"
+  },
+  "Teleport": {
+    "teletransportadoa": "&6Teletransportado a &c%player%",
+    "nopendientes": "&cNo tienes peticiones de TP pendientes",
+    "tpall": "&6Todos los jugadores han sido teletransportados",
+    "hasenviado": "&6Has enviado una petición de teletransporte",
+    "tehanenviado": "&6Te han enviado una petición de teletransporte",
+    "hacaducado": "&6La peticion ha caducado.",
+    "haciati": "&c%player% &6se ha teletransportado hacia tí.",
+    "hasdenegado": "&6Has denegado la petición",
+    "hadenegado": "&c%player% &6ha denagado la petición de teletransporte",
+    "tpposuso": "&eUsa: /tppos <x> <y> <z> (Deben ser números de coordenadas)",
+    "tpposa": "*&6Teleportando a &e%x%&6, &e%y%&6, &e%z%"
+  },
+  "Ayuda": {
+    "titulo": "&6Comandos de StylusNetwork:"
+  },
+  "Clear": {
+    "hasborrado": "&6Has borrado tu inventario",
+    "hasidoborrado": "&6Tu inventario ha sido borrado",
+    "hasborradode": "&6Has borrado el inventario de &c%player%"
+  },
+  "Msg": {
+    "noatimismo": "&c¡No puedes enviarte un mensaje a ti mismo!",
+    "para": "&6[&bYO &6-> &b%player%&6] &r: ",
+    "desde": "&6[&b%player% &6-> &bYO&6] &r: "
+  },
+  "Gamemode": {
+    "cambiadoa": "&6Modo de juego cambiado a &c%gamemode%",
+    "cambiadoade": "&6Modo de juego cambiado de &2%player% a &c%gamemode%"
+  },
+  "Heal": {
+    "tehascurado": "&6Te has curado.",
+    "hascuradoa": "&6Has curado a &c%player%"
+  },
+  "HelpOP": {
+    "astaff": "&2El mensaje ha sido enviado al Staff"
+  },
+  "Chat": {
+    "desabilitado": "&cTienes deshabilitado el uso del chat.",
+    "noips": "&cEsta desabilitado el uso de esas palabras."
+  },
+  "Scoreboardlobby": {
+    "rango": "&5Rango: ",
+    "jugadores": "&5Jugadores: &f",
+    "monedas": "&6LiteCoins: &f"
+  },
+  "Itemnames": {
+    "brujula": "&dMenu de Juegos &7(Haz Click)",
+    "clicktest": "&dClick Test &7(Haz Click)",
+    "perfil": "&dTu Perfil &7(Haz Click)",
+    "lobby": "&dSelector De Lobby &7(Haz Click)",
+    "visibilidad": "&dVisibilidad &7(Haz Click)"
+  },
+  "Itemlores": {
+    "brujula": "&7¡Haz Click para ver el Menu del Lobby!",
+    "clicktest": "&7Comprueba tus clicks por segundo.",
+    "perfil": "&7¡Haz Click para ver tus Stats!",
+    "lobby": "&7Usa esto para cambiar entre Lobbies",
+    "visibilidad": "&8Ajustes\n \n&7Selecciona que tipo de jugadores quieres ver\n&7- Todos (&aLima&7)\n&7- Amigos (&5Morado&7)\n&7- Nadie (&8Gris&7)",
+    "chat": "&8Ajustes\n \n&7Poder participar en el chat de StylusLite\n&7- Participar (&aVerde&7)\n&7- No participar (&cRojo&7)",
+    "clanes": "&8Ajustes\n \n&7Poder participar en los clanes de StylusLite\n&7- Participar (&aVerde&7)\n&7- No participar (&cRojo&7)",
+    "party": "&8Ajustes\n \n&7Poder participar en las Partys de StylusLite\n&7- Participar (&aVerde&7)\n&7- No participar (&cRojo&7)"
+  },
+  "Ajustes": {
+    "cambiado": "&a&lServer> &fAjuste cambiado"
+  },
+  "Clicktest": {
+    "aunno": "&6&l>> &cAun tienes que esperar para hacer eso!",
+    "comienzaen": "&6&l>> &eClick Test comienza en &b%secs% &esegundos!",
+    "comenzado": "&6&l>> &eClick Test comenzado!!",
+    "soloclickaire": "&6&l>> &eSolo los clicks al aire seran contabilizados",
+    "titulo": "&e================ &3&lClick Test &e================",
+    "terminado": "&6&l>> &eClick Test terminado!",
+    "hashecho": "&6&l>> &bHas hecho en 10 segundos §6%clicks% §bclicks",
+    "tumedia": "&6&l>> &bTu media es de &6%cps% &bclicks por segundo!",
+    "grandioso": "&5%player% &7ha logrado sobrepasar los 10 clicks por segundo en el clicktest! &cGRANDIOSO!!"
+  },
+  "Varios": {
+    "proximamente": "&cProximamente disponible."
+  },
+  "Inventarios": {
+    "infoname": "&dInformacion",
+    "infolore": "&7Rango: %rango%\n&7LiteCoins: &d%coins%\n \n&e¡Haz Click para ver el Link de la Tienda!",
+    "statsname": "&dTus Estadisticas",
+    "statslore": "&7Haz Click para ver como vas\n&7en todos los Juegos de Stylus",
+    "ajustesname": "&dTus Ajustes",
+    "ajusteslore": "&7Poder cambiar tus ajustes",
+    "idiomasname": "&dIdiomas",
+    "idiomaslore": "&7Click para cambiar tus idiomas",
+    "socialname": "&dSocial",
+    "sociallore": "&7Click para ver el menu social"
+  },
+  "Ajustesname": {
+    "visibilidad": "&9VISIBILIDAD DE JUGADORES",
+    "clanes": "&9CLANES",
+    "chat": "&9CHAT",
+    "party": "&9PARTYS"
+  },
+  "Juegosname": {
+    "lobby": "&eLobby Principal",
+    "ffa": "&dFFA",
+    "uhc": "&dUHC",
+    "sw": "&dSkyWars",
+    "fc": "&dFightClub",
+    "mum": "&dMUM",
+    "mb": "&dMicroBattle",
+    "ew": "&dEggWars"
+  },
+  "Juegoslore": {
+    "lobby": "&7Vuelves al Lobby principal\n \n&e&l¡Haz Click para conectar!\n&7¡%players% jugando ahora!",
+    "ffa": "&8Hardcore\n \n&7¡Combate y lucha por ser el\n&7mejor en PVP, estadasticas\n&7y mucha competitividad haran\n&7que te lo pases genial!\n \n&e&l¡Haz Click para conectar!\n&7¡%players% jugando ahora!",
+    "uhc": "&8UltraHardcore\n \n&7¡Conseguir tus propios recursos\n&7y luchar en intensos pvp haran\n&7que te lo pases genial!\n \n&e&l¡Haz Click para conectar!\n&7¡%players% jugando ahora!",
+    "sw": "&8SkyDuels\n \n&7¡Se el ultimo sobreviviendo en\n&7Islas con ayuda de tus\n&7habilidades en pvp.\n \n&e&l¡Haz Click para conectar!\n&7¡%players% jugando ahora!",
+    "fc": "&8Brave\n \n&7¡Se el ultimo sobreviviendo ronda\n&7tras ronda hasta ser\n&7el mejor en pvp.\n \n&e&l¡Haz Click para conectar!\n&7¡%players% jugando ahora!",
+    "mum": "&8UltraHardcore\n \n&7¡Conseguir tus propios recursos\n&7y luchar en intensos pvp haran\n&7que te lo pases genial!\n \n&e&l¡Haz Click para conectar!\n&7¡%players% jugando ahora!",
+    "mb": "&8TeamWork\n \n&7¡4 Equipos y un solo ganador\n&7Apoya a tus compañeros para\n&7Quedar los primeros!\n \n&e&l¡Haz Click para conectar!\n&7¡%players% jugando ahora!",
+    "ew": "&8Save the Egg\n \n&7¡Se el ultimo sobreviviendo en\n&7Islas con ayuda de tus\n&7habilidades en pvp e intenta\n&7que no rompan tu huevo o moriras!\n \n&e&l¡Haz Click para conectar!\n&7¡%players% jugando ahora!"
+  },
+  "Bienvenida": {
+    "welcome": "&dBienvenido, &5%player% &da &5StylusLITE Network",
+    "tienda": "&dTienda: &fhttp://tienda.styluslite.net",
+    "web": "&dWeb: &fhttp://styluslite.net",
+    "twitter": "&dTwitter: &fhttps://twitter.com/styluslite",
+    "discord": "&dDiscord: &fhttps://discord.gg/GbCv6CG"
+  },
+  "FFA": {
+    "kill": "&f%killer% &cha sido asesinado por &f%death%",
+    "playerjoin": "&dHey &f%player%&d! Bienvenido al FFA de Stylus",
+    "hasasesinado": "&aTu has asesinado a &f%victim%",
+    "asesinadopor": "&cTu has sido asesinado por &f%killer%",
+    "recuerda": "&cRECUERDA:"
+  },
+  "Kit": {
+    "selected": "&7- &fHas seleccionado el kit: &d%kit%",
+    "selecciona": "&7- &fSelecciona tu kit usando: &d/kits",
+    "recuerda": "&5RECUERDA:"
+  },
+  "Scoreboardffa": {
+    "kills": "&8- &5Bajas&7: &f",
+    "deaths": "&8- &5Muertes&7: &f",
+    "kdr": "&8- &5KDR&7: &f",
+    "streak": "&8- &5Racha: &f",
+    "jugadores": "&8- &5Jugadores: &f"
+  },
+  "MUMScoreboard": {
+    "jugadores": "&8- &5Jugadores: &f",
+    "votacon": "&8- &5Vota con &6/vote",
+    "kills": "&8- &5Bajas: &f",
+    "spectators": "&8- &5Viendo: &f",
+    "puntos": "&8- &5Puntos: &f"
+  },
+  "MUM": {
+    "winmsg": "&bFelicidades a &6%player% &bpor ganar la partida!",
+    "hasganadoreroll": "&bTu has ganado un reroll gratis por haber ganado!",
+    "notienesreroll": "&cNo tienen ningun reroll disponible.",
+    "disallowcl": "&cTe has desconectado de esta partida!",
+    "playerrankis": "&b%player%'s &erango es %rango%",
+    "deathmsg": "&c%death% &7a sido asesinado por &c%player%",
+    "bordereduceen": "&6El borde empezara a reducirce a &d50x50 &6en &d30 &6segundos!",
+    "deathclog": "&c%player% &7ha muerto (se ha salido del servidor)",
+    "airdropcords": "&eEl airdrop caera en 10 segundos en X:%x% Y:%y% Z:%z%",
+    "countdown": "&6Empezando en &d%secs% &6segundo(s)!",
+    "votaporgm": "&6Vota por un gamemode usando &d/vote",
+    "usareroll": "&6Si no te gusta los objetos que se te dieron puedes usar &d/reroll",
+    "noteam": "&c&L!!ADVERTENCIA!! &6Tu no estas permitido a hacer equipo! Si te vemos haciendo equipo con alguien resultara en un baneo."
+  }
+
+}
