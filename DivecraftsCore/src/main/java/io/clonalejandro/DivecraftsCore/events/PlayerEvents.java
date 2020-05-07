@@ -74,6 +74,21 @@ public class PlayerEvents implements Listener {
         if (SServer.getAdminChatMode().contains(u)) SServer.getAdminChatMode().remove(u);
     }
 
+    @EventHandler
+    public void onPlayerKick(PlayerKickEvent e){
+        SUser u = SServer.getUser(e.getPlayer());
+
+        u.getUserData().setLastLocation(u.getPlayer().getLocation());
+        u.getUserData().setLastConnect(System.currentTimeMillis());
+
+        u.getUserData().setTimePlayed(u.getUserData().getTimePlayed() + System.currentTimeMillis() - u.getUserData().getTimeJoin());
+        u.save();
+
+        SServer.users.remove(u);
+
+        if (SServer.getAdminChatMode().contains(u)) SServer.getAdminChatMode().remove(u);
+    }
+
     @EventHandler(priority = EventPriority.LOW)
     public void onDamage(EntityDamageEvent e) {
         //God
