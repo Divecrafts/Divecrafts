@@ -2,6 +2,7 @@ package io.clonalejandro.Essentials.commands;
 
 import io.clonalejandro.Essentials.Main;
 import org.bukkit.Bukkit;
+import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -31,8 +32,17 @@ public class ItemInfoCmd implements CommandExecutor {
         final Player player = Bukkit.getPlayer(sender.getName());
 
         if (player.getItemInHand() != null && player.getItemInHand().getType() != Material.AIR){
-            final int itemId = player.getItemInHand().getTypeId();
-            player.sendMessage(Main.translate(String.format("&9&lServer> &fLa id del item de tu mano es &e%s", itemId)));
+            final StringBuilder itemId = new StringBuilder();
+            final String data = player.getItemInHand().getData().toString();
+
+            itemId.append(player.getItemInHand().getTypeId());
+            itemId.append(
+                    String.format(":%s", data.charAt(
+                            data.indexOf("(") + 1
+                    ))
+            );
+
+            player.sendMessage(Main.translate(String.format("&9&lServer> &fLa id del item de tu mano es &e%s", itemId.toString())));
         }
         else player.sendMessage(Main.translate("&c&lServer> &fNo tienes ningún item en tu mano"));
         return true;
