@@ -33,6 +33,7 @@ public class SServer {
     }
 
     public static SUser getUser(OfflinePlayer p) {
+        if (p.getUniqueId() == null) throw new NullPointerException("UUID can't be null (GetUser)");
         return getUser(p.getUniqueId());
     }
 

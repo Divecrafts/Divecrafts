@@ -195,7 +195,6 @@ public class PlayerEvents implements Listener {
             e.setCancelled(true);
         }
 
-        mu.setUserData(Main.getInstance().getMySQL().loadUserData(p.getUniqueId()));
         SCmd.Rank r = mu.getUserData().getRank();
 
         if (r.getRank() > 0) {
