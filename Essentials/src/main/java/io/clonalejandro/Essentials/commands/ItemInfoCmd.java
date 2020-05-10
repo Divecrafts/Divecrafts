@@ -2,7 +2,6 @@ package io.clonalejandro.Essentials.commands;
 
 import io.clonalejandro.Essentials.Main;
 import org.bukkit.Bukkit;
-import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -34,13 +33,10 @@ public class ItemInfoCmd implements CommandExecutor {
         if (player.getItemInHand() != null && player.getItemInHand().getType() != Material.AIR){
             final StringBuilder itemId = new StringBuilder();
             final String data = player.getItemInHand().getData().toString();
+            final char dataValue = data.charAt(data.indexOf("(") + 1);
 
             itemId.append(player.getItemInHand().getTypeId());
-            itemId.append(
-                    String.format(":%s", data.charAt(
-                            data.indexOf("(") + 1
-                    ))
-            );
+            itemId.append(dataValue == 0 || dataValue == '0' ? "" : String.format(":%s", dataValue));
 
             player.sendMessage(Main.translate(String.format("&9&lServer> &fLa id del item de tu mano es &e%s", itemId.toString())));
         }
