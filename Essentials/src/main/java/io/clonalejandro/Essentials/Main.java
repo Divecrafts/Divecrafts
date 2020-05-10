@@ -38,8 +38,8 @@ public class Main extends JavaPlugin {
             instance = this;
             final PluginManager pluginManager = Bukkit.getPluginManager();
 
-            database();
             config();
+            database();
             events(pluginManager);
             commands();
         }
@@ -119,7 +119,7 @@ public class Main extends JavaPlugin {
     }
 
     private void database(){
-        new MysqlManager("localhost", 3306, "survival", "root", "patata123");
+        new MysqlManager("localhost", 3306, getConfig().getString("database"), "root", "patata123");
         Bukkit.getConsoleSender().sendMessage(Main.translate("&9&lEssentials> &fdatabase connected"));
     }
 
