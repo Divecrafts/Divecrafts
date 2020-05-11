@@ -60,22 +60,22 @@ public class PlayerEvents implements Listener {
             e.remove();
         }
         Hologramas.hologramas.clear();
-        Hologramas.crearHolo((BungeeMensager.getLobbies().get("lew") + BungeeMensager.getJuegos().get("ew")) + " &6In Game", new Location(Bukkit.getWorld("spawn"), -30.5, 63.6, 12.5));
-        Hologramas.crearHolo((BungeeMensager.getLobbies().get("lsw") + BungeeMensager.getJuegos().get("sw")) + " &6In Game", new Location(Bukkit.getWorld("spawn"), -35.5, 64.1, 11.5));
-        Hologramas.crearHolo(BungeeMensager.getJuegos().get("mum") + " &6In Game", new Location(Bukkit.getWorld("spawn"), -39.5, 64.6, 8.5));
-        Hologramas.crearHolo(BungeeMensager.getJuegos().get("ffa") + " &6In Game", new Location(Bukkit.getWorld("spawn"), -42.5, 65.1, 3.5));
-        Hologramas.crearHolo(BungeeMensager.getJuegos().get("uhc") + " &6In Game", new Location(Bukkit.getWorld("spawn"), -42.5, 65.1, -2.5));
-        Hologramas.crearHolo((BungeeMensager.getLobbies().get("lfc") + BungeeMensager.getJuegos().get("fc")) + " &6In Game", new Location(Bukkit.getWorld("spawn"), -39.5, 64.6, -7.5));
-        Hologramas.crearHolo(BungeeMensager.getJuegos().get("mb") + " &6In Game", new Location(Bukkit.getWorld("spawn"), -35.5, 64.1, -10.5));
+        //Hologramas.crearHolo((BungeeMensager.getLobbies().get("lew") + BungeeMensager.getJuegos().get("ew")) + " &6In Game", new Location(Bukkit.getWorld("spawn"), -30.5, 63.6, 12.5));
+        //Hologramas.crearHolo((BungeeMensager.getLobbies().get("lsw") + BungeeMensager.getJuegos().get("sw")) + " &6In Game", new Location(Bukkit.getWorld("spawn"), -35.5, 64.1, 11.5));
+        //Hologramas.crearHolo(BungeeMensager.getJuegos().get("mum") + " &6In Game", new Location(Bukkit.getWorld("spawn"), -39.5, 64.6, 8.5));
+        //Hologramas.crearHolo(BungeeMensager.getJuegos().get("ffa") + " &6In Game", new Location(Bukkit.getWorld("spawn"), -42.5, 65.1, 3.5));
+        //Hologramas.crearHolo(BungeeMensager.getJuegos().get("uhc") + " &6In Game", new Location(Bukkit.getWorld("spawn"), -42.5, 65.1, -2.5));
+        //Hologramas.crearHolo((BungeeMensager.getLobbies().get("lfc") + BungeeMensager.getJuegos().get("fc")) + " &6In Game", new Location(Bukkit.getWorld("spawn"), -39.5, 64.6, -7.5));
+        //Hologramas.crearHolo(BungeeMensager.getJuegos().get("mb") + " &6In Game", new Location(Bukkit.getWorld("spawn"), -35.5, 64.1, -10.5));
 
-        Hologramas.crearHolo(Utils.colorize(Main.getInstance().getHolo1()), new Location(Bukkit.getWorld("spawn"),-9.5,66,0.5));
-        Hologramas.crearHolo(Utils.colorize(Main.getInstance().getHolo1p2()), new Location(Bukkit.getWorld("spawn"),-9.5,65.7,0.5));
+        Hologramas.crearHolo(Utils.colorize(Main.getInstance().getHolo1()), new Location(Bukkit.getWorld("world"),-9.5,66,0.5));
+        Hologramas.crearHolo(Utils.colorize(Main.getInstance().getHolo1p2()), new Location(Bukkit.getWorld("world"),-9.5,65.7,0.5));
 
-        Hologramas.crearHolo(Utils.colorize(Main.getInstance().getHolo2()), new Location(Bukkit.getWorld("spawn"),-9.5,65,0.5));
-        Hologramas.crearHolo(Utils.colorize(Main.getInstance().getHolo2p2()), new Location(Bukkit.getWorld("spawn"),-9.5,64.7,0.5));
+        Hologramas.crearHolo(Utils.colorize(Main.getInstance().getHolo2()), new Location(Bukkit.getWorld("world"),-9.5,65,0.5));
+        Hologramas.crearHolo(Utils.colorize(Main.getInstance().getHolo2p2()), new Location(Bukkit.getWorld("world"),-9.5,64.7,0.5));
 
-        Hologramas.crearHolo(Utils.colorize(Main.getInstance().getHolo3()), new Location(Bukkit.getWorld("spawn"),-31.5,63,0.5));
-        Hologramas.crearHolo(Utils.colorize(Main.getInstance().getHolo3p2()), new Location(Bukkit.getWorld("spawn"),-31.5,62.7,0.5));
+        Hologramas.crearHolo(Utils.colorize(Main.getInstance().getHolo3()), new Location(Bukkit.getWorld("world"),-31.5,63,0.5));
+        Hologramas.crearHolo(Utils.colorize(Main.getInstance().getHolo3p2()), new Location(Bukkit.getWorld("world"),-31.5,62.7,0.5));
     }
 
     @EventHandler
