@@ -39,7 +39,7 @@ public class Main extends JavaPlugin {
         registerClasses();
         registerEvents();
 
-        Bukkit.getWorld("spawn").setDifficulty(Difficulty.PEACEFUL);
+        Bukkit.getWorld("world").setDifficulty(Difficulty.PEACEFUL);
         Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "/minecraft:kill @e");
     }
 

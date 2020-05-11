@@ -33,7 +33,7 @@ public class SUser {
 
     private final Main plugin = Main.getInstance();
 
-    @Getter private UUID uuid;
+    @Getter private final UUID uuid;
     @Getter @Setter private UserData userData;
     @Getter @Setter private Profile profile;
 

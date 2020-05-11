@@ -12,7 +12,7 @@ import org.bukkit.Material;
 public class FireworkName extends Gadget {
 
     public FireworkName() {
-        super(SCmd.Rank.RA);
+        super(SCmd.Rank.YOUTUBER);
     }
 
     @Override

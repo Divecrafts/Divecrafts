@@ -15,7 +15,7 @@ import java.util.Random;
 public class Butterfly extends Gadget {
 
     public Butterfly() {
-        super(SCmd.Rank.INDRA);
+        super(SCmd.Rank.YOUTUBER);
     }
 
     private final Random dice = new Random();
