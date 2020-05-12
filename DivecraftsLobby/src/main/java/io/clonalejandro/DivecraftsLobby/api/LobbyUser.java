@@ -70,11 +70,13 @@ public class LobbyUser extends SUser {
 
     public void setScoreBoard() {
 
-        ScoreboardUtil board = new ScoreboardUtil(sbName, "lobby");
+        final ScoreboardUtil board = new ScoreboardUtil(sbName, "lobby");
+        final String rankColored = SCmd.Rank.groupColor(getUserData().getRank()) + getUserData().getRank().getPrefix();
+        final String rank = getUserData().getRank() == SCmd.Rank.USUARIO ? rankColored + "USER" : rankColored;
 
         board.setName(Utils.colorize(sbName));
         board.text(10, Utils.colorize("&1"));
-        board.text(9, Utils.colorize(Languaje.getLangMsg(getUserData().getLang(), "Scoreboardlobby.rango") + "&" + SCmd.Rank.groupColor(getUserData().getRank()) + getUserData().getRank().getPrefix()));
+        board.text(9, Utils.colorize(Languaje.getLangMsg(getUserData().getLang(), "Scoreboardlobby.rango") + "&" + rank));
         board.text(8, Utils.colorize("&fBoosters: &a0"));
         board.text(7, Utils.colorize("&fKeys: &a0"));
         board.text(6, Utils.colorize(Languaje.getLangMsg(getUserData().getLang(), "Scoreboardlobby.monedas") + getUserData().getCoins()));
