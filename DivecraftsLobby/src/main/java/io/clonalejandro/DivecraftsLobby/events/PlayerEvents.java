@@ -68,14 +68,14 @@ public class PlayerEvents implements Listener {
         //Hologramas.crearHolo((BungeeMensager.getLobbies().get("lfc") + BungeeMensager.getJuegos().get("fc")) + " &6In Game", new Location(Bukkit.getWorld("spawn"), -39.5, 64.6, -7.5));
         //Hologramas.crearHolo(BungeeMensager.getJuegos().get("mb") + " &6In Game", new Location(Bukkit.getWorld("spawn"), -35.5, 64.1, -10.5));
 
-        Hologramas.crearHolo(Utils.colorize(Main.getInstance().getHolo1()), new Location(Bukkit.getWorld("world"),-9.5,66,0.5));
-        Hologramas.crearHolo(Utils.colorize(Main.getInstance().getHolo1p2()), new Location(Bukkit.getWorld("world"),-9.5,65.7,0.5));
+        Hologramas.crearHolo(Utils.colorize(Main.getInstance().getHolo1()), new Location(Bukkit.getWorld("world"),-9.5,66,0.5), "world");
+        Hologramas.crearHolo(Utils.colorize(Main.getInstance().getHolo1p2()), new Location(Bukkit.getWorld("world"),-9.5,65.7,0.5), "world");
 
-        Hologramas.crearHolo(Utils.colorize(Main.getInstance().getHolo2()), new Location(Bukkit.getWorld("world"),-9.5,65,0.5));
-        Hologramas.crearHolo(Utils.colorize(Main.getInstance().getHolo2p2()), new Location(Bukkit.getWorld("world"),-9.5,64.7,0.5));
+        Hologramas.crearHolo(Utils.colorize(Main.getInstance().getHolo2()), new Location(Bukkit.getWorld("world"),-9.5,65,0.5), "world");
+        Hologramas.crearHolo(Utils.colorize(Main.getInstance().getHolo2p2()), new Location(Bukkit.getWorld("world"),-9.5,64.7,0.5), "world");
 
-        Hologramas.crearHolo(Utils.colorize(Main.getInstance().getHolo3()), new Location(Bukkit.getWorld("world"),-31.5,63,0.5));
-        Hologramas.crearHolo(Utils.colorize(Main.getInstance().getHolo3p2()), new Location(Bukkit.getWorld("world"),-31.5,62.7,0.5));
+        Hologramas.crearHolo(Utils.colorize(Main.getInstance().getHolo3()), new Location(Bukkit.getWorld("world"),-31.5,63,0.5), "world");
+        Hologramas.crearHolo(Utils.colorize(Main.getInstance().getHolo3p2()), new Location(Bukkit.getWorld("world"),-31.5,62.7,0.5), "world");
     }
 
     @EventHandler
@@ -194,8 +194,8 @@ public class PlayerEvents implements Listener {
                 case "Perfil":
                     switch (event.getSlot()) {
                         case 11:
-                            user.getPlayer().sendMessage(Utils.colorize("&6Ranks, Crates, Coins and more:"));
-                            user.getPlayer().sendMessage(Utils.colorize("&dhttps://tienda.styluslite.net"));
+                            user.getPlayer().sendMessage(Utils.colorize("&eRanks, Crates, Coins and more:"));
+                            user.getPlayer().sendMessage(Utils.colorize("&ahttps://shop.divecrafts.net"));
                             user.getPlayer().closeInventory();
                             break;
                         case 13:
@@ -270,62 +270,7 @@ public class PlayerEvents implements Listener {
             }
         }*/
 
-        if (event.getAction() == Action.LEFT_CLICK_AIR) {
-            if (event.getMaterial() == Material.DIAMOND_SWORD) {
-                Player p = event.getPlayer();
-
-                if (aunNo.contains(p)) {
-                    p.sendMessage(Languaje.getLangMsg(u.getUserData().getLang(), "Clicktest.aunno"));
-                    return;
-                }
-
-                if (!click.contains(p)) {
-                    click.add(p);
-                    p.setLevel(0);
-                    p.setGameMode(GameMode.SURVIVAL);
-                    p.sendMessage(Languaje.getLangMsg(u.getUserData().getLang(), "Clicktest.comienzaen").replace("%secs%", String.valueOf(5)));
-                    Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Main.getInstance(), () -> p.sendMessage(Languaje.getLangMsg(u.getUserData().getLang(), "Clicktest.comienzaen").replace("%secs%", String.valueOf(4))), 20L);
-                    Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Main.getInstance(), () -> p.sendMessage(Languaje.getLangMsg(u.getUserData().getLang(), "Clicktest.comienzaen").replace("%secs%", String.valueOf(3))), 40L);
-                    Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Main.getInstance(), () -> p.sendMessage(Languaje.getLangMsg(u.getUserData().getLang(), "Clicktest.comienzaen").replace("%secs%", String.valueOf(2))), 60L);
-                    Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Main.getInstance(), () -> p.sendMessage(Languaje.getLangMsg(u.getUserData().getLang(), "Clicktest.comienzaen").replace("%secs%", String.valueOf(1))), 80L);
-
-                    Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Main.getInstance(), () -> {
-                        p.sendMessage(Languaje.getLangMsg(u.getUserData().getLang(), "Clicktest.comenzado"));
-                        p.sendMessage(Languaje.getLangMsg(u.getUserData().getLang(), "Clicktest.soloclickaire"));
-                        sela.add(p);
-                    }, 100L);
-                } else {
-                    if (sela.contains(p)) {
-                        p.setLevel(p.getLevel() + 1);
-
-                        Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Main.getInstance(), () -> {
-                            if (sela.contains(p)) {
-                                aunNo.add(p);
-                                sela.remove(p);
-                                click.remove(p);
-                                p.sendMessage(Languaje.getLangMsg(u.getUserData().getLang(), "Clicktest.titulo"));
-                                p.sendMessage(Languaje.getLangMsg(u.getUserData().getLang(), "Clicktest.terminado"));
-                                p.sendMessage(Languaje.getLangMsg(u.getUserData().getLang(), "Clicktest.hashecho").replace("%clicks%", String.valueOf(p.getLevel())));
-                                p.sendMessage(Languaje.getLangMsg(u.getUserData().getLang(), "Clicktest.tumedia").replace("%cps%", String.valueOf(p.getLevel() / 10)));
-                                p.sendMessage(Languaje.getLangMsg(u.getUserData().getLang(), "Clicktest.titulo"));
-                                if (p.getLevel()/10 >= 10) {
-                                    for (LobbyUser lu : Main.getUsers()) {
-                                        lu.getPlayer().sendMessage(Languaje.getLangMsg(lu.getUserData().getLang(), "Clicktest.grandioso").replace("%player%", p.getName()));
-                                    }
-                                }
-                            }
-                        }, 200L);
-
-                        Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Main.getInstance(), () -> p.setLevel(0), 260L);
-
-                        Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Main.getInstance(), () -> {
-                            aunNo.remove(p);
-                            p.setGameMode(GameMode.ADVENTURE);
-                        }, 600L);
-                    }
-                }
-            }
-        } else if (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+        if (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
             switch (event.getMaterial()) {
                 case COMPASS:
                     InvManager.openInventory(event.getPlayer(), InvManager.InvType.GAMES);

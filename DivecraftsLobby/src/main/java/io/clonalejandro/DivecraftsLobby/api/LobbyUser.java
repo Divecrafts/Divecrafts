@@ -38,7 +38,6 @@ public class LobbyUser extends SUser {
         i.clear();
         getPlayer().updateInventory();
         i.setItem(0, new ItemMaker(Material.COMPASS).setName(Languaje.getLangMsg(getUserData().getLang(), "Itemnames.brujula")).setLore(Languaje.getLangMsg(getUserData().getLang(), "Itemlores.brujula")).build());
-        i.setItem(4, new ItemMaker(Material.DIAMOND_SWORD).setName(Languaje.getLangMsg(getUserData().getLang(), "Itemnames.clicktest")).setLore(Languaje.getLangMsg(getUserData().getLang(), "Itemlores.clicktest")).build());
         i.setItem(1, ItemUtil.createHeadPlayer(Languaje.getLangMsg(getUserData().getLang(), "Itemnames.perfil"), getName(), Arrays.asList(Languaje.getLangMsg(getUserData().getLang(), "Itemlores.perfil"))));
         i.setItem(8, new ItemMaker(Material.NETHER_STAR).setName(Languaje.getLangMsg(getUserData().getLang(), "Itemnames.lobby")).setLore(Languaje.getLangMsg(getUserData().getLang(), "Itemlores.lobby")).build());
 
