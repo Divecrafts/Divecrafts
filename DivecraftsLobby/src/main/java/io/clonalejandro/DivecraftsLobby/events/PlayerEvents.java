@@ -290,13 +290,13 @@ public class PlayerEvents implements Listener {
                     }
                     switch (user.getUserData().getVisible()) {
                         case 0:
-                            user.getPlayer().getInventory().setItem(7, new ItemMaker(Material.INK_SACK, 1, (byte) 8).setName(Languaje.getLangMsg(user.getUserData().getLang(), "Itemnames.visibilidad")).setLore(Languaje.getLangMsg(user.getUserData().getLang(), "Itemlores.visibilidad")).build());
+                            user.getPlayer().getInventory().setItem(7, new ItemMaker(Material.INK_SACK, 1, (byte) 8).setName(Languaje.getLangMsg(user.getUserData().getLang(), "Itemnames.visibilidad")).setLore(Languaje.getLangMsg(user.getUserData().getLang(), "Itemlores.visibilidad").split("\n")).build());
                             break;
                         case 1:
-                            user.getPlayer().getInventory().setItem(7, new ItemMaker(Material.INK_SACK, 1, (byte) 5).setName(Languaje.getLangMsg(user.getUserData().getLang(), "Itemnames.visibilidad")).setLore(Languaje.getLangMsg(user.getUserData().getLang(), "Itemlores.visibilidad")).build());
+                            user.getPlayer().getInventory().setItem(7, new ItemMaker(Material.INK_SACK, 1, (byte) 5).setName(Languaje.getLangMsg(user.getUserData().getLang(), "Itemnames.visibilidad")).setLore(Languaje.getLangMsg(user.getUserData().getLang(), "Itemlores.visibilidad").split("\n")).build());
                             break;
                         case 2:
-                            user.getPlayer().getInventory().setItem(7, new ItemMaker(Material.INK_SACK, 1, (byte) 10).setName(Languaje.getLangMsg(user.getUserData().getLang(), "Itemnames.visibilidad")).setLore(Languaje.getLangMsg(user.getUserData().getLang(), "Itemlores.visibilidad")).build());
+                            user.getPlayer().getInventory().setItem(7, new ItemMaker(Material.INK_SACK, 1, (byte) 10).setName(Languaje.getLangMsg(user.getUserData().getLang(), "Itemnames.visibilidad")).setLore(Languaje.getLangMsg(user.getUserData().getLang(), "Itemlores.visibilidad").split("\n")).build());
                             break;
                     }
                     user.tryHidePlayers();
