@@ -20,6 +20,9 @@ import net.md_5.bungee.event.EventHandler;
 
 
 import java.io.IOException;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Main extends Plugin implements Listener {
 
@@ -85,7 +88,23 @@ public class Main extends Plugin implements Listener {
     }
 
     public ServerInfo getLobby() {
-        return getProxy().getServerInfo("lobby");
+		final HashMap<String, Integer> playersInLobbies = new HashMap<>();
+
+		try {
+			getConfigManager().getConfig().getStringList("lobbies").forEach(lobby -> playersInLobbies.put(lobby, getProxy().getServerInfo(lobby).getPlayers().size()));
+		}
+		catch (IOException e){
+			e.printStackTrace();
+			return null;
+		}
+
+		String lobby = playersInLobbies
+				.entrySet()
+				.stream()
+				.min(Comparator.comparingDouble(Map.Entry::getValue))
+				.get().getKey();
+
+		return getProxy().getServerInfo(lobby);
     }
 
     @EventHandler
