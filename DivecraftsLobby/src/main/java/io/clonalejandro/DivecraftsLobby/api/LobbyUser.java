@@ -15,11 +15,15 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scoreboard.Team;
 
 import java.util.Arrays;
 import java.util.UUID;
 
 public class LobbyUser extends SUser {
+
+    private String sbName = "&f&lDivecrafts";
+    private int sbColor = 1;
 
     public LobbyUser(UUID uuid) {
         super(uuid);
@@ -34,7 +38,6 @@ public class LobbyUser extends SUser {
         i.clear();
         getPlayer().updateInventory();
         i.setItem(0, new ItemMaker(Material.COMPASS).setName(Languaje.getLangMsg(getUserData().getLang(), "Itemnames.brujula")).setLore(Languaje.getLangMsg(getUserData().getLang(), "Itemlores.brujula")).build());
-        i.setItem(4, new ItemMaker(Material.DIAMOND_SWORD).setName(Languaje.getLangMsg(getUserData().getLang(), "Itemnames.clicktest")).setLore(Languaje.getLangMsg(getUserData().getLang(), "Itemlores.clicktest")).build());
         i.setItem(1, ItemUtil.createHeadPlayer(Languaje.getLangMsg(getUserData().getLang(), "Itemnames.perfil"), getName(), Arrays.asList(Languaje.getLangMsg(getUserData().getLang(), "Itemlores.perfil"))));
         i.setItem(8, new ItemMaker(Material.NETHER_STAR).setName(Languaje.getLangMsg(getUserData().getLang(), "Itemnames.lobby")).setLore(Languaje.getLangMsg(getUserData().getLang(), "Itemlores.lobby")).build());
 
@@ -59,40 +62,71 @@ public class LobbyUser extends SUser {
         getPlayer().setGameMode(GameMode.ADVENTURE);
 
         getPlayer().updateInventory();
-        setScoreBoard(Utils.colorize("&5STYLUS &dNETWORK"));
+        setScoreBoard();
 
         getPlayer().teleport(getPlayer().getWorld().getSpawnLocation());
-
-        getPlayer().sendMessage("§7§m---------------------------------------------");
-        getPlayer().sendMessage(Languaje.getLangMsg(getUserData().getLang(), "Bienvenida.welcome").replace("%player%", getName()));
-        getPlayer().sendMessage(Languaje.getLangMsg(getUserData().getLang(), "Bienvenida.tienda"));
-        getPlayer().sendMessage(Languaje.getLangMsg(getUserData().getLang(), "Bienvenida.web"));
-        getPlayer().sendMessage(Languaje.getLangMsg(getUserData().getLang(), "Bienvenida.twitter"));
-        getPlayer().sendMessage(Languaje.getLangMsg(getUserData().getLang(), "Bienvenida.discord"));
-        getPlayer().sendMessage("§7§m---------------------------------------------");
-
     }
 
-    public void setScoreBoard(String displayname) {
-        ScoreboardUtil board = new ScoreboardUtil(displayname, "lobby");
+
+    public void setScoreBoard() {
+
+        ScoreboardUtil board = new ScoreboardUtil(sbName, "lobby");
+
+        board.setName(Utils.colorize(sbName));
+        board.text(10, Utils.colorize("&1"));
+        board.text(9, Utils.colorize(Languaje.getLangMsg(getUserData().getLang(), "Scoreboardlobby.rango") + "&" + SCmd.Rank.groupColor(getUserData().getRank()) + getUserData().getRank().getPrefix()));
+        board.text(8, Utils.colorize("&fBoosters: &a0"));
+        board.text(7, Utils.colorize("&fKeys: &a0"));
+        board.text(6, Utils.colorize(Languaje.getLangMsg(getUserData().getLang(), "Scoreboardlobby.monedas") + getUserData().getCoins()));
+        board.text(5, Utils.colorize("&2"));
+        board.text(4, Utils.colorize("&fLobby: &a#" + Bukkit.getServerId()));
+        board.text(3, Utils.colorize("&f"));
+        board.text(2, Utils.colorize("&3"));
+        board.text(1, Utils.colorize("&ewww.divecrafts.net"));
+
+        board.team("players", Languaje.getLangMsg(getUserData().getLang(), "Scoreboardlobby.jugadores"));
+        board.getTeam("players").addEntry(Utils.colorize("&f"));
+
         new BukkitRunnable() {
             @Override
             public void run() {
                 if (getPlayer() == null) cancel();
-                board.setName(Utils.colorize(displayname));
-                board.text(11, Utils.colorize("&6&8&m--------------------"));
-                board.text(10, Utils.colorize(Languaje.getLangMsg(getUserData().getLang(), "Scoreboardlobby.rango") + "§" + SCmd.Rank.groupColor(getUserData().getRank()) + "[" + getUserData().getRank() + "]"));
-                board.text(9, Utils.colorize(Languaje.getLangMsg(getUserData().getLang(), "Scoreboardlobby.jugadores") + Bukkit.getServer().getOnlinePlayers().size()));
-                board.text(8, Utils.colorize("&8 "));
-                board.text(7, Utils.colorize("&5News:"));
-                board.text(6, Utils.colorize("&6@StylusLite"));
-                board.text(5, Utils.colorize("&5 "));
-                board.text(4, Utils.colorize(Languaje.getLangMsg(getUserData().getLang(), "Scoreboardlobby.monedas") + getUserData().getCoins()));
-                board.text(3, Utils.colorize("&5&8&m--------------------"));
-                board.text(2, Utils.colorize("&5Lobby: &f" + Bukkit.getServerId().substring(Bukkit.getServerId().length() - 1)));
-                board.text(1, Utils.colorize("&7&8&m--------------------"));
+
+                switch (sbColor){
+                    case 1:
+                        sbName = "&a&lDivecrafts";
+                        sbColor++;
+                        break;
+                    case 2:
+                        sbName = "&b&lDivecrafts";
+                        sbColor++;
+                        break;
+                    case 3:
+                        sbName = "&c&lDivecrafts";
+                        sbColor++;
+                        break;
+                    case 4:
+                        sbName = "&d&lDivecrafts";
+                        sbColor++;
+                        break;
+                    case 5:
+                        sbName = "&e&lDivecrafts";
+                        sbColor++;
+                        break;
+                    case 6:
+                        sbName = "&6&lDivecrafts";
+                        sbColor++;
+                        break;
+                    default:
+                        sbName = "&f&lDivecrafts";
+                        sbColor = 1;
+                        break;
+                }
+
+                board.setName(sbName);
+                board.getTeam("players").setSuffix(String.valueOf(Bukkit.getOnlinePlayers().size()));
                 if (getPlayer() != null) board.build(getPlayer());
             }
-        }.runTaskTimer(Main.getInstance(), 0, 20);
+        }.runTaskTimer(Main.getInstance(), 0, 5);
     }
 }

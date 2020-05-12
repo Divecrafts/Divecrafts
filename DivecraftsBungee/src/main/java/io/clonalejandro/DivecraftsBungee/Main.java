@@ -36,7 +36,7 @@ public class Main extends Plugin implements Listener {
 		MB = this;
 		setupDB();
 
-	    getProxy().registerChannel("DiveBungee");
+	    getProxy().registerChannel("DivecraftsBungee");
 	    
 		try {
 			getConfigManager().generateConfig(MB);

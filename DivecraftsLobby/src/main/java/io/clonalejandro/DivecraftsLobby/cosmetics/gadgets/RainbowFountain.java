@@ -24,7 +24,7 @@ import java.util.List;
 public class RainbowFountain extends Gadget {
 
     public RainbowFountain() {
-        super(SCmd.Rank.INDRA);
+        super(SCmd.Rank.YOUTUBER);
     }
 
     @Override

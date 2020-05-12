@@ -13,8 +13,8 @@ public class Hologramas {
 
     public static ArrayList<org.bukkit.entity.Entity> hologramas = new ArrayList<>();
 
-    public static void crearHolo(String msg, Location l){
-        org.bukkit.entity.Entity e = Bukkit.getWorld("spawn").spawn(l, ArmorStand.class);
+    public static void crearHolo(String msg, Location l, String worldName){
+        org.bukkit.entity.Entity e = Bukkit.getWorld(worldName).spawn(l, ArmorStand.class);
         ((ArmorStand) e).setVisible(false);
         Entity h = ((CraftEntity)e).getHandle();
         NBTTagCompound tag = h.getNBTTag();

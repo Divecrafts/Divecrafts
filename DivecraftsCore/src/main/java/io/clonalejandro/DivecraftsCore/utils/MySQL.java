@@ -1,13 +1,11 @@
 package io.clonalejandro.DivecraftsCore.utils;
 
-import com.mysql.jdbc.CommunicationsException;
+import com.mysql.cj.jdbc.exceptions.CommunicationsException;
 import io.clonalejandro.DivecraftsCore.Main;
 import io.clonalejandro.DivecraftsCore.api.SServer;
 import io.clonalejandro.DivecraftsCore.api.SUser;
 import io.clonalejandro.DivecraftsCore.cmd.SCmd;
 import org.bukkit.entity.Player;
-
-import java.net.InetSocketAddress;
 import java.sql.*;
 import java.util.UUID;
 
@@ -52,7 +50,7 @@ public class MySQL {
     public Connection openConnection() throws SQLException, ClassNotFoundException {
         if (checkConnection()) return connection;
 
-        Class.forName("com.mysql.jdbc.Driver");
+        Class.forName("com.mysql.cj.jdbc.Driver");
         connection = DriverManager.getConnection("jdbc:mysql://" + this.hostname + ":" + this.port + "/" + this.database + "?autoReconnect=true", this.user, this.password);
         return connection;
     }
@@ -227,6 +225,8 @@ public class MySQL {
             } catch (Exception ex1) {
                 ex1.printStackTrace();
             }
+
+            return data;
         } catch (Exception ex) {
             System.out.println("Ha ocurrido un error cargando los datos de " + id);
             ex.printStackTrace();

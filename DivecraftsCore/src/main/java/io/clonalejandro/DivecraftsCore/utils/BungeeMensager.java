@@ -56,7 +56,7 @@ public class BungeeMensager implements PluginMessageListener {
             String[] servers = in.readUTF().split(",");
 
             for (String server : servers){
-                juegos.put(server.split("-")[0],Integer.parseInt(server.split("-")[1]));
+                juegos.put(server.split("-")[0],Integer.parseInt(server.split("-")[1].equals("null") ? "0" : server.split("-")[1]));
             }
         }
         if (subcanal.equalsIgnoreCase("Lobbies")){
@@ -64,7 +64,7 @@ public class BungeeMensager implements PluginMessageListener {
             String[] l = in.readUTF().split(",");
             for (String lobby : l){
                 String[] ldef = lobby.split("-");
-                lobbies.put(ldef[0], Integer.parseInt(ldef[1]));
+                lobbies.put(ldef[0], Integer.parseInt(ldef[1].equals("null") ? "0" : ldef[1]));
             }
         }
         if (subcanal.equalsIgnoreCase("LobbiesCat")){

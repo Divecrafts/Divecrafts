@@ -31,8 +31,14 @@ public class ItemInfoCmd implements CommandExecutor {
         final Player player = Bukkit.getPlayer(sender.getName());
 
         if (player.getItemInHand() != null && player.getItemInHand().getType() != Material.AIR){
-            final int itemId = player.getItemInHand().getTypeId();
-            player.sendMessage(Main.translate(String.format("&9&lServer> &fLa id del item de tu mano es &e%s", itemId)));
+            final StringBuilder itemId = new StringBuilder();
+            final String data = player.getItemInHand().getData().toString();
+            final char dataValue = data.charAt(data.indexOf("(") + 1);
+
+            itemId.append(player.getItemInHand().getTypeId());
+            itemId.append(dataValue == 0 || dataValue == '0' ? "" : String.format(":%s", dataValue));
+
+            player.sendMessage(Main.translate(String.format("&9&lServer> &fLa id del item de tu mano es &e%s", itemId.toString())));
         }
         else player.sendMessage(Main.translate("&c&lServer> &fNo tienes ningún item en tu mano"));
         return true;

@@ -20,6 +20,13 @@
         </plugins>
     </build>
 
+    <repositories>
+        <repository>
+            <url>https://divecrafts.github.io/bungeecord/</url>
+            <id>bungeecord</id>
+        </repository>
+    </repositories>
+
     <dependencies>
         <dependency>
             <groupId>mysql</groupId>
@@ -31,6 +38,11 @@
             <artifactId>lombok</artifactId>
             <version>1.18.12</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.divecrafts</groupId>
+            <artifactId>BungeeCord</artifactId>
+            <version>1.15</version>
         </dependency>
     </dependencies>
 </project>

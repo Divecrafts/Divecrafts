@@ -7,6 +7,7 @@ import io.clonalejandro.DivecraftsCore.idiomas.Languaje;
 import io.clonalejandro.DivecraftsCore.utils.BungeeMensager;
 import io.clonalejandro.DivecraftsCore.utils.ItemMaker;
 import io.clonalejandro.DivecraftsCore.utils.SoundUtils;
+import io.clonalejandro.DivecraftsCore.utils.Utils;
 import io.clonalejandro.DivecraftsLobby.utils.ItemUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.DyeColor;
@@ -48,9 +49,9 @@ public class InvManager {
             case PROFILE:
                 inv = Bukkit.getServer().createInventory(null, 45, "Perfil");
 
-                String rankname = "§" + SCmd.Rank.groupColor(u.getUserData().getRank()) + u.getUserData().getRank();
+                String rankname = Utils.colorize("&" + SCmd.Rank.groupColor(u.getUserData().getRank()) + u.getUserData().getRank().getPrefix());
 
-                inv.setItem(11, ItemUtil.createSkull(Languaje.getLangMsg(u.getUserData().getLang(), "Inventarios.infoname"), player.getName(), Arrays.asList(Languaje.getLangMsg(u.getUserData().getLang(), "Inventarios.infolore").replace("%rango%", rankname).replace("%coins%", String.valueOf(u.getUserData().getCoins())).split("\n"))));
+                inv.setItem(11, ItemUtil.createSkull(Languaje.getLangMsg(u.getUserData().getLang(), "Inventarios.infoname"), player.getName(), Arrays.asList(Languaje.getLangMsg(u.getUserData().getLang(), "Inventarios.infolore").replace("%rango%",  rankname).replace("%coins%", String.valueOf(u.getUserData().getCoins())).split("\n"))));
                 inv.setItem(15, new ItemMaker(Material.PAPER).setName(Languaje.getLangMsg(u.getUserData().getLang(), "Inventarios.statsname")).setLore(Arrays.asList(Languaje.getLangMsg(u.getUserData().getLang(), "Inventarios.statslore").split("\n"))).build());
                 inv.setItem(13, new ItemMaker(Material.REDSTONE_COMPARATOR).setName(Languaje.getLangMsg(u.getUserData().getLang(), "Inventarios.ajustesname")).setLore(Arrays.asList(Languaje.getLangMsg(u.getUserData().getLang(), "Inventarios.ajusteslore").split("\n"))).build());
                 inv.setItem(30, ItemUtil.createCustomSkull("http://textures.minecraft.net/texture/9228a1f45d741ea33a973cb2c824e9106784a546dddbacda9f4af73399fbbfd4", Languaje.getLangMsg(u.getUserData().getLang(), "Inventarios.socialname"), Arrays.asList(Languaje.getLangMsg(u.getUserData().getLang(), "Inventarios.sociallore").split("\n"))));
@@ -94,19 +95,19 @@ public class InvManager {
 
                 inv.setItem(4, new ItemMaker(Material.BOOKSHELF).setName(Languaje.getLangMsg(u.getUserData().getLang(), "Juegosname.lobby")).setLore(loreLobby).build());
 
-                inv.setItem(20, new ItemMaker(Material.BLAZE_ROD).setName(Languaje.getLangMsg(u.getUserData().getLang(), "Juegosname.ffa")).setLore(Arrays.asList(Languaje.getLangMsg(u.getUserData().getLang(), "Juegoslore.ffa").replace("%players%", String.valueOf(BungeeMensager.getJuegos().get("ffa"))).split("\n"))).build());
+                //inv.setItem(20, new ItemMaker(Material.BLAZE_ROD).setName(Languaje.getLangMsg(u.getUserData().getLang(), "Juegosname.ffa")).setLore(Arrays.asList(Languaje.getLangMsg(u.getUserData().getLang(), "Juegoslore.ffa").replace("%players%", String.valueOf(BungeeMensager.getJuegos().get("ffa"))).split("\n"))).build());
 
-                inv.setItem(22, new ItemMaker(Material.DIAMOND_CHESTPLATE).setName(Languaje.getLangMsg(u.getUserData().getLang(), "Juegosname.uhc")).setLore(Arrays.asList(Languaje.getLangMsg(u.getUserData().getLang(), "Juegoslore.uhc").replace("%players%", String.valueOf(BungeeMensager.getJuegos().get("uhc"))).split("\n"))).build());
+                //inv.setItem(22, new ItemMaker(Material.DIAMOND_CHESTPLATE).setName(Languaje.getLangMsg(u.getUserData().getLang(), "Juegosname.uhc")).setLore(Arrays.asList(Languaje.getLangMsg(u.getUserData().getLang(), "Juegoslore.uhc").replace("%players%", String.valueOf(BungeeMensager.getJuegos().get("uhc"))).split("\n"))).build());
 
-                inv.setItem(24, new ItemMaker(Material.BOW).setName(Languaje.getLangMsg(u.getUserData().getLang(), "Juegosname.sw")).setLore(Arrays.asList(Languaje.getLangMsg(u.getUserData().getLang(), "Juegoslore.sw").replace("%players%", String.valueOf(BungeeMensager.getLobbies().get("lsw") + BungeeMensager.getJuegos().get("sw"))).split("\n"))).build());
+                //inv.setItem(24, new ItemMaker(Material.BOW).setName(Languaje.getLangMsg(u.getUserData().getLang(), "Juegosname.sw")).setLore(Arrays.asList(Languaje.getLangMsg(u.getUserData().getLang(), "Juegoslore.sw").replace("%players%", String.valueOf(BungeeMensager.getLobbies().get("lsw") + BungeeMensager.getJuegos().get("sw"))).split("\n"))).build());
 
-                inv.setItem(28, new ItemMaker(Material.GOLDEN_APPLE).setName(Languaje.getLangMsg(u.getUserData().getLang(), "Juegosname.fc")).setLore(Arrays.asList(Languaje.getLangMsg(u.getUserData().getLang(), "Juegoslore.fc").replace("%players%", String.valueOf(BungeeMensager.getLobbies().get("lfc") + BungeeMensager.getJuegos().get("fc"))).split("\n"))).build());
+                //inv.setItem(28, new ItemMaker(Material.GOLDEN_APPLE).setName(Languaje.getLangMsg(u.getUserData().getLang(), "Juegosname.fc")).setLore(Arrays.asList(Languaje.getLangMsg(u.getUserData().getLang(), "Juegoslore.fc").replace("%players%", String.valueOf(BungeeMensager.getLobbies().get("lfc") + BungeeMensager.getJuegos().get("fc"))).split("\n"))).build());
 
-                inv.setItem(30, new ItemMaker(Material.DIAMOND_SWORD).setName(Languaje.getLangMsg(u.getUserData().getLang(), "Juegosname.mum")).setLore(Arrays.asList(Languaje.getLangMsg(u.getUserData().getLang(), "Juegoslore.mum").replace("%players%", String.valueOf(BungeeMensager.getJuegos().get("mum"))).split("\n"))).build());
+                //inv.setItem(30, new ItemMaker(Material.DIAMOND_SWORD).setName(Languaje.getLangMsg(u.getUserData().getLang(), "Juegosname.mum")).setLore(Arrays.asList(Languaje.getLangMsg(u.getUserData().getLang(), "Juegoslore.mum").replace("%players%", String.valueOf(BungeeMensager.getJuegos().get("mum"))).split("\n"))).build());
 
-                inv.setItem(32, new ItemMaker(Material.WOOL, 1, (byte) 2).setName(Languaje.getLangMsg(u.getUserData().getLang(), "Juegosname.mb")).setLore(Arrays.asList(Languaje.getLangMsg(u.getUserData().getLang(), "Juegoslore.mb").replace("%players%", String.valueOf(BungeeMensager.getJuegos().get("mb"))).split("\n"))).build());
+                //inv.setItem(32, new ItemMaker(Material.WOOL, 1, (byte) 2).setName(Languaje.getLangMsg(u.getUserData().getLang(), "Juegosname.mb")).setLore(Arrays.asList(Languaje.getLangMsg(u.getUserData().getLang(), "Juegoslore.mb").replace("%players%", String.valueOf(BungeeMensager.getJuegos().get("mb"))).split("\n"))).build());
 
-                inv.setItem(34, new ItemMaker(Material.DRAGON_EGG).setName(Languaje.getLangMsg(u.getUserData().getLang(), "Juegosname.ew")).setLore(Arrays.asList(Languaje.getLangMsg(u.getUserData().getLang(), "Juegoslore.ew").replace("%players%", String.valueOf(BungeeMensager.getLobbies().get("lew") + BungeeMensager.getJuegos().get("ew"))).split("\n"))).build());
+                //inv.setItem(34, new ItemMaker(Material.DRAGON_EGG).setName(Languaje.getLangMsg(u.getUserData().getLang(), "Juegosname.ew")).setLore(Arrays.asList(Languaje.getLangMsg(u.getUserData().getLang(), "Juegoslore.ew").replace("%players%", String.valueOf(BungeeMensager.getLobbies().get("lew") + BungeeMensager.getJuegos().get("ew"))).split("\n"))).build());
 
                 break;
             case STATS:

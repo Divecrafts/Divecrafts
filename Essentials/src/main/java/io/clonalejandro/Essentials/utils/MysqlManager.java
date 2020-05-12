@@ -6,7 +6,6 @@ import org.bukkit.Bukkit;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 /**
  * Created by Alex
@@ -46,7 +45,7 @@ public class MysqlManager {
             if (connection != null && !connection.isClosed()) return;
 
             Class.forName("com.mysql.jdbc.Driver");
-            connection = DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + database, username, password);
+            connection = DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + database + "?autoReconnect=true", username, password);
         }
     }
 
