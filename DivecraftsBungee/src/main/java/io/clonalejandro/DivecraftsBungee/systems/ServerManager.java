@@ -126,7 +126,7 @@ public class ServerManager {
 	            var6.printStackTrace();
 			}
 
-			s.sendData("DiveBungee", stream.toByteArray());
+			s.sendData("DivecraftsBungee", stream.toByteArray());
 		}
 	}
 
@@ -164,7 +164,7 @@ public class ServerManager {
 	            var6.printStackTrace();
 			}
 
-			s.sendData("DiveBungee", stream.toByteArray());
+			s.sendData("DivecraftsBungee", stream.toByteArray());
 		}
 	}
 	
@@ -208,7 +208,7 @@ public class ServerManager {
 	            var6.printStackTrace();
 			}
 
-			s.sendData("DiveBungee", stream.toByteArray());
+			s.sendData("DivecraftsBungee", stream.toByteArray());
 		}
 	}
 	
