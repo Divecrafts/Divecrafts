@@ -81,7 +81,7 @@ public class LobbyUser extends SUser {
         board.text(7, Utils.colorize("&fKeys: &a0"));
         board.text(6, Utils.colorize(Languaje.getLangMsg(getUserData().getLang(), "Scoreboardlobby.monedas") + getUserData().getCoins()));
         board.text(5, Utils.colorize("&2"));
-        board.text(4, Utils.colorize("&fLobby: &a#" + Bukkit.getServerId()));
+        board.text(4, Utils.colorize("&fLobby: &a#" + (Bukkit.getServerId().equalsIgnoreCase("lobby") ? "1" :  Bukkit.getServerId().charAt(Bukkit.getServerId().length() -1))));
         board.text(3, Utils.colorize("&f"));
         board.text(2, Utils.colorize("&3"));
         board.text(1, Utils.colorize("&ewww.divecrafts.net"));

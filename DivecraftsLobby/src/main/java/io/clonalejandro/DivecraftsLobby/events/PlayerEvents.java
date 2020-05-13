@@ -279,7 +279,7 @@ public class PlayerEvents implements Listener {
                     InvManager.openInventory(event.getPlayer(), InvManager.InvType.PROFILE);
                     break;
                 case NETHER_STAR:
-                    event.getPlayer().sendMessage(Languaje.getLangMsg(u.getUserData().getLang(), "Varios.proximamente"));
+                    InvManager.openInventory(event.getPlayer(), InvManager.InvType.LOBBIES);
                     break;
                 case INK_SACK:
                     SUser user = SServer.getUser(event.getPlayer());

@@ -18,11 +18,14 @@ import org.bukkit.inventory.Inventory;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class InvManager {
 
     public enum InvType { //Debemos incluir todos los invs para abrirlos
-        SETTINGS, PROFILE, GAMES, STATS, IDIOMAS, SOCIAL;
+        SETTINGS, PROFILE, GAMES, STATS, IDIOMAS, SOCIAL, LOBBIES
     }
 
     public static void openInventory(Player player, InvType invType) {
@@ -31,6 +34,33 @@ public class InvManager {
         SUser u = SServer.getUser(player);
 
         switch (invType){
+            case LOBBIES:
+                List<String> lobbies = BungeeMensager.getLobbies()
+                        .keySet()
+                        .stream()
+                        .filter(server -> server.contains("lobby"))
+                        .sorted()
+                        .collect(Collectors.toList());
+
+                inv = Bukkit.getServer().createInventory(null, 9, "Lobbies");
+
+                for (String lobby : lobbies){
+                    final String name = lobby.substring(0, 1).toUpperCase() + lobby.substring(1);
+
+                    DyeColor color = BungeeMensager.getLobbies().get(lobby) == 0 ? DyeColor.RED : DyeColor.WHITE;
+
+                    if (Bukkit.getServerId().equalsIgnoreCase(name)) color = DyeColor.YELLOW;
+
+                    inv.setItem(
+                            lobbies.indexOf(lobby),
+                            ItemUtil.createClay(
+                                    Utils.colorize(String.format("&a%s", name)),
+                                    Arrays.asList(Languaje.getLangMsg(u.getUserData().getLang(), "Juegoslore.lobbies").replace("%players%", String.valueOf(BungeeMensager.getLobbies().get(lobby))).split("\n")),
+                                    color
+                            )
+                    );
+                }
+                break;
             case IDIOMAS:
                 inv = Bukkit.getServer().createInventory(null, 45, "Language");
 
@@ -87,7 +117,7 @@ public class InvManager {
             case GAMES:
                 inv = Bukkit.getServer().createInventory(null, 45, "Games");
 
-                ArrayList<String> loreLobby = new ArrayList<String>();
+                ArrayList<String> loreLobby = new ArrayList<>();
                 String[] lores = Languaje.getLangMsg(u.getUserData().getLang(), "Juegoslore.lobby").split("\n");
                 for (String addlore : lores) {
                     loreLobby.add((addlore).replace("%players%", String.valueOf(BungeeMensager.getLobbies().get("lobby"))));
