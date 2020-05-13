@@ -20,9 +20,9 @@ import net.md_5.bungee.event.EventHandler;
 
 
 import java.io.IOException;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.logging.Level;
+import java.util.stream.Collectors;
 
 public class Main extends Plugin implements Listener {
 
@@ -91,20 +91,23 @@ public class Main extends Plugin implements Listener {
 		final HashMap<String, Integer> playersInLobbies = new HashMap<>();
 
 		try {
-			getConfigManager().getConfig().getStringList("lobbies").forEach(lobby -> playersInLobbies.put(lobby, getProxy().getServerInfo(lobby).getPlayers().size()));
+			getConfigManager().getConfig().getStringList("lobbies").forEach(lobby -> playersInLobbies.put(lobby, getProxy().getServerInfo(lobby) == null ? 100 : getProxy().getServerInfo(lobby).getPlayers().size()));
 		}
 		catch (IOException e){
 			e.printStackTrace();
 			return null;
 		}
 
-		String lobby = playersInLobbies
+
+		Optional<Map.Entry<String, Integer>> lobbyMin = playersInLobbies
 				.entrySet()
 				.stream()
-				.min(Comparator.comparingDouble(Map.Entry::getValue))
-				.get().getKey();
+				.filter(Objects::nonNull)
+				.min(Comparator.comparingDouble(Map.Entry::getValue));
 
-		return getProxy().getServerInfo(lobby);
+		if (lobbyMin.isPresent())
+			return getProxy().getServerInfo(lobbyMin.get().getKey());
+		else return getProxy().getServerInfo("lobby");
     }
 
     @EventHandler
