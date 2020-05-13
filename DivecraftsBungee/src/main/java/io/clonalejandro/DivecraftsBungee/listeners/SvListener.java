@@ -17,19 +17,19 @@ public class SvListener implements Listener {
 
    @EventHandler
    public void onPluginMessage(PluginMessageEvent e) throws IOException {
-      if(e.getTag().equalsIgnoreCase("StylusBungee")) {
+      if(e.getTag().equalsIgnoreCase("DivecraftsBungee")) {
          ByteArrayDataInput in = ByteStreams.newDataInput(e.getData());
          String subchannel = in.readUTF();
          if (subchannel.equalsIgnoreCase("Conectar")) {
              String s = in.readUTF();
              ProxiedPlayer p = (ProxiedPlayer)e.getReceiver();
              ServerInfo server = Main.getSvManager().elegirServer(s);
-             if(server != null) {
-                p.connect(server);
-             } else {
+             if(server != null) p.connect(server);
+             else {
                  try {
                      p.sendMessage(Languaje.getLangMsg(Languaje.getPlayerLang(p), "Global.portalnodispo"));
-                 } catch (SQLException ex) {
+                 }
+                 catch (SQLException ex) {
                      ex.printStackTrace();
                  }
              }
@@ -37,13 +37,14 @@ public class SvListener implements Listener {
          if (subchannel.equalsIgnoreCase("Exacto")) {
              String s = in.readUTF();
              ProxiedPlayer p = (ProxiedPlayer) e.getReceiver();
-             ServerInfo server = Main.getSvManager().elegirServer(s);
-             if(server != null) {
-                 p.connect(server);
-             } else {
+             ServerInfo server = Main.getSvManager().connectExact(s);
+
+             if (server != null) p.connect(server);
+             else {
                  try {
                      p.sendMessage(Languaje.getLangMsg(Languaje.getPlayerLang(p), "Global.portalnodispo"));
-                 } catch (SQLException ex) {
+                 }
+                 catch (SQLException ex) {
                      ex.printStackTrace();
                  }
              }

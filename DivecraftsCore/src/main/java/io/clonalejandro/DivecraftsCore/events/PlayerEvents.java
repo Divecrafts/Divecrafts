@@ -128,18 +128,6 @@ public class PlayerEvents implements Listener {
     }
 
     @EventHandler
-    public void playerCommand(PlayerCommandPreprocessEvent e) {
-        SUser u = SServer.getUser(e.getPlayer());
-
-        if(u.isOnRank(SCmd.Rank.ADMIN)) return;
-
-        if (e.getMessage().startsWith("/?") || e.getMessage().startsWith("/bukkit:") || e.getMessage().startsWith("/pl") || e.getMessage().startsWith("/plugins") || e.getMessage().startsWith("/minecraft:")) {
-            u.getPlayer().sendMessage(" ");
-            e.setCancelled(true);
-        }
-    }
-
-    @EventHandler
     public void onPlayerInteract(PlayerInteractEvent e) {
         SUser u = SServer.getUser(e.getPlayer());
 
