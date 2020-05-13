@@ -141,21 +141,21 @@ public class InvManager {
 
                 break;
             case STATS:
-                inv = Bukkit.getServer().createInventory(null, 36, "Stats");;
+                inv = Bukkit.getServer().createInventory(null, 36, "Stats");
 
-                inv.setItem(11, new ItemMaker(Material.BLAZE_ROD).setName("&6FFA").setLore("&fKILLS: &6" + u.getUserData().getKills(SServer.GameID.FFA),"&fDEATHS: &6" + u.getUserData().getDeaths(SServer.GameID.FFA), "&fPLAYS: &6" + u.getUserData().getPlays(SServer.GameID.FFA)).build());
+                inv.setItem(11, new ItemMaker(Material.BLAZE_ROD).setName("&aFFA").setLore("&7KILLS: &a" + u.getUserData().getKills(SServer.GameID.FFA),"&7DEATHS: &a" + u.getUserData().getDeaths(SServer.GameID.FFA), "&7PLAYS: &a" + u.getUserData().getPlays(SServer.GameID.FFA)).build());
 
-                inv.setItem(13, new ItemMaker(Material.DIAMOND_CHESTPLATE).setName("&6UHC").setLore("&fKILLS: &6" + u.getUserData().getKills(SServer.GameID.UHC), "&fDEATHS: &6" + u.getUserData().getDeaths(SServer.GameID.UHC), "&fWINS: &6" + u.getUserData().getWins(SServer.GameID.UHC), "&fPLAYS: &6" + u.getUserData().getPlays(SServer.GameID.UHC)).build());
+                inv.setItem(13, new ItemMaker(Material.DIAMOND_CHESTPLATE).setName("&aUHC").setLore("&7KILLS: &a" + u.getUserData().getKills(SServer.GameID.UHC), "&7DEATHS: &a" + u.getUserData().getDeaths(SServer.GameID.UHC), "&7WINS: &a" + u.getUserData().getWins(SServer.GameID.UHC), "&7PLAYS: &a" + u.getUserData().getPlays(SServer.GameID.UHC)).build());
 
-                inv.setItem(15, new ItemMaker(Material.BOW).setName("&6SkyWars").setLore("&fKILLS: &6" + u.getUserData().getKills(SServer.GameID.SKYWARS),"&fDEATHS: &6" + u.getUserData().getDeaths(SServer.GameID.SKYWARS),"&fWINS: &6" + u.getUserData().getWins(SServer.GameID.SKYWARS),"&fPLAYS: &6" + u.getUserData().getPlays(SServer.GameID.SKYWARS)).build());
+                inv.setItem(15, new ItemMaker(Material.BOW).setName("&aSkyWars").setLore("&7KILLS: &a" + u.getUserData().getKills(SServer.GameID.SKYWARS),"&7DEATHS: &a" + u.getUserData().getDeaths(SServer.GameID.SKYWARS),"&7WINS: &a" + u.getUserData().getWins(SServer.GameID.SKYWARS),"&7PLAYS: &a" + u.getUserData().getPlays(SServer.GameID.SKYWARS)).build());
 
-                inv.setItem(19, new ItemMaker(Material.GOLDEN_APPLE).setName("&6FightClub").setLore("&fKILLS: &6" + u.getUserData().getKills(SServer.GameID.FIGTHCLUB),"&fDEATHS: &6" + u.getUserData().getDeaths(SServer.GameID.FIGTHCLUB),"&fWINS: &6" + u.getUserData().getWins(SServer.GameID.FIGTHCLUB),"&fPLAYS: &6" + u.getUserData().getPlays(SServer.GameID.FIGTHCLUB)).build());
+                inv.setItem(19, new ItemMaker(Material.GOLDEN_APPLE).setName("&aFightClub").setLore("&7KILLS: &a" + u.getUserData().getKills(SServer.GameID.FIGTHCLUB),"&7DEATHS: &a" + u.getUserData().getDeaths(SServer.GameID.FIGTHCLUB),"&7WINS: &a" + u.getUserData().getWins(SServer.GameID.FIGTHCLUB),"&7PLAYS: &a" + u.getUserData().getPlays(SServer.GameID.FIGTHCLUB)).build());
 
-                inv.setItem(21, new ItemMaker(Material.DIAMOND_SWORD).setName("&6MUM").setLore("&fKILLS: &6" + u.getUserData().getKills(SServer.GameID.MUM),"&fDEATHS: &6" + u.getUserData().getDeaths(SServer.GameID.MUM),"&fWINS: &6" + u.getUserData().getWins(SServer.GameID.MUM),"&fPLAYS: &6" + u.getUserData().getPlays(SServer.GameID.MUM),"&fELO: &6" + u.getUserData().getMum_elo(),"&fREROLL: &6" + u.getUserData().getMum_reroll()).build());
+                inv.setItem(21, new ItemMaker(Material.DIAMOND_SWORD).setName("&aMUM").setLore("&7KILLS: &a" + u.getUserData().getKills(SServer.GameID.MUM),"&7DEATHS: &a" + u.getUserData().getDeaths(SServer.GameID.MUM),"&7WINS: &a" + u.getUserData().getWins(SServer.GameID.MUM),"&7PLAYS: &a" + u.getUserData().getPlays(SServer.GameID.MUM),"&7ELO: &a" + u.getUserData().getMum_elo(),"&7REROLL: &a" + u.getUserData().getMum_reroll()).build());
 
-                inv.setItem(23, new ItemMaker(Material.WOOL, 1, (byte) 2).setName("&6MicroBattle").setLore("&fKILLS: &6" + u.getUserData().getKills(SServer.GameID.MICROBATTLES),"&fDEATHS: &6" + u.getUserData().getDeaths(SServer.GameID.MICROBATTLES),"&fWINS: &6" + u.getUserData().getWins(SServer.GameID.MICROBATTLES),"&fPLAYS: &6" + u.getUserData().getPlays(SServer.GameID.MICROBATTLES)).build());
+                inv.setItem(23, new ItemMaker(Material.WOOL, 1, (byte) 2).setName("&aMicroBattle").setLore("&7KILLS: &a" + u.getUserData().getKills(SServer.GameID.MICROBATTLES),"&7DEATHS: &a" + u.getUserData().getDeaths(SServer.GameID.MICROBATTLES),"&7WINS: &a" + u.getUserData().getWins(SServer.GameID.MICROBATTLES),"&7PLAYS: &a" + u.getUserData().getPlays(SServer.GameID.MICROBATTLES)).build());
 
-                inv.setItem(25, new ItemMaker(Material.DRAGON_EGG).setName("&6EggWars").setLore("&fKILLS: &6" + u.getUserData().getKills(SServer.GameID.EGGWARS),"&fDEATHS: &6" + u.getUserData().getDeaths(SServer.GameID.EGGWARS),"&fWINS: &6" + u.getUserData().getWins(SServer.GameID.EGGWARS),"&fPLAYS: &6" + u.getUserData().getPlays(SServer.GameID.EGGWARS)).build());
+                inv.setItem(25, new ItemMaker(Material.DRAGON_EGG).setName("&aEggWars").setLore("&7KILLS: &a" + u.getUserData().getKills(SServer.GameID.EGGWARS),"&7DEATHS: &a" + u.getUserData().getDeaths(SServer.GameID.EGGWARS),"&7WINS: &a" + u.getUserData().getWins(SServer.GameID.EGGWARS),"&7PLAYS: &a" + u.getUserData().getPlays(SServer.GameID.EGGWARS)).build());
 
                 break;
         }
