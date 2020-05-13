@@ -26,6 +26,8 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.*;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class PlayerEvents implements Listener {
 
@@ -97,7 +99,17 @@ public class PlayerEvents implements Listener {
             if (event.getClickedInventory().getTitle() == null) return;
 
             switch (event.getClickedInventory().getTitle()) {
-                case ("Games"):
+                case "Lobbies":
+                    final String itemName = event.getCurrentItem().getItemMeta().getDisplayName();
+
+                    BungeeMensager.getLobbies().forEach((lobby, onlinePlayers) -> {
+                        if (itemName.equalsIgnoreCase(Utils.colorize(String.format("&a%s", lobby)))){
+                            BungeeMensager.conectarExacto(p, lobby);
+                        }
+                    });
+
+                    break;
+                case "Games":
                     switch (event.getSlot()) {
                         case 4:
                             p.sendMessage(Languaje.getLangMsg(user.getUserData().getLang(), "Global.portalyaenlobby"));
