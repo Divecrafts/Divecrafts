@@ -169,10 +169,18 @@ public class ServerManager {
 	}
 	
 	public String getLobbiesMsg() {
-		return "lobby-" + datosgames.get("lobby") + ",lsw-" + datosgames.get("lsw") + ",lew-" + datosgames.get("lew") + ",lfc-" + datosgames.get("lfc");
+		List<String> res = new ArrayList<>();
+
+		try {
+			Main.getConfigManager().getConfig().getStringList("lobbies").forEach(lobby -> res.add(String.format("%s-%s", lobby, datosgames.get(lobby))));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return String.join(",", res);
 	}
 	
-	public String getGamesMsg() {
+	public String getGamesMsg() {//TODO:
 		return "sw-" + datosgames.get("sw") + ",ew-" + datosgames.get("ew") + ",ffa-" + datosgames.get("ffa") + ",fc-" + datosgames.get("fc") + ",uhc-" + datosgames.get("uhc") + ",mum-" + datosgames.get("mum") + ",mb-" + datosgames.get("mb");
 	}
 	

@@ -18,11 +18,14 @@ import org.bukkit.inventory.Inventory;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class InvManager {
 
     public enum InvType { //Debemos incluir todos los invs para abrirlos
-        SETTINGS, PROFILE, GAMES, STATS, IDIOMAS, SOCIAL;
+        SETTINGS, PROFILE, GAMES, STATS, IDIOMAS, SOCIAL, LOBBIES
     }
 
     public static void openInventory(Player player, InvType invType) {
@@ -31,6 +34,33 @@ public class InvManager {
         SUser u = SServer.getUser(player);
 
         switch (invType){
+            case LOBBIES:
+                List<String> lobbies = BungeeMensager.getLobbies()
+                        .keySet()
+                        .stream()
+                        .filter(server -> server.contains("lobby"))
+                        .sorted()
+                        .collect(Collectors.toList());
+
+                inv = Bukkit.getServer().createInventory(null, 9, "Lobbies");
+
+                for (String lobby : lobbies){
+                    final String name = lobby.substring(0, 1).toUpperCase() + lobby.substring(1);
+
+                    DyeColor color = BungeeMensager.getLobbies().get(lobby) == 0 ? DyeColor.RED : DyeColor.WHITE;
+
+                    if (Bukkit.getServerId().equalsIgnoreCase(name)) color = DyeColor.YELLOW;
+
+                    inv.setItem(
+                            lobbies.indexOf(lobby),
+                            ItemUtil.createClay(
+                                    Utils.colorize(String.format("&a%s", name)),
+                                    Arrays.asList(Languaje.getLangMsg(u.getUserData().getLang(), "Juegoslore.lobbies").replace("%players%", String.valueOf(BungeeMensager.getLobbies().get(lobby))).split("\n")),
+                                    color
+                            )
+                    );
+                }
+                break;
             case IDIOMAS:
                 inv = Bukkit.getServer().createInventory(null, 45, "Language");
 
@@ -87,7 +117,7 @@ public class InvManager {
             case GAMES:
                 inv = Bukkit.getServer().createInventory(null, 45, "Games");
 
-                ArrayList<String> loreLobby = new ArrayList<String>();
+                ArrayList<String> loreLobby = new ArrayList<>();
                 String[] lores = Languaje.getLangMsg(u.getUserData().getLang(), "Juegoslore.lobby").split("\n");
                 for (String addlore : lores) {
                     loreLobby.add((addlore).replace("%players%", String.valueOf(BungeeMensager.getLobbies().get("lobby"))));
@@ -111,21 +141,21 @@ public class InvManager {
 
                 break;
             case STATS:
-                inv = Bukkit.getServer().createInventory(null, 36, "Stats");;
+                inv = Bukkit.getServer().createInventory(null, 36, "Stats");
 
-                inv.setItem(11, new ItemMaker(Material.BLAZE_ROD).setName("&6FFA").setLore("&fKILLS: &6" + u.getUserData().getKills(SServer.GameID.FFA),"&fDEATHS: &6" + u.getUserData().getDeaths(SServer.GameID.FFA), "&fPLAYS: &6" + u.getUserData().getPlays(SServer.GameID.FFA)).build());
+                inv.setItem(11, new ItemMaker(Material.BLAZE_ROD).setName("&aFFA").setLore("&7KILLS: &a" + u.getUserData().getKills(SServer.GameID.FFA),"&7DEATHS: &a" + u.getUserData().getDeaths(SServer.GameID.FFA), "&7PLAYS: &a" + u.getUserData().getPlays(SServer.GameID.FFA)).build());
 
-                inv.setItem(13, new ItemMaker(Material.DIAMOND_CHESTPLATE).setName("&6UHC").setLore("&fKILLS: &6" + u.getUserData().getKills(SServer.GameID.UHC), "&fDEATHS: &6" + u.getUserData().getDeaths(SServer.GameID.UHC), "&fWINS: &6" + u.getUserData().getWins(SServer.GameID.UHC), "&fPLAYS: &6" + u.getUserData().getPlays(SServer.GameID.UHC)).build());
+                inv.setItem(13, new ItemMaker(Material.DIAMOND_CHESTPLATE).setName("&aUHC").setLore("&7KILLS: &a" + u.getUserData().getKills(SServer.GameID.UHC), "&7DEATHS: &a" + u.getUserData().getDeaths(SServer.GameID.UHC), "&7WINS: &a" + u.getUserData().getWins(SServer.GameID.UHC), "&7PLAYS: &a" + u.getUserData().getPlays(SServer.GameID.UHC)).build());
 
-                inv.setItem(15, new ItemMaker(Material.BOW).setName("&6SkyWars").setLore("&fKILLS: &6" + u.getUserData().getKills(SServer.GameID.SKYWARS),"&fDEATHS: &6" + u.getUserData().getDeaths(SServer.GameID.SKYWARS),"&fWINS: &6" + u.getUserData().getWins(SServer.GameID.SKYWARS),"&fPLAYS: &6" + u.getUserData().getPlays(SServer.GameID.SKYWARS)).build());
+                inv.setItem(15, new ItemMaker(Material.BOW).setName("&aSkyWars").setLore("&7KILLS: &a" + u.getUserData().getKills(SServer.GameID.SKYWARS),"&7DEATHS: &a" + u.getUserData().getDeaths(SServer.GameID.SKYWARS),"&7WINS: &a" + u.getUserData().getWins(SServer.GameID.SKYWARS),"&7PLAYS: &a" + u.getUserData().getPlays(SServer.GameID.SKYWARS)).build());
 
-                inv.setItem(19, new ItemMaker(Material.GOLDEN_APPLE).setName("&6FightClub").setLore("&fKILLS: &6" + u.getUserData().getKills(SServer.GameID.FIGTHCLUB),"&fDEATHS: &6" + u.getUserData().getDeaths(SServer.GameID.FIGTHCLUB),"&fWINS: &6" + u.getUserData().getWins(SServer.GameID.FIGTHCLUB),"&fPLAYS: &6" + u.getUserData().getPlays(SServer.GameID.FIGTHCLUB)).build());
+                inv.setItem(19, new ItemMaker(Material.GOLDEN_APPLE).setName("&aFightClub").setLore("&7KILLS: &a" + u.getUserData().getKills(SServer.GameID.FIGTHCLUB),"&7DEATHS: &a" + u.getUserData().getDeaths(SServer.GameID.FIGTHCLUB),"&7WINS: &a" + u.getUserData().getWins(SServer.GameID.FIGTHCLUB),"&7PLAYS: &a" + u.getUserData().getPlays(SServer.GameID.FIGTHCLUB)).build());
 
-                inv.setItem(21, new ItemMaker(Material.DIAMOND_SWORD).setName("&6MUM").setLore("&fKILLS: &6" + u.getUserData().getKills(SServer.GameID.MUM),"&fDEATHS: &6" + u.getUserData().getDeaths(SServer.GameID.MUM),"&fWINS: &6" + u.getUserData().getWins(SServer.GameID.MUM),"&fPLAYS: &6" + u.getUserData().getPlays(SServer.GameID.MUM),"&fELO: &6" + u.getUserData().getMum_elo(),"&fREROLL: &6" + u.getUserData().getMum_reroll()).build());
+                inv.setItem(21, new ItemMaker(Material.DIAMOND_SWORD).setName("&aMUM").setLore("&7KILLS: &a" + u.getUserData().getKills(SServer.GameID.MUM),"&7DEATHS: &a" + u.getUserData().getDeaths(SServer.GameID.MUM),"&7WINS: &a" + u.getUserData().getWins(SServer.GameID.MUM),"&7PLAYS: &a" + u.getUserData().getPlays(SServer.GameID.MUM),"&7ELO: &a" + u.getUserData().getMum_elo(),"&7REROLL: &a" + u.getUserData().getMum_reroll()).build());
 
-                inv.setItem(23, new ItemMaker(Material.WOOL, 1, (byte) 2).setName("&6MicroBattle").setLore("&fKILLS: &6" + u.getUserData().getKills(SServer.GameID.MICROBATTLES),"&fDEATHS: &6" + u.getUserData().getDeaths(SServer.GameID.MICROBATTLES),"&fWINS: &6" + u.getUserData().getWins(SServer.GameID.MICROBATTLES),"&fPLAYS: &6" + u.getUserData().getPlays(SServer.GameID.MICROBATTLES)).build());
+                inv.setItem(23, new ItemMaker(Material.WOOL, 1, (byte) 2).setName("&aMicroBattle").setLore("&7KILLS: &a" + u.getUserData().getKills(SServer.GameID.MICROBATTLES),"&7DEATHS: &a" + u.getUserData().getDeaths(SServer.GameID.MICROBATTLES),"&7WINS: &a" + u.getUserData().getWins(SServer.GameID.MICROBATTLES),"&7PLAYS: &a" + u.getUserData().getPlays(SServer.GameID.MICROBATTLES)).build());
 
-                inv.setItem(25, new ItemMaker(Material.DRAGON_EGG).setName("&6EggWars").setLore("&fKILLS: &6" + u.getUserData().getKills(SServer.GameID.EGGWARS),"&fDEATHS: &6" + u.getUserData().getDeaths(SServer.GameID.EGGWARS),"&fWINS: &6" + u.getUserData().getWins(SServer.GameID.EGGWARS),"&fPLAYS: &6" + u.getUserData().getPlays(SServer.GameID.EGGWARS)).build());
+                inv.setItem(25, new ItemMaker(Material.DRAGON_EGG).setName("&aEggWars").setLore("&7KILLS: &a" + u.getUserData().getKills(SServer.GameID.EGGWARS),"&7DEATHS: &a" + u.getUserData().getDeaths(SServer.GameID.EGGWARS),"&7WINS: &a" + u.getUserData().getWins(SServer.GameID.EGGWARS),"&7PLAYS: &a" + u.getUserData().getPlays(SServer.GameID.EGGWARS)).build());
 
                 break;
         }
