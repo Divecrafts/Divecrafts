@@ -90,6 +90,19 @@ public class CMD_Party extends Command {
                 }
                 return;
             }
+            else if (args[0].equalsIgnoreCase("warp")) {
+                final Party party = plugin.getPartyManager().getParty(player);
+                if (party != null) party.getPlayers().forEach(partyPlayer -> partyPlayer.connect(player.getServer().getInfo()));
+                else {
+                    try {
+                        player.sendMessage(Languaje.getLangMsg(Languaje.getPlayerLang(player), "Party.NoPerteneces"));
+                    }
+                    catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+                return;
+            }
             else if (args[0].equalsIgnoreCase("leave")) {
                 Party party = plugin.getPartyManager().getParty(player);
                 if (party != null) {
@@ -123,10 +136,6 @@ public class CMD_Party extends Command {
                     plugin.getPartyManager().kickPlayer(player, other);
                     return;
                 }
-                else if (args[0].equalsIgnoreCase("warp")) {
-                    plugin.getPartyManager().getParty(player).getPlayers().forEach(partyPlayer -> partyPlayer.connect(player.getServer().getInfo()));
-                    return;
-                }
             }
             else {
                 try {
@@ -141,7 +150,7 @@ public class CMD_Party extends Command {
         player.sendMessage(new TextComponent("- §d§lPARTYS §f-"));
         player.sendMessage(new TextComponent("§b/party §elist"));
         player.sendMessage(new TextComponent("§b/party §eleave"));
-        player.sendMessage(new TextComponent("§b/party §warp"));
+        player.sendMessage(new TextComponent("§b/party §ewarp"));
         player.sendMessage(new TextComponent("§b/party §einvite <Player>"));
         player.sendMessage(new TextComponent("§b/party §eaccept <Player>"));
         player.sendMessage(new TextComponent("§b/party §edeny <Player>"));
