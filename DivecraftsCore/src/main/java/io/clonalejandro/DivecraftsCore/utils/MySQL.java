@@ -1,10 +1,12 @@
 package io.clonalejandro.DivecraftsCore.utils;
 
 import com.mysql.cj.jdbc.exceptions.CommunicationsException;
+import com.zaxxer.hikari.HikariDataSource;
 import io.clonalejandro.DivecraftsCore.Main;
 import io.clonalejandro.DivecraftsCore.api.SServer;
 import io.clonalejandro.DivecraftsCore.api.SUser;
 import io.clonalejandro.DivecraftsCore.cmd.SCmd;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import java.sql.*;
 import java.util.UUID;
@@ -50,8 +52,15 @@ public class MySQL {
     public Connection openConnection() throws SQLException, ClassNotFoundException {
         if (checkConnection()) return connection;
 
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        connection = DriverManager.getConnection("jdbc:mysql://" + this.hostname + ":" + this.port + "/" + this.database + "?autoReconnect=true", this.user, this.password);
+        final HikariDataSource ds = new HikariDataSource();
+        ds.setMaximumPoolSize(20);
+        ds.setDriverClassName("org.mariadb.jdbc.Driver");
+        ds.setJdbcUrl(String.format("jdbc:mariadb://%s:%s/%s", hostname, port, database));
+        ds.addDataSourceProperty("user", user);
+        ds.addDataSourceProperty("password", password);
+        ds.setAutoCommit(false);
+
+        connection = ds.getConnection();
         return connection;
     }
 
@@ -169,10 +178,10 @@ public class MySQL {
             if (rsDatos.next()) {
                 int rank = rsDatos.getInt("grupo");
                 data.setRank(SCmd.Rank.values()[rank] == null ? SCmd.Rank.USUARIO : SCmd.Rank.values()[rank]);
-                data.setTimeJoin(rsDatos.getLong("timeJoin"));
+                data.setTimeJoin(Timestamp.valueOf(rsDatos.getString("timeJoin")).getTime());
                 data.setGod(rsDatos.getBoolean("god"));
                 data.setCoins(rsDatos.getInt("coins"));
-                data.setLastConnect(rsDatos.getLong("lastConnect"));
+                data.setLastConnect(Timestamp.valueOf(rsDatos.getString("lastConnect")).getTime());
                 data.setClanName(rsDatos.getString("clan"));
                 data.setNickcolor(rsDatos.getString("nickcolor"));
             }
