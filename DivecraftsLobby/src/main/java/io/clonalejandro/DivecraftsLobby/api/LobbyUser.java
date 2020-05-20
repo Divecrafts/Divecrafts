@@ -72,7 +72,7 @@ public class LobbyUser extends SUser {
 
         final ScoreboardUtil board = new ScoreboardUtil(sbName, "lobby");
         final String rankColored = SCmd.Rank.groupColor(getUserData().getRank()) + getUserData().getRank().getPrefix();
-        final String rank = getUserData().getRank() == SCmd.Rank.USUARIO ? rankColored + "USER" : rankColored;
+        final String rank = getUserData().getRank() == SCmd.Rank.USUARIO ? rankColored + "&lUSER" : rankColored;
 
         board.setName(Utils.colorize(sbName));
         board.text(10, Utils.colorize("&1"));
