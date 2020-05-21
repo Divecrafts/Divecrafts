@@ -207,6 +207,7 @@ public class SUser {
         String nickname = null;
         InetSocketAddress ip = null;
         Integer coins = 200;
+        Integer keys = 0;
         String clanName = null;
 
         String nickcolor = "7";

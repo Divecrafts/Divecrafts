@@ -72,13 +72,13 @@ public class LobbyUser extends SUser {
 
         final ScoreboardUtil board = new ScoreboardUtil(sbName, "lobby");
         final String rankColored = SCmd.Rank.groupColor(getUserData().getRank()) + getUserData().getRank().getPrefix();
-        final String rank = getUserData().getRank() == SCmd.Rank.USUARIO ? rankColored + "USER" : rankColored;
+        final String rank = getUserData().getRank() == SCmd.Rank.USUARIO ? rankColored + "&lUSER" : rankColored;
 
         board.setName(Utils.colorize(sbName));
         board.text(10, Utils.colorize("&1"));
         board.text(9, Utils.colorize(Languaje.getLangMsg(getUserData().getLang(), "Scoreboardlobby.rango") + "&" + rank));
         board.text(8, Utils.colorize("&fBoosters: &a0"));
-        board.text(7, Utils.colorize("&fKeys: &a0"));
+        board.text(7, Utils.colorize("&fKeys: &a" + getUserData().getKeys()));
         board.text(6, Utils.colorize(Languaje.getLangMsg(getUserData().getLang(), "Scoreboardlobby.monedas") + getUserData().getCoins()));
         board.text(5, Utils.colorize("&2"));
         board.text(4, Utils.colorize("&fLobby: &a#" + (Bukkit.getServerId().equalsIgnoreCase("lobby") ? "1" :  Bukkit.getServerId().charAt(Bukkit.getServerId().length() -1))));
