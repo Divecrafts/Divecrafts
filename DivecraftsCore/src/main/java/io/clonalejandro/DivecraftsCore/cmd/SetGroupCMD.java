@@ -4,11 +4,14 @@ import io.clonalejandro.DivecraftsCore.Main;
 import io.clonalejandro.DivecraftsCore.api.SServer;
 import io.clonalejandro.DivecraftsCore.api.SUser;
 import io.clonalejandro.DivecraftsCore.utils.Utils;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 
+import java.sql.*;
 import java.util.List;
+import java.util.UUID;
 
 public class SetGroupCMD extends SCmd {
 
@@ -86,13 +89,30 @@ public class SetGroupCMD extends SCmd {
                 sender.sendMessage(Main.getPREFIX() + "*§cEste número es más grande de los rangos que hay");
                 return;
             }
-            SUser target = SServer.getUser(plugin.getServer().getPlayer(args[0]));
 
-            if (target == null || !target.isOnline()) {
-                sender.sendMessage(Utils.colorize(Main.getPREFIX() + "*§cEl jugador no está conectado"));
-                return;
+            SUser target;
+
+            if (plugin.getServer().getPlayer(args[0]) == null) {
+
+                try {
+                    final Connection connection = Main.getInstance().getMySQL().openConnection();
+                    final PreparedStatement statement = connection.prepareStatement("SELECT `uuid` FROM data WHERE `name` = ?");
+
+                    statement.setString(1, args[0]);
+                    final ResultSet rs = statement.executeQuery();
+
+                    if (rs.next()){
+                        final String uuidStr = rs.getString("uuid");
+                        target = SServer.getUser(UUID.fromString(uuidStr));
+                    }
+                    else throw new SQLException();
+                }
+                catch (SQLException ex){
+                    sender.sendMessage(Utils.colorize(Main.getPREFIX() + "*§cEl jugador no existe"));
+                    return;
+                }
             }
-
+            else target = SServer.getUser(plugin.getServer().getPlayer(args[0]));
             target.getUserData().setRank(Rank.values()[i]);
             target.save();
             sender.sendMessage(Utils.colorize(Main.getPREFIX() + "*§3Rango cambiado a §c" + target.getName() + " §3: §" + Rank.groupColor(Rank.values()[i]) + target.getUserData().getRank().toString()));

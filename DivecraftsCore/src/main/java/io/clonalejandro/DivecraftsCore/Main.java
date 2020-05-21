@@ -1,11 +1,13 @@
 package io.clonalejandro.DivecraftsCore;
 
-import io.clonalejandro.DivecraftsCore.utils.*;
-import lombok.Getter;
-import lombok.Setter;
 import io.clonalejandro.DivecraftsCore.events.PlayerEvents;
 import io.clonalejandro.DivecraftsCore.inv.InventoryManager;
-import org.bukkit.Bukkit;
+import io.clonalejandro.DivecraftsCore.utils.AntiWorldDownloader;
+import io.clonalejandro.DivecraftsCore.utils.BungeeMensager;
+import io.clonalejandro.DivecraftsCore.utils.Log;
+import io.clonalejandro.DivecraftsCore.utils.MySQL;
+import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.PluginManager;
@@ -44,12 +46,12 @@ public class Main extends JavaPlugin {
         try {
           mySQL = new MySQL("localhost", "divecrafts", "root", "patata123");
           mySQL.openConnection();
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (SQLException e) {
             Log.log(Log.ERROR, "Imposible conectar con la MySQL, desactivando el plugin");
             getServer().getPluginManager().disablePlugin(this);
         }
 
-        io.clonalejandro.DivecraftsCore.SCommands.load();
+        SCommands.load();
 
         registerClasses();
         registerEvents();
@@ -74,7 +76,7 @@ public class Main extends JavaPlugin {
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         try {
-            io.clonalejandro.DivecraftsCore.SCommands.onCmd(sender, cmd, label, args);
+            SCommands.onCmd(sender, cmd, label, args);
         } catch (Exception ex) {
             Log.log(Log.ERROR, "Error al ejecutar el comando '" + label + Arrays.toString(args) + "'");
             ex.printStackTrace();
