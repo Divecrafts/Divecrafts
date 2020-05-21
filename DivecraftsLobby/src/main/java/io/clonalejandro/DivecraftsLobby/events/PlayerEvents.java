@@ -243,16 +243,16 @@ public class PlayerEvents implements Listener {
                 case "Language":
                     switch (event.getSlot()) {
                         case 20:
-                            user.getUserData().setLang(0);
+                            user.getUserData().setLang(Languaje.Lang.ES.getId());
                             InvManager.openInventory(p, InvManager.InvType.IDIOMAS);
                             user.getPlayer().playSound(user.getPlayer().getLocation(), Sound.ORB_PICKUP, 1F, 1F);
                             user.getPlayer().sendMessage(Languaje.getLangMsg(user.getUserData().getLang(), "Ajustes.cambiado"));
                             user.save();
                             break;
                         case 24:
+                            user.getUserData().setLang(Languaje.Lang.EN.getId());
                             InvManager.openInventory(p, InvManager.InvType.IDIOMAS);
                             user.getPlayer().playSound(user.getPlayer().getLocation(), Sound.ORB_PICKUP, 1F, 1F);
-                            user.getUserData().setLang(1);
                             user.getPlayer().sendMessage(Languaje.getLangMsg(user.getUserData().getLang(), "Ajustes.cambiado"));
                             user.save();
                             break;
