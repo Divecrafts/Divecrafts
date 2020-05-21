@@ -6,8 +6,8 @@ import io.clonalejandro.DivecraftsCore.Main;
 import io.clonalejandro.DivecraftsCore.api.SServer;
 import io.clonalejandro.DivecraftsCore.api.SUser;
 import io.clonalejandro.DivecraftsCore.cmd.SCmd;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+
 import java.sql.*;
 import java.util.UUID;
 
@@ -49,7 +49,7 @@ public class MySQL {
         return true;
     }
 
-    public Connection openConnection() throws SQLException, ClassNotFoundException {
+    public Connection openConnection() throws SQLException {
         if (checkConnection()) return connection;
 
         final HikariDataSource ds = new HikariDataSource();
@@ -97,7 +97,7 @@ public class MySQL {
                     inserSettings.setInt(2, 0);
                     inserSettings.executeUpdate();
 
-            } catch (SQLException | ClassNotFoundException ex) {
+            } catch (SQLException ex) {
                 ex.printStackTrace();
             }
         });
@@ -166,7 +166,7 @@ public class MySQL {
      *
      * @param id The User UUID
      * @return The userData
-     * @see io.clonalejandro.DivecraftsCore.api.SUser.UserData
+     * @see SUser.UserData
      */
     public SUser.UserData loadUserData(UUID id) {
         SUser.UserData data = new SUser.UserData();
@@ -267,7 +267,7 @@ public class MySQL {
                     inserDatos.setString(4, email);
                     inserDatos.executeUpdate();
                 }
-            } catch (SQLException | ClassNotFoundException ex) {
+            } catch (SQLException ex) {
                 ex.printStackTrace();
             }
         });
@@ -305,7 +305,7 @@ public class MySQL {
             statement.setString(1, uuid);
             ResultSet rs = statement.executeQuery();
             return rs.next();
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (SQLException e) {
             Log.log(Log.ERROR, e.toString());
         }
         return false;
@@ -317,7 +317,7 @@ public class MySQL {
             statement.setString(1, uuid);
             statement.executeQuery();
             return true;
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (SQLException e) {
             Log.log(Log.ERROR, e.toString());
         }
         return false;
@@ -330,7 +330,7 @@ public class MySQL {
             statement.setString(2, uuid);
             statement.executeQuery();
             return true;
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (SQLException e) {
             Log.log(Log.ERROR, e.toString());
         }
         return false;
@@ -343,7 +343,7 @@ public class MySQL {
             statement.setString(2, uuid);
             statement.executeQuery();
             return true;
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (SQLException e) {
             Log.log(Log.ERROR, e.toString());
         }
         return false;
