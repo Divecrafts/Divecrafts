@@ -58,7 +58,6 @@ public class MySQL {
         ds.setJdbcUrl(String.format("jdbc:mariadb://%s:%s/%s", hostname, port, database));
         ds.addDataSourceProperty("user", user);
         ds.addDataSourceProperty("password", password);
-        ds.setAutoCommit(false);
 
         connection = ds.getConnection();
         return connection;
@@ -78,6 +77,7 @@ public class MySQL {
                 PreparedStatement statement = openConnection().prepareStatement("SELECT * FROM `data` WHERE `uuid` = ?");
                 statement.setString(1, p.getUniqueId().toString());
                 ResultSet rs = statement.executeQuery();
+
 
                 if (rs.next()) return;
                     //if (!rs.getString("name").equalsIgnoreCase("")) return;
@@ -171,9 +171,14 @@ public class MySQL {
     public SUser.UserData loadUserData(UUID id) {
         SUser.UserData data = new SUser.UserData();
         try {
-            PreparedStatement statementDatos = openConnection().prepareStatement("SELECT `timeJoin`,`grupo`,`god`,`coins`,`lastConnect`,`clan`,`nickcolor` FROM `data` WHERE `uuid` = ?");
+            final PreparedStatement statementDatos = openConnection().prepareStatement("SELECT `timeJoin`,`grupo`,`god`,`coins`,`lastConnect`,`clan`,`nickcolor` FROM `data` WHERE `uuid` = ?");
+            final PreparedStatement statementKeys = openConnection().prepareStatement("SELECT `treasureKeys` FROM `UltraCosmeticsData` WHERE  `uuid` = ?");
+
             statementDatos.setString(1, id.toString());
+            statementKeys.setString(1, id.toString());
+
             ResultSet rsDatos = statementDatos.executeQuery();
+            ResultSet rsKeys = statementKeys.executeQuery();
 
             if (rsDatos.next()) {
                 int rank = rsDatos.getInt("grupo");
@@ -181,6 +186,7 @@ public class MySQL {
                 data.setTimeJoin(Timestamp.valueOf(rsDatos.getString("timeJoin")).getTime());
                 data.setGod(rsDatos.getBoolean("god"));
                 data.setCoins(rsDatos.getInt("coins"));
+                data.setKeys(rsKeys.next() ? rsKeys.getInt("treasureKeys") : 0);
                 data.setLastConnect(Timestamp.valueOf(rsDatos.getString("lastConnect")).getTime());
                 data.setClanName(rsDatos.getString("clan"));
                 data.setNickcolor(rsDatos.getString("nickcolor"));
