@@ -2,6 +2,7 @@ package io.clonalejandro.DivecraftsCore.api;
 
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
+import io.clonalejandro.DivecraftsCore.idiomas.Languaje;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -138,8 +139,10 @@ public class SUser {
     public void toggleFly() {
         if (getPlayer().getAllowFlight()) {
             getPlayer().setAllowFlight(false);
+            getUserData().setFly(false);
             return;
         }
+        getUserData().setFly(true);
         getPlayer().setAllowFlight(true);
     }
 
@@ -214,10 +217,11 @@ public class SUser {
 
         // Settings
         Integer visible = 2;//0 nadie, 1 amigos, 2 todos
-        Boolean clanes = false;//false no, true si
-        Boolean chat = true;//false no, true si
-        Boolean partys = true;//false no, true si
-        Integer lang = 0;//0 es, 1 en
+        Boolean clanes = false;
+        Boolean chat = true;
+        Boolean partys = true;
+        Boolean fly = false;
+        Integer lang = Languaje.Lang.ES.getId();
 
         // Game Stats
         HashMap<Integer, Integer> kills = new HashMap<>(); // ID, amount

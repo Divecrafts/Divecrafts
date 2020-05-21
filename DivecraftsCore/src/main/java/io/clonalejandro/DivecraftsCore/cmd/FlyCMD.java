@@ -1,6 +1,5 @@
 package io.clonalejandro.DivecraftsCore.cmd;
 
-
 import io.clonalejandro.DivecraftsCore.api.SUser;
 
 public class FlyCMD extends SCmd {

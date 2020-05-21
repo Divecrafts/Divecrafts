@@ -6,6 +6,7 @@ import io.clonalejandro.DivecraftsCore.Main;
 import io.clonalejandro.DivecraftsCore.api.SServer;
 import io.clonalejandro.DivecraftsCore.api.SUser;
 import io.clonalejandro.DivecraftsCore.cmd.SCmd;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.sql.*;
@@ -55,7 +56,7 @@ public class MySQL {
         final HikariDataSource ds = new HikariDataSource();
         ds.setMaximumPoolSize(20);
         ds.setDriverClassName("org.mariadb.jdbc.Driver");
-        ds.setJdbcUrl(String.format("jdbc:mariadb://%s:%s/%s", hostname, port, database));
+        ds.setJdbcUrl(String.format("jdbc:mariadb://%s:%s/%s?autoReconnect=true", hostname, port, database));
         ds.addDataSourceProperty("user", user);
         ds.addDataSourceProperty("password", password);
 
@@ -146,8 +147,8 @@ public class MySQL {
                 statementStats.executeUpdate();
 
                 //Settings
-                PreparedStatement statementSett = openConnection().prepareStatement("UPDATE `settings` SET `clanes`=?,`visible`=?,`chat`=?,`party`=?,`lang`=? WHERE `uuid`=?");
-                statementSett.setBoolean(1, data.getClanes());
+                PreparedStatement statementSett = openConnection().prepareStatement("UPDATE `settings` SET `fly`=?,`visible`=?,`chat`=?,`party`=?,`lang`=? WHERE `uuid`=?");
+                statementSett.setBoolean(1, data.getFly());
                 statementSett.setInt(2, data.getVisible());
                 statementSett.setBoolean(3, data.getChat());
                 statementSett.setBoolean(4, data.getPartys());
@@ -228,14 +229,17 @@ public class MySQL {
                 data.setVisible(rsSett.getInt("visible"));
                 data.setClanes(rsSett.getBoolean("clanes"));
                 data.setChat(rsSett.getBoolean("chat"));
+                data.setFly(rsSett.getBoolean("fly"));
                 data.setLang(rsSett.getInt("lang"));
                 data.setPartys(rsSett.getBoolean("party"));
+
+                Bukkit.getPlayer(id).setAllowFlight(rsSett.getBoolean("fly"));
             }
         } catch (CommunicationsException ex) {
             ex.printStackTrace();
             try {
-                closeConnection();
-                openConnection();
+                if (closeConnection())
+                    openConnection();
                 return loadUserData(id);
             } catch (Exception ex1) {
                 ex1.printStackTrace();
