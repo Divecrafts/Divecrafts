@@ -252,7 +252,8 @@ public class PlayerEvents implements Listener {
                         case 24:
                             InvManager.openInventory(p, InvManager.InvType.IDIOMAS);
                             user.getPlayer().playSound(user.getPlayer().getLocation(), Sound.ORB_PICKUP, 1F, 1F);
-                            user.getPlayer().sendMessage(Languaje.getLangMsg(user.getUserData().getLang(), "Varios.proximamente"));
+                            user.getUserData().setLang(1);
+                            user.getPlayer().sendMessage(Languaje.getLangMsg(user.getUserData().getLang(), "Ajustes.cambiado"));
                             user.save();
                             break;
                     }
