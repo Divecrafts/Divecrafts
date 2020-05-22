@@ -2,16 +2,16 @@ package io.clonalejandro.DivecraftsCore.api;
 
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
-import io.clonalejandro.DivecraftsCore.idiomas.Languaje;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 import io.clonalejandro.DivecraftsCore.Main;
 import io.clonalejandro.DivecraftsCore.cmd.SCmd;
+import io.clonalejandro.DivecraftsCore.idiomas.Languaje;
 import io.clonalejandro.DivecraftsCore.user.Profile;
 import io.clonalejandro.DivecraftsCore.utils.ReflectionAPI;
 import io.clonalejandro.DivecraftsCore.utils.Sounds;
 import io.clonalejandro.DivecraftsCore.utils.Utils;
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
@@ -35,6 +35,7 @@ public class SUser {
 
     @Getter private final UUID uuid;
     @Getter @Setter private UserData userData;
+    @Getter private final List<BukkitRunnable> tasks = new ArrayList<>();
     @Getter @Setter private Profile profile;
 
     /**
@@ -55,7 +56,6 @@ public class SUser {
         this.uuid = uuid;
         setUserData(plugin.getMySQL().loadUserData(uuid));
         setProfile(new Profile(this));
-        checkBoosters();
     }
 
     /**
@@ -195,20 +195,6 @@ public class SUser {
                 plugin.getServer().getOnlinePlayers().forEach(pl -> getPlayer().showPlayer(pl));
                 break;
         }
-    }
-
-    private void checkBoosters(){
-        new BukkitRunnable(){
-            @Override
-            public void run() {
-                if (!isOnline()) {
-                    cancel();
-                    return;
-                }
-
-                userData.getBoosters().forEach(SBooster::isExpired);
-            }
-        }.runTaskTimer(plugin, 0L, 60 * 20L);
     }
 
 
