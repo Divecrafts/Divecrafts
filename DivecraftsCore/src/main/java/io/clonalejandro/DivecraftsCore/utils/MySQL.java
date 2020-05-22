@@ -3,6 +3,7 @@ package io.clonalejandro.DivecraftsCore.utils;
 import com.mysql.cj.jdbc.exceptions.CommunicationsException;
 import com.zaxxer.hikari.HikariDataSource;
 import io.clonalejandro.DivecraftsCore.Main;
+import io.clonalejandro.DivecraftsCore.api.SBooster;
 import io.clonalejandro.DivecraftsCore.api.SServer;
 import io.clonalejandro.DivecraftsCore.api.SUser;
 import io.clonalejandro.DivecraftsCore.cmd.SCmd;
@@ -10,6 +11,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 
 
@@ -114,7 +118,7 @@ public class MySQL {
             SUser.UserData data = u.getUserData();
 
             try {
-                PreparedStatement statementDatos = openConnection().prepareStatement("UPDATE `data` SET `grupo`=?,`god`=?,`coins`=?,`lastConnect`=?,`ip`=?,`nick`=?,`nickcolor`=? WHERE `uuid`=?");
+                PreparedStatement statementDatos = openConnection().prepareStatement("UPDATE `data` SET `grupo`=?,`god`=?,`coins`=?,`lastConnect`=?,`ip`=?,`nick`=?,`nickcolor`=?, `boosters`=? WHERE `uuid`=?");
                 statementDatos.setInt(1, data.getRank() != null ? data.getRank().getRank() : 0);
                 statementDatos.setBoolean(2, data.getGod() == null ? false : data.getGod());
                 statementDatos.setInt(3, data.getCoins() == null ? 0 : data.getCoins());
@@ -122,7 +126,8 @@ public class MySQL {
                 statementDatos.setString(5, data.getIp() == null ? "" : data.getIp().getAddress().getHostAddress());
                 statementDatos.setString(6, data.getNickname() == null ? "" : data.getNickname());
                 statementDatos.setString(7, data.getNickcolor() == null ? "7" : data.getNickcolor());
-                statementDatos.setString(8, u.getUuid().toString());
+                statementDatos.setInt(8, data.getBoosters().size());
+                statementDatos.setString(9, u.getUuid().toString());
                 statementDatos.executeUpdate();
 
                 //Stats
@@ -173,11 +178,13 @@ public class MySQL {
     public SUser.UserData loadUserData(UUID id) {
         SUser.UserData data = new SUser.UserData();
         try {
-            final PreparedStatement statementDatos = openConnection().prepareStatement("SELECT `timeJoin`,`grupo`,`god`,`coins`,`lastConnect`,`clan`,`nickcolor` FROM `data` WHERE `uuid` = ?");
+            final PreparedStatement statementDatos = openConnection().prepareStatement("SELECT `timeJoin`,`grupo`,`god`,`coins`,`lastConnect`,`clan`,`nickcolor`,`boosters` FROM `data` WHERE `uuid` = ?");
             final PreparedStatement statementKeys = openConnection().prepareStatement("SELECT `treasureKeys` FROM `UltraCosmeticsData` WHERE  `uuid` = ?");
+            final PreparedStatement statementBoosters = openConnection().prepareStatement("SELECT * FROM `booster` where `uuid`=?");
 
             statementDatos.setString(1, id.toString());
             statementKeys.setString(1, id.toString());
+            statementBoosters.setString(1, id.toString());
 
             ResultSet rsDatos = statementDatos.executeQuery();
             ResultSet rsKeys = statementKeys.executeQuery();
@@ -189,6 +196,7 @@ public class MySQL {
                 data.setGod(rsDatos.getBoolean("god"));
                 data.setCoins(rsDatos.getInt("coins"));
                 data.setKeys(rsKeys.next() ? rsKeys.getInt("treasureKeys") : 0);
+                data.setBoosters(loadBoosters(statementBoosters));
                 data.setLastConnect(Timestamp.valueOf(rsDatos.getString("lastConnect")).getTime());
                 data.setClanName(rsDatos.getString("clan"));
                 data.setNickcolor(rsDatos.getString("nickcolor"));
@@ -353,5 +361,35 @@ public class MySQL {
             Log.log(Log.ERROR, e.toString());
         }
         return false;
+    }
+
+    public void addBooster(SUser user, SBooster booster) throws SQLException{
+        PreparedStatement statement = openConnection().prepareStatement("INSERT INTO `booster` (`multiplier`, `gameId`, `expires`, `uuid`) VALUES (?, ?, ?, ?)");
+        statement.setInt(1, booster.getMultiplier());
+        statement.setInt(2, booster.getGameID().getId());
+        statement.setString(3, booster.getExpires().toString());
+        statement.setString(4, booster.getUuid().toString());
+
+        statement.executeUpdate();
+
+        user.save();//Refresh the user data
+    }
+
+    private List<SBooster> loadBoosters(PreparedStatement statement) throws SQLException {
+        ResultSet rs = statement.executeQuery();
+
+        final List<SBooster> boosters = new ArrayList<>();
+
+        while (rs.next()){
+            boosters.add(new SBooster(
+                    rs.getInt("id"),
+                    rs.getInt("multiplier"),
+                    SServer.GameID.values()[rs.getInt("gameId")],
+                    Timestamp.valueOf(rs.getString("expires")),
+                    UUID.fromString(rs.getString("uuid"))
+            ));
+        }
+
+        return boosters;
     }
 }

@@ -2,16 +2,16 @@ package io.clonalejandro.DivecraftsCore.api;
 
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
-import io.clonalejandro.DivecraftsCore.idiomas.Languaje;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 import io.clonalejandro.DivecraftsCore.Main;
 import io.clonalejandro.DivecraftsCore.cmd.SCmd;
+import io.clonalejandro.DivecraftsCore.idiomas.Languaje;
 import io.clonalejandro.DivecraftsCore.user.Profile;
 import io.clonalejandro.DivecraftsCore.utils.ReflectionAPI;
 import io.clonalejandro.DivecraftsCore.utils.Sounds;
 import io.clonalejandro.DivecraftsCore.utils.Utils;
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
@@ -21,14 +21,13 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.net.InetSocketAddress;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.UUID;
+import java.util.*;
 
 public class SUser {
 
@@ -36,6 +35,7 @@ public class SUser {
 
     @Getter private final UUID uuid;
     @Getter @Setter private UserData userData;
+    @Getter private final List<BukkitRunnable> tasks = new ArrayList<>();
     @Getter @Setter private Profile profile;
 
     /**
@@ -210,6 +210,7 @@ public class SUser {
         String nickname = null;
         InetSocketAddress ip = null;
         Integer coins = 200;
+        List<SBooster> boosters = new ArrayList<>();
         Integer keys = 0;
         String clanName = null;
 
