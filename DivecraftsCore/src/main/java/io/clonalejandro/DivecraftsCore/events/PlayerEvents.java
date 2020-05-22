@@ -55,6 +55,7 @@ public class PlayerEvents implements Listener {
 
         Utils.updateUserColor(u);
         loadPermissions(e.getPlayer());
+        checkBoosters(u);
 
         e.setJoinMessage(Utils.colorize(String.format("%s &ejoined the game", e.getPlayer().getDisplayName())));
 
