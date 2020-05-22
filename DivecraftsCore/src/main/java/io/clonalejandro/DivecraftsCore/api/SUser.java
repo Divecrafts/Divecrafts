@@ -21,14 +21,13 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.net.InetSocketAddress;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.UUID;
+import java.util.*;
 
 public class SUser {
 
@@ -56,6 +55,7 @@ public class SUser {
         this.uuid = uuid;
         setUserData(plugin.getMySQL().loadUserData(uuid));
         setProfile(new Profile(this));
+        checkBoosters();
     }
 
     /**
@@ -197,6 +197,20 @@ public class SUser {
         }
     }
 
+    private void checkBoosters(){
+        new BukkitRunnable(){
+            @Override
+            public void run() {
+                if (!isOnline()) {
+                    cancel();
+                    return;
+                }
+
+                userData.getBoosters().forEach(SBooster::isExpired);
+            }
+        }.runTaskTimer(plugin, 0L, 60 * 20L);
+    }
+
 
     @Data
     public static class UserData {
@@ -210,6 +224,7 @@ public class SUser {
         String nickname = null;
         InetSocketAddress ip = null;
         Integer coins = 200;
+        List<SBooster> boosters = new ArrayList<>();
         Integer keys = 0;
         String clanName = null;
 
