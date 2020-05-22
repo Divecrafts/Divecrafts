@@ -4,6 +4,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import io.clonalejandro.DivecraftsCore.utils.Utils;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -12,20 +14,11 @@ import java.net.URL;
 
 public class Languaje {
 
+    @AllArgsConstructor
+    @Getter
     public enum Lang {
-        ES (0),
-        EN (1);
-
-
+        ES (0), EN (1);
         private final int id;
-
-        Lang(int id){
-            this.id = id;
-        }
-
-        public int getId() {
-            return id;
-        }
     }
 
     public static String getLangMsg(int language, String whatToSearch) {

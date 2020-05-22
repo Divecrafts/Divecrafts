@@ -19,7 +19,7 @@ import java.util.Arrays;
 
 public class Main extends JavaPlugin {
 
-    @Getter @Setter private static String PREFIX = "";
+    @Getter @Setter private static String PREFIX = "&9&lServer> ";
 
     @Getter private static Main instance;
 

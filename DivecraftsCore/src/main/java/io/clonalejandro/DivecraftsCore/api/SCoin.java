@@ -29,7 +29,7 @@ import java.util.UUID;
 public class SCoin {
 
     private static final Main plugin = Main.getInstance();
-    @Getter SUser user;
+    @Getter private final SUser user;
 
     public SCoin(SUser user){
         this.user = user;

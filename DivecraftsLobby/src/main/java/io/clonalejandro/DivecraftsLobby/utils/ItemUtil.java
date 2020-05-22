@@ -89,7 +89,7 @@ public class ItemUtil {
         return i;
     }
 
-    public static ItemStack createSkull(String displayName, String owner, List lores){
+    public static ItemStack createSkull(String displayName, String owner, List<String> lores){
         ItemStack i = new ItemStack(Material.SKULL_ITEM, 1 ,(byte)3);
         SkullMeta im = (SkullMeta) i.getItemMeta();
         im.setDisplayName(Utils.colorize(displayName));
@@ -99,7 +99,7 @@ public class ItemUtil {
         return i;
     }
 
-    public static ItemStack createCustomSkull(String url, String displayname, List lore) {
+    public static ItemStack createCustomSkull(String url, String displayname, List<String> lore) {
         ItemStack head = new ItemStack(Material.SKULL_ITEM, 1, (short)3);
         if(url.isEmpty())return head;
 
@@ -110,7 +110,7 @@ public class ItemUtil {
         GameProfile profile = new GameProfile(UUID.randomUUID(), null);
         byte[] encodedData = Base64.encodeBase64(String.format("{textures:{SKIN:{url:\"%s\"}}}", url).getBytes());
         profile.getProperties().put("textures", new Property("textures", new String(encodedData)));
-        Field profileField = null;
+        Field profileField;
         try {
             profileField = headMeta.getClass().getDeclaredField("profile");
             profileField.setAccessible(true);
