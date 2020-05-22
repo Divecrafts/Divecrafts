@@ -56,6 +56,7 @@ public class MySQL {
         final HikariDataSource ds = new HikariDataSource();
         ds.setMaximumPoolSize(20);
         ds.setDriverClassName("org.mariadb.jdbc.Driver");
+        ds.setConnectionTimeout(86400);
         ds.setJdbcUrl(String.format("jdbc:mariadb://%s:%s/%s?autoReconnect=true", hostname, port, database));
         ds.addDataSourceProperty("user", user);
         ds.addDataSourceProperty("password", password);
@@ -234,6 +235,7 @@ public class MySQL {
                 data.setPartys(rsSett.getBoolean("party"));
 
                 Bukkit.getPlayer(id).setAllowFlight(rsSett.getBoolean("fly"));
+                Bukkit.getPlayer(id).setFlying(rsSett.getBoolean("fly"));
             }
         } catch (CommunicationsException ex) {
             ex.printStackTrace();
