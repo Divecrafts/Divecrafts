@@ -17,8 +17,12 @@ En el escribimos lo siguiente:
     <!-- SPIGOT-REPO -->
     <repositories>
         <repository>
-            <id>repo</id>
+            <id>spigot-repo</id>
             <url>https://divecrafts.github.io/spigot/</url>
+        </repository>
+        <repository>
+            <id>main-repo</id>
+            <url>https://clonalejandro.github.io/Divecrafts/Libs/</url>
         </repository>
     </repositories>
 
