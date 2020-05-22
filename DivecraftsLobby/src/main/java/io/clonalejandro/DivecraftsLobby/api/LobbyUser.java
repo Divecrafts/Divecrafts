@@ -77,7 +77,7 @@ public class LobbyUser extends SUser {
         board.setName(Utils.colorize(sbName));
         board.text(10, Utils.colorize("&1"));
         board.text(9, Utils.colorize(Languaje.getLangMsg(getUserData().getLang(), "Scoreboardlobby.rango") + "&" + rank));
-        board.text(8, Utils.colorize("&fBoosters: &a" + getUserData().getBoosters().size()));
+        board.text(8, Utils.colorize("&4"));
         board.text(7, Utils.colorize("&fKeys: &a" + getUserData().getKeys()));
         board.text(6, Utils.colorize(Languaje.getLangMsg(getUserData().getLang(), "Scoreboardlobby.monedas") + getUserData().getCoins()));
         board.text(5, Utils.colorize("&2"));
@@ -86,13 +86,19 @@ public class LobbyUser extends SUser {
         board.text(2, Utils.colorize("&3"));
         board.text(1, Utils.colorize("&ewww.divecrafts.net"));
 
+        board.team("boosters", Utils.colorize("&fBoosters: &a"));
         board.team("players", Languaje.getLangMsg(getUserData().getLang(), "Scoreboardlobby.jugadores"));
+
+        board.getTeam("boosters").addEntry(Utils.colorize("&4"));
         board.getTeam("players").addEntry(Utils.colorize("&f"));
 
         new BukkitRunnable() {
             @Override
             public void run() {
-                if (getPlayer() == null) cancel();
+                if (getPlayer() == null) {
+                    cancel();
+                    return;
+                }
 
                 switch (sbColor){
                     case 1:
@@ -126,8 +132,11 @@ public class LobbyUser extends SUser {
                 }
 
                 board.setName(sbName);
+
+                board.getTeam("boosters").setSuffix(String.valueOf(getUserData().getBoosters().size()));
                 board.getTeam("players").setSuffix(String.valueOf(Bukkit.getOnlinePlayers().size()));
-                if (getPlayer() != null) board.build(getPlayer());
+
+                board.build(getPlayer());
             }
         }.runTaskTimer(Main.getInstance(), 0, 5);
     }
