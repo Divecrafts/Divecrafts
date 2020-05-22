@@ -1,6 +1,7 @@
 package io.clonalejandro.DivecraftsCore.events;
 
 import io.clonalejandro.DivecraftsCore.Main;
+import io.clonalejandro.DivecraftsCore.api.SBooster;
 import io.clonalejandro.DivecraftsCore.api.SServer;
 import io.clonalejandro.DivecraftsCore.api.SUser;
 import io.clonalejandro.DivecraftsCore.cmd.SCmd;
@@ -20,6 +21,7 @@ import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.event.weather.WeatherChangeEvent;
 import org.bukkit.permissions.PermissionAttachment;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -53,6 +55,7 @@ public class PlayerEvents implements Listener {
 
         Utils.updateUserColor(u);
         loadPermissions(e.getPlayer());
+        checkBoosters(u);
 
         e.setJoinMessage(Utils.colorize(String.format("%s &ejoined the game", e.getPlayer().getDisplayName())));
 
@@ -69,6 +72,9 @@ public class PlayerEvents implements Listener {
         u.getUserData().setTimePlayed(u.getUserData().getTimePlayed() + System.currentTimeMillis() - u.getUserData().getTimeJoin());
         u.save();
 
+        u.getTasks().forEach(BukkitRunnable::cancel);
+        u.getTasks().clear();
+
         SServer.users.remove(u);
 
         if (SServer.getAdminChatMode().contains(u)) SServer.getAdminChatMode().remove(u);
@@ -83,6 +89,9 @@ public class PlayerEvents implements Listener {
 
         u.getUserData().setTimePlayed(u.getUserData().getTimePlayed() + System.currentTimeMillis() - u.getUserData().getTimeJoin());
         u.save();
+
+        u.getTasks().forEach(BukkitRunnable::cancel);
+        u.getTasks().clear();
 
         SServer.users.remove(u);
 
@@ -207,5 +216,22 @@ public class PlayerEvents implements Listener {
 
         permissions.forEach(permission -> attachment.setPermission(permission, true));
         perms.put(player, attachment);
+    }
+
+    private void checkBoosters(SUser user){
+        final BukkitRunnable task = new BukkitRunnable(){
+            @Override
+            public void run() {
+                if (!user.isOnline()) {
+                    cancel();
+                    return;
+                }
+
+                user.getUserData().getBoosters().forEach(SBooster::isExpired);
+            }
+        };
+        task.runTaskTimer(plugin, 0L, 60 * 20L);
+
+        user.getTasks().add(task);
     }
 }

@@ -141,11 +141,8 @@ public class PlayerEvents implements Listener {
                     switch (event.getSlot()) {
                         case 1:
                         case 10:
-                            if (user.getUserData().getClanes()) {
-                                user.getUserData().setClanes(false);
-                            } else {
-                                user.getUserData().setClanes(true);
-                            }
+                            user.getUserData().setFly(!user.getUserData().getFly());
+                            user.toggleFly();
                             InvManager.openInventory(p, InvManager.InvType.SETTINGS);
                             user.getPlayer().playSound(user.getPlayer().getLocation(), Sound.ORB_PICKUP, 1F, 1F);
                             user.getPlayer().sendMessage(Languaje.getLangMsg(user.getUserData().getLang(), "Ajustes.cambiado"));
@@ -153,11 +150,7 @@ public class PlayerEvents implements Listener {
                             break;
                         case 3:
                         case 12:
-                            if (user.getUserData().getChat()) {
-                                user.getUserData().setChat(false);
-                            } else {
-                                user.getUserData().setChat(true);
-                            }
+                            user.getUserData().setChat(!user.getUserData().getChat());
                             InvManager.openInventory(p, InvManager.InvType.SETTINGS);
                             user.getPlayer().playSound(user.getPlayer().getLocation(), Sound.ORB_PICKUP, 1F, 1F);
                             user.getPlayer().sendMessage(Languaje.getLangMsg(user.getUserData().getLang(), "Ajustes.cambiado"));
@@ -165,11 +158,7 @@ public class PlayerEvents implements Listener {
                             break;
                         case 5:
                         case 14:
-                            if (user.getUserData().getPartys()) {
-                                user.getUserData().setPartys(false);
-                            } else {
-                                user.getUserData().setPartys(true);
-                            }
+                            user.getUserData().setPartys(!user.getUserData().getPartys());
                             InvManager.openInventory(p, InvManager.InvType.SETTINGS);
                             user.getPlayer().playSound(user.getPlayer().getLocation(), Sound.ORB_PICKUP, 1F, 1F);
                             user.getPlayer().sendMessage(Languaje.getLangMsg(user.getUserData().getLang(), "Ajustes.cambiado"));

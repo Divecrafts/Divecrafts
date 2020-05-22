@@ -77,7 +77,7 @@ public class LobbyUser extends SUser {
         board.setName(Utils.colorize(sbName));
         board.text(10, Utils.colorize("&1"));
         board.text(9, Utils.colorize(Languaje.getLangMsg(getUserData().getLang(), "Scoreboardlobby.rango") + "&" + rank));
-        board.text(8, Utils.colorize("&fBoosters: &a0"));
+        board.text(8, Utils.colorize("&fBoosters: &a" + getUserData().getBoosters().size()));
         board.text(7, Utils.colorize("&fKeys: &a" + getUserData().getKeys()));
         board.text(6, Utils.colorize(Languaje.getLangMsg(getUserData().getLang(), "Scoreboardlobby.monedas") + getUserData().getCoins()));
         board.text(5, Utils.colorize("&2"));

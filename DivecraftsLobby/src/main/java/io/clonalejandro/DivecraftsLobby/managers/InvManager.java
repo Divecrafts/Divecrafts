@@ -81,7 +81,7 @@ public class InvManager {
 
                 String rankname = Utils.colorize("&" + SCmd.Rank.groupColor(u.getUserData().getRank()) + u.getUserData().getRank().getPrefix());
 
-                inv.setItem(11, ItemUtil.createSkull(Languaje.getLangMsg(u.getUserData().getLang(), "Inventarios.infoname"), player.getName(), Arrays.asList(Languaje.getLangMsg(u.getUserData().getLang(), "Inventarios.infolore").replace("%rango%",  rankname).replace("%coins%", String.valueOf(u.getUserData().getCoins())).split("\n"))));
+                inv.setItem(11, ItemUtil.createSkull(Languaje.getLangMsg(u.getUserData().getLang(), "Inventarios.infoname"), player.getName(), Arrays.asList(Languaje.getLangMsg(u.getUserData().getLang(), "Inventarios.infolore").replace("%rango%",  rankname).replace("%boosters%", String.valueOf(u.getUserData().getBoosters().size())).replace("%coins%", String.valueOf(u.getUserData().getCoins())).split("\n"))));
                 inv.setItem(15, new ItemMaker(Material.PAPER).setName(Languaje.getLangMsg(u.getUserData().getLang(), "Inventarios.statsname")).setLore(Arrays.asList(Languaje.getLangMsg(u.getUserData().getLang(), "Inventarios.statslore").split("\n"))).build());
                 inv.setItem(13, new ItemMaker(Material.REDSTONE_COMPARATOR).setName(Languaje.getLangMsg(u.getUserData().getLang(), "Inventarios.ajustesname")).setLore(Arrays.asList(Languaje.getLangMsg(u.getUserData().getLang(), "Inventarios.ajusteslore").split("\n"))).build());
                 inv.setItem(30, ItemUtil.createCustomSkull("http://textures.minecraft.net/texture/9228a1f45d741ea33a973cb2c824e9106784a546dddbacda9f4af73399fbbfd4", Languaje.getLangMsg(u.getUserData().getLang(), "Inventarios.socialname"), Arrays.asList(Languaje.getLangMsg(u.getUserData().getLang(), "Inventarios.sociallore").split("\n"))));
@@ -90,7 +90,7 @@ public class InvManager {
             case SETTINGS:
                 inv = Bukkit.getServer().createInventory(null, 18, "Settings");
 
-                inv.setItem(1, ItemUtil.createItem(Material.ANVIL, Languaje.getLangMsg(u.getUserData().getLang(), "Ajustesname.clanes"), Arrays.asList(Languaje.getLangMsg(u.getUserData().getLang(), "Itemlores.clanes").split("\n"))));
+                inv.setItem(1, ItemUtil.createItem(Material.FEATHER, Languaje.getLangMsg(u.getUserData().getLang(), "Ajustesname.fly"), Arrays.asList(Languaje.getLangMsg(u.getUserData().getLang(), "Itemlores.fly").split("\n"))));
 
                 inv.setItem(3, ItemUtil.createItem(Material.BOOK, Languaje.getLangMsg(u.getUserData().getLang(), "Ajustesname.chat"), Arrays.asList(Languaje.getLangMsg(u.getUserData().getLang(), "Itemlores.chat").split("\n"))));
 
@@ -99,8 +99,8 @@ public class InvManager {
                 inv.setItem(7, ItemUtil.createItem(Material.ENDER_PEARL, Languaje.getLangMsg(u.getUserData().getLang(), "Ajustesname.visibilidad"), Arrays.asList(Languaje.getLangMsg(u.getUserData().getLang(), "Itemlores.visibilidad").split("\n"))));
 
                 //Clanes
-                DyeColor clanesColor = u.getUserData().getClanes() ? DyeColor.LIME : DyeColor.RED;
-                inv.setItem(10, ItemUtil.createClay(Languaje.getLangMsg(u.getUserData().getLang(), "Ajustesname.clanes"), Arrays.asList(Languaje.getLangMsg(u.getUserData().getLang(), "Itemlores.clanes").split("\n")), clanesColor));
+                DyeColor flyColor = u.getUserData().getFly() ? DyeColor.LIME : DyeColor.RED;
+                inv.setItem(10, ItemUtil.createClay(Languaje.getLangMsg(u.getUserData().getLang(), "Ajustesname.clanes"), Arrays.asList(Languaje.getLangMsg(u.getUserData().getLang(), "Itemlores.clanes").split("\n")), flyColor));
 
                 //Party
                 DyeColor partyColor = u.getUserData().getPartys() ? DyeColor.LIME : DyeColor.RED;

@@ -37,9 +37,10 @@ public class SCommands implements TabCompleter {
         cmds.add(new WeatherCMD());
         cmds.add(new KittyCMD());
         cmds.add(new ColorCMD());
+        cmds.add(new GiveBoosterCMD());
 
-        ucmds = new io.clonalejandro.DivecraftsCore.SCommands();
-        cmds.forEach(io.clonalejandro.DivecraftsCore.SCommands::register);
+        ucmds = new SCommands();
+        cmds.forEach(SCommands::register);
     }
 
     public static void register(SCmd... cmdList) {
