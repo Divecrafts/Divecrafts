@@ -1,6 +1,5 @@
 package io.clonalejandro.DivecraftsCore.utils;
 
-import com.mysql.jdbc.Util;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -29,7 +28,8 @@ public class TagApi {
 
     public TagApi(Player player, String name){
         try {
-            setTag(player, Utils.colorize(name.substring(0, 15)));
+            name = Utils.colorize(name);
+            setTag(player, name.length() > 15 ? name.substring(0, 15) : name);
         }
         catch (Exception ex) {
             ex.printStackTrace();

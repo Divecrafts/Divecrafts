@@ -3,6 +3,9 @@ MySQL:
   db: divecrafts
   user: root
   pass: patata123
+disguises:
+  - 'Steve'
+  - 'Alex'
 Permissions:
   0:
     perms:
