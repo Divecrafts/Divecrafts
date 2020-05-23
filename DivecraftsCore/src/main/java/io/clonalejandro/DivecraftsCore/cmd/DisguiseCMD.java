@@ -26,7 +26,7 @@ import java.util.Random;
 public class DisguiseCMD extends SCmd {
 
     public DisguiseCMD() {
-        super("f", Rank.TMOD, "fd");
+        super("fd", Rank.TMOD, "fdisguise");
     }
 
     public void run(SUser u, String label, String... args) {
