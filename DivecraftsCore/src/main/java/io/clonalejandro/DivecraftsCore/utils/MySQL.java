@@ -152,13 +152,14 @@ public class MySQL {
             statementStats.executeUpdate();
 
             //Settings
-            PreparedStatement statementSett = openConnection().prepareStatement("UPDATE `settings` SET `fly`=?,`visible`=?,`chat`=?,`party`=?,`lang`=? WHERE `uuid`=?");
+            PreparedStatement statementSett = openConnection().prepareStatement("UPDATE `settings` SET `fly`=?,`visible`=?,`chat`=?,`party`=?,`lang`=?,`disguise`=? WHERE `uuid`=?");
             statementSett.setBoolean(1, data.getFly());
             statementSett.setInt(2, data.getVisible());
             statementSett.setBoolean(3, data.getChat());
             statementSett.setBoolean(4, data.getPartys());
             statementSett.setInt(5, data.getLang());
-            statementSett.setString(6, u.getUuid().toString());
+            statementSett.setString(6, data.getDisguise());
+            statementSett.setString(7, u.getUuid().toString());
             statementSett.executeUpdate();
 
             //Keys
@@ -246,6 +247,7 @@ public class MySQL {
                 data.setFly(rsSett.getBoolean("fly"));
                 data.setLang(rsSett.getInt("lang"));
                 data.setPartys(rsSett.getBoolean("party"));
+                data.setDisguise(rsSett.getString("disguise"));
 
                 Bukkit.getPlayer(id).setAllowFlight(rsSett.getBoolean("fly"));
                 Bukkit.getPlayer(id).setFlying(rsSett.getBoolean("fly"));

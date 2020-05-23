@@ -6,6 +6,7 @@ import io.clonalejandro.DivecraftsCore.api.SServer;
 import io.clonalejandro.DivecraftsCore.api.SUser;
 import io.clonalejandro.DivecraftsCore.cmd.SCmd;
 import io.clonalejandro.DivecraftsCore.idiomas.Languaje;
+import io.clonalejandro.DivecraftsCore.utils.Disguise;
 import io.clonalejandro.DivecraftsCore.utils.Utils;
 import lombok.AllArgsConstructor;
 import org.bukkit.Bukkit;
@@ -56,6 +57,9 @@ public class PlayerEvents implements Listener {
         Utils.updateUserColor(u);
         loadPermissions(e.getPlayer());
         checkBoosters(u);
+
+        if (!u.getUserData().getDisguise().equals(""))
+            new Disguise(u, u.getUserData().getDisguise());
 
         e.setJoinMessage(Utils.colorize(String.format("%s &ejoined the game", e.getPlayer().getDisplayName())));
 

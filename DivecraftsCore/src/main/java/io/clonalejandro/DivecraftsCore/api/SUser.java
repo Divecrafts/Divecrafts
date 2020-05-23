@@ -6,6 +6,7 @@ import io.clonalejandro.DivecraftsCore.Main;
 import io.clonalejandro.DivecraftsCore.cmd.SCmd;
 import io.clonalejandro.DivecraftsCore.idiomas.Languaje;
 import io.clonalejandro.DivecraftsCore.user.Profile;
+import io.clonalejandro.DivecraftsCore.utils.Disguise;
 import io.clonalejandro.DivecraftsCore.utils.ReflectionAPI;
 import io.clonalejandro.DivecraftsCore.utils.Sounds;
 import io.clonalejandro.DivecraftsCore.utils.Utils;
@@ -223,6 +224,7 @@ public class SUser {
         Boolean partys = true;
         Boolean fly = false;
         Integer lang = Languaje.Lang.ES.getId();
+        String disguise = "";
 
         // Game Stats
         HashMap<Integer, Integer> kills = new HashMap<>(); // ID, amount
@@ -241,7 +243,6 @@ public class SUser {
                 plays.put(g.getId(), 0);
             });
         }
-
 
 
         public int getKills(SServer.GameID gameMode) {

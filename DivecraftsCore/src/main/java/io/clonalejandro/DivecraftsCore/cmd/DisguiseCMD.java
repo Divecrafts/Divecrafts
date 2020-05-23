@@ -38,7 +38,4 @@ public class DisguiseCMD extends SCmd {
 
         u.getPlayer().sendMessage(Languaje.getLangMsg(u.getUserData().getLang(), "Ajustes.cambiado"));
     }
-
-
-
 }

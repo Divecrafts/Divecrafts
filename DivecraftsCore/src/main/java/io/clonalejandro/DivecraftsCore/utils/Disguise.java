@@ -7,9 +7,11 @@ import com.mojang.util.UUIDTypeAdapter;
 import io.clonalejandro.DivecraftsCore.Main;
 import io.clonalejandro.DivecraftsCore.api.SUser;
 import io.clonalejandro.DivecraftsCore.cmd.SCmd;
+import lombok.Getter;
 import org.bukkit.Bukkit;
 
 import java.lang.reflect.Array;
+import java.util.HashMap;
 import java.util.UUID;
 
 /**
@@ -31,8 +33,11 @@ import java.util.UUID;
 public class Disguise {
 
     private final Main plugin = Main.getInstance();
+    @Getter private static final HashMap<String, String> disguises = new HashMap<>();
 
     public Disguise(SUser user, String username){
+        disguises.put(username, user.getName());
+
         final SCmd.Rank rank = SCmd.Rank.USUARIO;
         final String color = "&7";
         final String prefix = rank.getRank() > 0 ? "&" + SCmd.Rank.groupColor(rank) + rank.getPrefix() + " " : "";
@@ -43,8 +48,13 @@ public class Disguise {
         user.getPlayer().setCustomName(Utils.colorize(name));
         user.getPlayer().setCustomNameVisible(true);
 
+        new TagApi(user.getPlayer(), username);
+
         applySkin(user, username);
+
+        user.getUserData().setDisguise(username);
     }
+
 
     private void applySkin(SUser u, String skinName){
         try {
@@ -97,6 +107,7 @@ public class Disguise {
         }
     }
 
+
     private boolean setSkin(GameProfile profile, UUID uuid) {
         final JsonObject json = Utils.getJson(String.format("https://sessionserver.mojang.com/session/minecraft/profile/%s?unsigned=false", UUIDTypeAdapter.fromUUID(uuid)));
 
@@ -111,6 +122,7 @@ public class Disguise {
         }
         return false;
     }
+
 
     private UUID resolverUuid(String name){
         final JsonObject json = Utils.getJson(String.format("https://api.mojang.com/users/profiles/minecraft/%s", name));
