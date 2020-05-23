@@ -42,10 +42,7 @@ public class UnDisguiseCMD extends SCmd {
         new Disguise(u, targetName);
         u.getUserData().setDisguise("");
 
-        Bukkit.getScheduler().runTaskLater(plugin, () -> {
-            Utils.updateUserColor(u);
-            new TagApi(u.getPlayer(), targetName);
-        }, 4L);
+        Bukkit.getScheduler().runTaskLater(plugin, () -> Utils.updateUserColor(u), 4L);
 
         u.getPlayer().sendMessage(Languaje.getLangMsg(u.getUserData().getLang(), "Ajustes.cambiado"));
     }
