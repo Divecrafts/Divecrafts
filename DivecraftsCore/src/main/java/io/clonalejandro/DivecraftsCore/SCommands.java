@@ -39,6 +39,7 @@ public class SCommands implements TabCompleter {
         cmds.add(new ColorCMD());
         cmds.add(new GiveBoosterCMD());
         cmds.add(new DisguiseCMD());
+        cmds.add(new UnDisguiseCMD());
 
         ucmds = new SCommands();
         cmds.forEach(SCommands::register);
