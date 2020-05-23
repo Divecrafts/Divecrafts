@@ -1,5 +1,8 @@
 package io.clonalejandro.DivecraftsCore.utils;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import io.clonalejandro.DivecraftsCore.api.SUser;
 import io.clonalejandro.DivecraftsCore.cmd.SCmd;
 import lombok.NonNull;
@@ -11,6 +14,10 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 
 public class Utils {
@@ -57,6 +64,27 @@ public class Utils {
         user.getPlayer().setDisplayName(Utils.colorize(name));
         user.getPlayer().setCustomName(Utils.colorize(name));
         user.getPlayer().setCustomNameVisible(true);
+    }
+
+    /**
+     * This function rescue a json from url
+     */
+    public static JsonObject getJson(String url) {
+        try {
+            URL cUrl = new URL(url);
+            HttpURLConnection request = (HttpURLConnection) cUrl.openConnection();
+
+            request.connect();
+
+            JsonParser jsonParser = new JsonParser();
+            InputStream stream = (InputStream) request.getContent();
+            JsonElement response = jsonParser.parse(new InputStreamReader(stream));
+
+            return response.getAsJsonObject();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
     }
 
     public static String locationToString(@NonNull Location loc) {
