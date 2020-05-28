@@ -1,7 +1,5 @@
 package io.clonalejandro.DivecraftsLobby.events;
 
-import net.citizensnpcs.api.event.NPCRightClickEvent;
-import net.citizensnpcs.api.npc.NPC;
 import io.clonalejandro.DivecraftsCore.api.SServer;
 import io.clonalejandro.DivecraftsCore.api.SUser;
 import io.clonalejandro.DivecraftsCore.idiomas.Languaje;
@@ -12,7 +10,12 @@ import io.clonalejandro.DivecraftsCore.utils.Utils;
 import io.clonalejandro.DivecraftsLobby.Main;
 import io.clonalejandro.DivecraftsLobby.api.LobbyUser;
 import io.clonalejandro.DivecraftsLobby.managers.InvManager;
-import org.bukkit.*;
+import net.citizensnpcs.api.event.NPCRightClickEvent;
+import net.citizensnpcs.api.npc.NPC;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -26,8 +29,6 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.*;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class PlayerEvents implements Listener {
 
@@ -38,6 +39,7 @@ public class PlayerEvents implements Listener {
     private final Main plugin = Main.getInstance();
 
     private boolean primera = true;
+    private int runId = 0;
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
@@ -52,7 +54,6 @@ public class PlayerEvents implements Listener {
         event.setJoinMessage(null);
     }
 
-    public int runId;
     public void correrRun(){
         runId = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, this::registerHologramas, 0, 400L);
     }

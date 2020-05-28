@@ -61,14 +61,19 @@ public abstract class SCmd {
     @AllArgsConstructor
     public enum Rank {
         USUARIO(0, ""),
-        YOUTUBER(1, "YT"),
-        TMOD(2, "MOD"),
-        MOD(3, "MOD"),
-        SMOD(4, "SMOD"),
-        BUILDER(5, "BTD"),
-        ADMIN(6, "ADM"),
-        CEO(7, "CEO"),
-        DEV(8, "DEV");
+        NEMO(1, "NEMO"),
+        MEGALODON(2, "MEGALODON"),
+        KRAKEN(3, "KRAKEN"),
+        MEDUSA(4, "MEDUSA"),
+        POSEIDON(5, "POSEIDON"),
+        YOUTUBER(6, "YT"),
+        TMOD(7, "MOD"),
+        MOD(8, "MOD"),
+        SMOD(9, "SMOD"),
+        BUILDER(10, "BTD"),
+        DEV(11, "DEV"),
+        ADMIN(12, "ADM"),
+        CEO(13, "CEO");
 
         private final int rank;
         private final String prefix;
@@ -79,16 +84,26 @@ public abstract class SCmd {
                     return "4&l";
                 case ADMIN:
                     return "c&l";
+                case DEV:
+                    return "d&l";
+                case SMOD:
                 case MOD:
                 case TMOD:
-                case SMOD:
                     return "6&l";
                 case BUILDER:
                     return "3&l";
                 case YOUTUBER:
                     return "c";
-                case DEV:
-                    return "d&l";
+                case POSEIDON:
+                    return "e&l";
+                case MEDUSA:
+                    return "5&l";
+                case KRAKEN:
+                    return "a&l";
+                case MEGALODON:
+                    return "b&l";
+                case NEMO:
+                    return "9&l";
                 default:
                     return "8";
             }

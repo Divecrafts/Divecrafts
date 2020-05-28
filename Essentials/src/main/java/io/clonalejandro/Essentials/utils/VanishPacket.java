@@ -1,11 +1,12 @@
 package io.clonalejandro.Essentials.utils;
 
-import me.clonalejandro.ReflectionAPI.ReflectionAPI;
+import io.clonalejandro.DivecraftsCore.utils.ReflectionAPI;
 import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -27,23 +28,46 @@ import java.util.ArrayList;
 public class VanishPacket extends ReflectionAPI {
 
     private static ArrayList<String> vanishPlayers = new ArrayList<>();
+    private static final Class enumPlayerInfoAction = ReflectionAPI.getNmsClass("PacketPlayOutPlayerInfo$EnumPlayerInfoAction");
 
 
     public static void vanishForPlayer(final Player playerToVanish, final Player target){
-        final CraftPlayer craftPlayer = ((CraftPlayer) playerToVanish);
-        final Object packet = new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER, craftPlayer.getHandle());
+        try {
+            final Object handle = ReflectionAPI.getHandle(playerToVanish);
+            final Object entities = Array.newInstance(handle.getClass(), 1);
 
-        target.hidePlayer(playerToVanish);
-        sendPacket(target, packet);
+            Array.set(entities, 0, handle);
+
+            final Object packet = ReflectionAPI.getNmsClass("PacketPlayOutPlayerInfo")
+                    .getConstructor(enumPlayerInfoAction, entities.getClass())
+                    .newInstance(Enum.valueOf(enumPlayerInfoAction, "REMOVE_PLAYER"), entities);
+
+            target.hidePlayer(playerToVanish);
+            sendPacket(target, packet);
+        }
+        catch (Exception ex){
+            ex.printStackTrace();
+        }
     }
 
     public static void setVanish(final Player player){
         Bukkit.getOnlinePlayers().forEach(onlinePlayer -> {
-            final CraftPlayer craftPlayer = ((CraftPlayer) player);
-            final Object packet = new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER, craftPlayer.getHandle());
+            try {
+                final Object handle = ReflectionAPI.getHandle(player);
+                final Object entities = Array.newInstance(handle.getClass(), 1);
 
-            onlinePlayer.hidePlayer(player);
-            sendPacket(onlinePlayer, packet);
+                Array.set(entities, 0, handle);
+
+                final Object packet = ReflectionAPI.getNmsClass("PacketPlayOutPlayerInfo")
+                        .getConstructor(enumPlayerInfoAction, entities.getClass())
+                        .newInstance(Enum.valueOf(enumPlayerInfoAction, "REMOVE_PLAYER"), entities);
+
+                onlinePlayer.hidePlayer(player);
+                sendPacket(onlinePlayer, packet);
+            }
+            catch (Exception ex){
+                ex.printStackTrace();
+            }
         });
 
         vanishPlayers.add(player.getName());
@@ -51,11 +75,22 @@ public class VanishPacket extends ReflectionAPI {
 
     public static void removeVanish(final Player player){
         Bukkit.getOnlinePlayers().forEach(onlinePlayer -> {
-            final CraftPlayer craftPlayer = ((CraftPlayer) player);
-            final Object packet = new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.ADD_PLAYER, craftPlayer.getHandle());
+           try {
+               final Object handle = ReflectionAPI.getHandle(player);
+               final Object entities = Array.newInstance(handle.getClass(), 1);
 
-            onlinePlayer.showPlayer(player);
-            sendPacket(onlinePlayer, packet);
+               Array.set(entities, 0, handle);
+
+               final Object packet = ReflectionAPI.getNmsClass("PacketPlayOutPlayerInfo")
+                       .getConstructor(enumPlayerInfoAction, entities.getClass())
+                       .newInstance(Enum.valueOf(enumPlayerInfoAction, "ADD_PLAYER"), entities);
+
+               onlinePlayer.showPlayer(player);
+               sendPacket(onlinePlayer, packet);
+           }
+           catch (Exception ex){
+               ex.printStackTrace();
+           }
         });
 
         vanishPlayers.remove(player.getName());

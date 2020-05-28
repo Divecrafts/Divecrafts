@@ -35,8 +35,10 @@ public class LobbyUser extends SUser {
 
     public void onJoin() {
         PlayerInventory i = getPlayer().getInventory();
+
         i.clear();
         getPlayer().updateInventory();
+
         i.setItem(0, new ItemMaker(Material.COMPASS).setName(Languaje.getLangMsg(getUserData().getLang(), "Itemnames.brujula")).setLore(Languaje.getLangMsg(getUserData().getLang(), "Itemlores.brujula")).build());
         i.setItem(1, ItemUtil.createHeadPlayer(Languaje.getLangMsg(getUserData().getLang(), "Itemnames.perfil"), getName(), Arrays.asList(Languaje.getLangMsg(getUserData().getLang(), "Itemlores.perfil"))));
         i.setItem(8, new ItemMaker(Material.NETHER_STAR).setName(Languaje.getLangMsg(getUserData().getLang(), "Itemnames.lobby")).setLore(Languaje.getLangMsg(getUserData().getLang(), "Itemlores.lobby")).build());
@@ -56,8 +58,11 @@ public class LobbyUser extends SUser {
         getPlayer().setLevel(0);
         getPlayer().setExp(0);
 
-        PotionEffect nospeed = PotionEffectType.SPEED.createEffect(99999999, 1);
-        getPlayer().addPotionEffect(nospeed);
+        PotionEffect nightVision = new PotionEffect(PotionEffectType.NIGHT_VISION, Integer.MAX_VALUE, 1, false, false);
+        PotionEffect nospeed = new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 1, false, false);
+
+        getPlayer().addPotionEffect(nospeed, true);
+        getPlayer().addPotionEffect(nightVision, true);
 
         getPlayer().setGameMode(GameMode.ADVENTURE);
 
@@ -69,7 +74,6 @@ public class LobbyUser extends SUser {
 
 
     public void setScoreBoard() {
-
         final ScoreboardUtil board = new ScoreboardUtil(sbName, "lobby");
         final String rankColored = SCmd.Rank.groupColor(getUserData().getRank()) + getUserData().getRank().getPrefix();
         final String rank = getUserData().getRank() == SCmd.Rank.USUARIO ? rankColored + "&lUSER" : rankColored;
