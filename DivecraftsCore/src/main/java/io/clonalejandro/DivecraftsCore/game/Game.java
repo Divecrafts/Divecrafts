@@ -45,7 +45,7 @@ public abstract class Game implements Listener {
      * @param name The Game Name
      * @param desc Small description about the game
      *
-     * @see io.clonalejandro.DivecraftsCore.api.SServer.GameID
+     * @see SServer.GameID
      */
     public Game(SServer.GameID game, String name, String... desc) {
         this.game = game;
