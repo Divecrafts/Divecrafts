@@ -42,7 +42,7 @@ public class Languaje {
                     file = "es.json";
             }
 
-            JsonObject json = getJson("http://91.121.76.115:3000/api/" + file);
+            JsonObject json = getJson("http://play.divecrafts.net:3000/api/" + file);
 
             if (json == null) return "Error!";
 
