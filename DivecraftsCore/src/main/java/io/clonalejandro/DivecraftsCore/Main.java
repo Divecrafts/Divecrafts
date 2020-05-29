@@ -1,6 +1,5 @@
 package io.clonalejandro.DivecraftsCore;
 
-import com.yapzhenyie.GadgetsMenu.economy.GEconomyProvider;
 import io.clonalejandro.DivecraftsCore.events.PlayerEvents;
 import io.clonalejandro.DivecraftsCore.inv.InventoryManager;
 import io.clonalejandro.DivecraftsCore.utils.*;
@@ -84,13 +83,22 @@ public class Main extends JavaPlugin {
     }
 
     private void registerBungee() {
-        getServer().getMessenger().registerIncomingPluginChannel(this, "DivecraftsBungee", new BungeeMensager());
-        getServer().getMessenger().registerOutgoingPluginChannel(this, "DivecraftsBungee");
+        String version = getServer().getVersion();
+
+        getServer().getMessenger().registerIncomingPluginChannel(this, version.contains("1.8") ? "DivecraftsBungee" : "divecrafts:divecraftsbungee", new BungeeMensager());
+        getServer().getMessenger().registerOutgoingPluginChannel(this, version.contains("1.8") ? "DivecraftsBungee" : "divecrafts:divecraftsbungee");
     }
 
     private void registerGadgetsMenuHook(){
         if (Bukkit.getPluginManager().isPluginEnabled("GadgetsMenu")){
-            GEconomyProvider.setMysteryDustStorage(new GadgetsMenuHook(this));
+            try {
+                Class<?> provider = Class.forName("com.yapzhenyie.GadgetsMenu.economy.GEconomyProvider");
+                provider.getMethod("setMysteryDustStorage", provider)
+                        .invoke(null, new GadgetsMenuHook(this));
+            }
+            catch (Exception ex) {
+                ex.printStackTrace();
+            }
         }
     }
 }

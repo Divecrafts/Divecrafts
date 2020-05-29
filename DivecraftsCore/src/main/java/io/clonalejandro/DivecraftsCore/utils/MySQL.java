@@ -194,7 +194,7 @@ public class MySQL {
                 data.setTimeJoin(Timestamp.valueOf(rsDatos.getString("timeJoin")).getTime());
                 data.setGod(rsDatos.getBoolean("god"));
                 data.setCoins(rsDatos.getInt("coins"));
-                data.setKeys(GadgetsMenuAPI.getOfflinePlayerManager(id).getMysteryBoxes());
+                data.setKeys(loadKeys(id));
                 data.setBoosters(loadBoosters(statementBoosters));
                 data.setLastConnect(Timestamp.valueOf(rsDatos.getString("lastConnect")).getTime());
                 data.setClanName(rsDatos.getString("clan"));
@@ -387,5 +387,33 @@ public class MySQL {
         }
 
         return boosters;
+    }
+
+    private int loadKeys(UUID id){
+        if (Main.getInstance().getServer().getPluginManager().isPluginEnabled("GadgetsMenu")){
+            try {
+                Class<?> apiClazz = Class.forName("com.yapzhenyie.GadgetsMenu.api.GadgetsMenuAPI");
+                Object factory = apiClazz.getMethod("getOfflinePlayerManager", UUID.class).invoke(null, id);
+                return (int) factory.getClass().getMethod("getMysteryBoxes").invoke(factory);
+            }
+            catch (Exception ex){
+                ex.printStackTrace();
+            }
+        }
+        else {
+            try {
+                final PreparedStatement statement = openConnection().prepareStatement("SELECT * FROM GadgetsMenu_Mystery_Boxes WHERE UUID=?");
+                statement.setString(1, id.toString());
+                final ResultSet rs = statement.executeQuery();
+
+                int keys = 0;
+                while (rs.next()) keys++;
+                return keys;
+            }
+            catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return 0;
     }
 }
