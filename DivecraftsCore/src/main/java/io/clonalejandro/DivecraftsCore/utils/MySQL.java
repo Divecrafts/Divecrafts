@@ -1,6 +1,7 @@
 package io.clonalejandro.DivecraftsCore.utils;
 
 import com.mysql.cj.jdbc.exceptions.CommunicationsException;
+import com.yapzhenyie.GadgetsMenu.api.GadgetsMenuAPI;
 import com.zaxxer.hikari.HikariDataSource;
 import io.clonalejandro.DivecraftsCore.Main;
 import io.clonalejandro.DivecraftsCore.api.SBooster;
@@ -161,12 +162,6 @@ public class MySQL {
             statementSett.setString(6, data.getDisguise());
             statementSett.setString(7, u.getUuid().toString());
             statementSett.executeUpdate();
-
-            //Keys
-            PreparedStatement statementKeys = openConnection().prepareStatement("UPDATE `UltraCosmeticsData` SET `treasureKeys` = ? WHERE `uuid` = ?");
-            statementKeys.setInt(1, data.getKeys());
-            statementKeys.setString(2, u.getUuid().toString());
-            statementKeys.executeUpdate();
         } catch (Exception ex) {
             System.out.println("Ha ocurrido un error guardando los datos de " + u.getName());
             ex.printStackTrace();
@@ -183,17 +178,15 @@ public class MySQL {
      */
     public SUser.UserData loadUserData(UUID id) {
         SUser.UserData data = new SUser.UserData();
+
         try {
             final PreparedStatement statementDatos = openConnection().prepareStatement("SELECT `timeJoin`,`grupo`,`god`,`coins`,`lastConnect`,`clan`,`nickcolor`,`boosters` FROM `data` WHERE `uuid` = ?");
-            final PreparedStatement statementKeys = openConnection().prepareStatement("SELECT `treasureKeys` FROM `UltraCosmeticsData` WHERE  `uuid` = ?");
             final PreparedStatement statementBoosters = openConnection().prepareStatement("SELECT * FROM `booster` where `uuid`=?");
 
             statementDatos.setString(1, id.toString());
-            statementKeys.setString(1, id.toString());
             statementBoosters.setString(1, id.toString());
 
             ResultSet rsDatos = statementDatos.executeQuery();
-            ResultSet rsKeys = statementKeys.executeQuery();
 
             if (rsDatos.next()) {
                 int rank = rsDatos.getInt("grupo");
@@ -201,7 +194,7 @@ public class MySQL {
                 data.setTimeJoin(Timestamp.valueOf(rsDatos.getString("timeJoin")).getTime());
                 data.setGod(rsDatos.getBoolean("god"));
                 data.setCoins(rsDatos.getInt("coins"));
-                data.setKeys(rsKeys.next() ? rsKeys.getInt("treasureKeys") : 0);
+                data.setKeys(GadgetsMenuAPI.getOfflinePlayerManager(id).getMysteryBoxes());
                 data.setBoosters(loadBoosters(statementBoosters));
                 data.setLastConnect(Timestamp.valueOf(rsDatos.getString("lastConnect")).getTime());
                 data.setClanName(rsDatos.getString("clan"));

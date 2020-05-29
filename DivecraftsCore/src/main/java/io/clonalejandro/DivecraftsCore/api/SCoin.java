@@ -77,6 +77,12 @@ public class SCoin {
         return data.getCoins();
     }
 
+    public int set(int coins){
+        final SUser.UserData data = user.getUserData();
+        data.setCoins(coins);
+        return data.getCoins();
+    }
+
     public int balance(){
         return user.getUserData().getCoins();
     }

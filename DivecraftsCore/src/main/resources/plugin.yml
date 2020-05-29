@@ -1,4 +1,5 @@
 name: DivecraftsCore
 main: io.clonalejandro.DivecraftsCore.Main
+softdepend: [GadgetsMenu]
 version: 1.0
 author: clonalejandro
