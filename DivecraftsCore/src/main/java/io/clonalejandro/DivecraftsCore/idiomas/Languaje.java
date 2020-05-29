@@ -7,6 +7,7 @@ import io.clonalejandro.DivecraftsCore.utils.Utils;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import javax.net.ssl.HttpsURLConnection;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -31,7 +32,7 @@ public class Languaje {
                 file = "es.json";
         }
 
-        JsonObject json = getJson("http://91.121.76.115:3000/api/" + file);
+        JsonObject json = getJson("http://play.divecrafts.net:3000/api/" + file);
 
         if (json == null) return "Error!";
 
@@ -45,16 +46,31 @@ public class Languaje {
     private static JsonObject getJson(String url) {
         try {
             URL cUrl = new URL(url);
-            HttpURLConnection request = (HttpURLConnection) cUrl.openConnection();
 
-            request.connect();
+            if (url.contains("https")){
+                HttpsURLConnection request = (HttpsURLConnection) cUrl.openConnection();
 
-            JsonParser jsonParser = new JsonParser();
-            InputStream stream = (InputStream) request.getContent();
-            JsonElement response = jsonParser.parse(new InputStreamReader(stream));
+                request.connect();
 
-            return response.getAsJsonObject();
-        } catch (Exception ex) {
+                JsonParser jsonParser = new JsonParser();
+                InputStream stream = (InputStream) request.getContent();
+                JsonElement response = jsonParser.parse(new InputStreamReader(stream));
+
+                return response.getAsJsonObject();
+            }
+            else {
+                HttpURLConnection request = (HttpURLConnection) cUrl.openConnection();
+
+                request.connect();
+
+                JsonParser jsonParser = new JsonParser();
+                InputStream stream = (InputStream) request.getContent();
+                JsonElement response = jsonParser.parse(new InputStreamReader(stream));
+
+                return response.getAsJsonObject();
+            }
+        }
+        catch (Exception ex) {
             ex.printStackTrace();
             return null;
         }
