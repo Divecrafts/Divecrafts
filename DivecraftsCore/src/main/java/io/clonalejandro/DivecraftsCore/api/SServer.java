@@ -42,7 +42,15 @@ public class SServer {
     @Getter
     @AllArgsConstructor
     public enum GameID {
-        FFA(1), ARCADE(2), SKYWARS(3), MICROBATTLES(4), UHC(5), FIGTHCLUB(6), MUM(7), EGGWARS(8);
+        FFA(1),
+        ARCADE(2),
+        SKYWARS(3),
+        MICROBATTLES(4),
+        UHC(5),
+        FIGTHCLUB(6),
+        MUM(7),
+        EGGWARS(8),
+        SURVIVAL(9);
 
         private final int id;
     }
