@@ -1,5 +1,6 @@
 package io.clonalejandro.DivecraftsCore.events;
 
+import com.yapzhenyie.GadgetsMenu.api.GadgetsMenuAPI;
 import io.clonalejandro.DivecraftsCore.Main;
 import io.clonalejandro.DivecraftsCore.api.SBooster;
 import io.clonalejandro.DivecraftsCore.api.SServer;
@@ -57,16 +58,11 @@ public class PlayerEvents implements Listener {
         Utils.updateUserColor(u);
         loadPermissions(e.getPlayer());
         checkBoosters(u);
+        checkFly(u);
+        checkDisguise(u);
 
-        Bukkit.getScheduler().runTaskLater(plugin, () -> {
-            e.getPlayer().setAllowFlight(u.getUserData().getFly());
-            e.getPlayer().setFlying(u.getUserData().getFly());
-        }, 4);
-
-        if (!u.getUserData().getDisguise().equals(""))
-            new Disguise(u, u.getUserData().getDisguise());
-
-        e.setJoinMessage(Utils.colorize(String.format("%s &ejoined the game", e.getPlayer().getDisplayName())));
+        if (u.getUserData().getRank().getRank() > 0)
+            e.setJoinMessage(Utils.colorize(String.format("%s &ejoined the game", e.getPlayer().getDisplayName())));//TODO: Add to api lang
 
         if (!u.isOnRank(SCmd.Rank.ADMIN)) u.getPlayer().setGameMode(GameMode.SURVIVAL);
     }
@@ -242,5 +238,17 @@ public class PlayerEvents implements Listener {
         task.runTaskTimer(plugin, 0L, 60 * 20L);
 
         user.getTasks().add(task);
+    }
+
+    private void checkFly(SUser user){
+        Bukkit.getScheduler().runTaskLater(plugin, () -> {
+            user.getPlayer().setAllowFlight(user.getUserData().getFly());
+            user.getPlayer().setFlying(user.getUserData().getFly());
+        }, 4);
+    }
+
+    private void checkDisguise(SUser user){
+        if (!user.getUserData().getDisguise().equals(""))
+            new Disguise(user, user.getUserData().getDisguise());
     }
 }
