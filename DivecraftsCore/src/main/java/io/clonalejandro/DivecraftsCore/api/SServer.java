@@ -10,7 +10,7 @@ import java.util.UUID;
 
 public class SServer {
 
-    public static final String defURL = "http://91.121.76.115:3000/api/";
+    public static final String defURL = "http://play.divecrafts.net:3000/api/";
 
 
     private static final HashMap<UUID, UUID> tp = new HashMap<>();
@@ -33,7 +33,8 @@ public class SServer {
     }
 
     public static SUser getUser(OfflinePlayer p) {
-        if (p.getUniqueId() == null) throw new NullPointerException("UUID can't be null (GetUser)");
+        if (p == null) return null;
+        else if (p.getUniqueId() == null) throw new NullPointerException("UUID can't be null (GetUser)");
         return getUser(p.getUniqueId());
     }
 

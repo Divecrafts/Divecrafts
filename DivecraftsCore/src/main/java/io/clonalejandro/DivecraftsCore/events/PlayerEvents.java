@@ -58,6 +58,11 @@ public class PlayerEvents implements Listener {
         loadPermissions(e.getPlayer());
         checkBoosters(u);
 
+        Bukkit.getScheduler().runTaskLater(plugin, () -> {
+            e.getPlayer().setAllowFlight(u.getUserData().getFly());
+            e.getPlayer().setFlying(u.getUserData().getFly());
+        }, 4);
+
         if (!u.getUserData().getDisguise().equals(""))
             new Disguise(u, u.getUserData().getDisguise());
 

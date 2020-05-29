@@ -140,11 +140,13 @@ public class SUser {
     public void toggleFly() {
         if (getPlayer().getAllowFlight()) {
             getPlayer().setAllowFlight(false);
+            getPlayer().setFlying(false);
             getUserData().setFly(false);
             return;
         }
         getUserData().setFly(true);
         getPlayer().setAllowFlight(true);
+        getPlayer().setFlying(true);
     }
 
     public void sendToServer(String server) {

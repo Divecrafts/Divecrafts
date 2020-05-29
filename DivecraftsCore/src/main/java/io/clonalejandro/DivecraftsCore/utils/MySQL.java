@@ -248,9 +248,6 @@ public class MySQL {
                 data.setLang(rsSett.getInt("lang"));
                 data.setPartys(rsSett.getBoolean("party"));
                 data.setDisguise(rsSett.getString("disguise"));
-
-                Bukkit.getPlayer(id).setAllowFlight(rsSett.getBoolean("fly"));
-                Bukkit.getPlayer(id).setFlying(rsSett.getBoolean("fly"));
             }
         } catch (CommunicationsException ex) {
             ex.printStackTrace();
