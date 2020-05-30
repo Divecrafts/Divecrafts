@@ -27,9 +27,7 @@ public class SCommands implements TabCompleter {
     public static void load() {
         cmds.add(new AfkCMD());
         cmds.add(new AyudaCMD());
-        cmds.add(new CoreCMD());
         cmds.add(new DecirCMD());
-        cmds.add(new FlyCMD());
         cmds.add(new HelpOPCMD());
         cmds.add(new KillAllCMD());
         cmds.add(new KillCMD());
@@ -40,6 +38,7 @@ public class SCommands implements TabCompleter {
         cmds.add(new GiveBoosterCMD());
         cmds.add(new DisguiseCMD());
         cmds.add(new UnDisguiseCMD());
+        cmds.add(new BroadcastCMD());
 
         ucmds = new SCommands();
         cmds.forEach(SCommands::register);
