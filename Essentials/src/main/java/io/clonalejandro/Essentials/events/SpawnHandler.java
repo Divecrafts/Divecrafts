@@ -4,12 +4,14 @@ import io.clonalejandro.Essentials.Main;
 import io.clonalejandro.Essentials.utils.SpawnYml;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.inventory.ItemStack;
 
 /**
  * Created by Alex
@@ -28,20 +30,45 @@ import org.bukkit.event.player.PlayerRespawnEvent;
  */
 
 public class SpawnHandler implements Listener {
+    final ItemStack[] kit = new ItemStack[]{
+            new ItemStack(Material.IRON_SWORD),
+            new ItemStack(Material.IRON_AXE),
+            new ItemStack(Material.IRON_PICKAXE),
+            new ItemStack(Material.IRON_SHOVEL),
+            new ItemStack(Material.IRON_HELMET),
+            new ItemStack(Material.IRON_CHESTPLATE),
+            new ItemStack(Material.IRON_LEGGINGS),
+            new ItemStack(Material.IRON_BOOTS),
+            new ItemStack(Material.BREAD, 16)
+    };
+
+    @EventHandler
+    public void onPlayerJoinEvent(PlayerJoinEvent event){
+        if (!event.getPlayer().hasPlayedBefore()){
+            event.getPlayer().teleport(new Spawn().getLocation());
+            event.getPlayer().getInventory().addItem(kit);
+        }
+    }
 
     @EventHandler (priority = EventPriority.HIGHEST)
-    public void onPlayerDeath(PlayerRespawnEvent event){
-        final SpawnYml spawnYml = Main.spawnYml;
+    public void onPlayerRespawn(PlayerRespawnEvent event){
+        event.setRespawnLocation(new Spawn().getLocation());
+    }
 
-        final World world = Bukkit.getWorld(spawnYml.getString("Lobby.World"));
-        final double x = spawnYml.getDouble("Lobby.x");
-        final double y = spawnYml.getDouble("Lobby.y");
-        final double z = spawnYml.getDouble("Lobby.z");
-        final float yaw = spawnYml.getFloat("Lobby.yaw");
-        final float pitch = spawnYml.getFloat("Lobby.pitch");
+    static class Spawn {
+        private final SpawnYml spawnYml = Main.spawnYml;
+
+        private final World world = Bukkit.getWorld(spawnYml.getString("Lobby.World"));
+        private final double x = spawnYml.getDouble("Lobby.x");
+        private final double y = spawnYml.getDouble("Lobby.y");
+        private final double z = spawnYml.getDouble("Lobby.z");
+        private final float yaw = spawnYml.getFloat("Lobby.yaw");
+        private final float pitch = spawnYml.getFloat("Lobby.pitch");
 
         final Location location = new Location(world, x , y, z, yaw, pitch);
 
-        event.setRespawnLocation(location);
+        public Location getLocation() {
+            return location;
+        }
     }
 }
