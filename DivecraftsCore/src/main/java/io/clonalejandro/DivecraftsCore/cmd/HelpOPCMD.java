@@ -8,7 +8,6 @@ import io.clonalejandro.DivecraftsCore.utils.Utils;
 
 public class HelpOPCMD extends SCmd {
 
-
     public HelpOPCMD() {
         super("helpop", Rank.USUARIO, "hp");
     }

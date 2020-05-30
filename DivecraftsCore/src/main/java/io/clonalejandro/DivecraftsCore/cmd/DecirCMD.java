@@ -8,6 +8,7 @@ import io.clonalejandro.DivecraftsCore.utils.Sounds;
 import io.clonalejandro.DivecraftsCore.utils.Utils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 
 import java.util.Arrays;
 import java.util.List;
@@ -19,8 +20,14 @@ public class DecirCMD extends SCmd {
     }
 
     private static void sendPrivateMessage(SUser target, SUser from, String mensaje) {
-        target.getPlayer().sendMessage(Languaje.getLangMsg(from.getUserData().getLang(), "Msg.desde").replace("%player%", target.getName()) + mensaje);
+        target.getPlayer().sendMessage(Languaje.getLangMsg(target.getUserData().getLang(), "Msg.desde").replace("%player%", from.getName()) + mensaje);
         from.getPlayer().sendMessage(Languaje.getLangMsg(from.getUserData().getLang(), "Msg.para").replace("%player%", target.getName()) + mensaje);
+        target.sendSound(Sounds.LEVEL_UP);
+    }
+
+    private static void sendPrivateMessage(SUser target, ConsoleCommandSender from, String mensaje) {
+        target.getPlayer().sendMessage(Languaje.getLangMsg(target.getUserData().getLang(), "Msg.desde").replace("%player%", from.getName()) + mensaje);
+        from.sendMessage(Languaje.getLangMsg(Languaje.Lang.ES.getId(), "Msg.para").replace("%player%", target.getName()) + mensaje);
         target.sendSound(Sounds.LEVEL_UP);
     }
 
@@ -28,7 +35,10 @@ public class DecirCMD extends SCmd {
     public void run(SUser user, String lbl, String[] args) {
         SUser target = SServer.getUser(Main.getInstance().getServer().getPlayer(args[0]));
 
-        if (target.equals(user)) {
+        if (args.length == 1){
+            return;
+        }
+        if (user == target) {
             user.getPlayer().sendMessage(Languaje.getLangMsg(user.getUserData().getLang(), "Msg.noatimismo"));
             return;
         }
@@ -38,6 +48,22 @@ public class DecirCMD extends SCmd {
         }
         args[0] = "";
         sendPrivateMessage(target, user, Utils.buildString(args));
+    }
+
+    @Override
+    public void run(ConsoleCommandSender sender, String lbl, String[] args) {
+        SUser target = SServer.getUser(Main.getInstance().getServer().getPlayer(args[0]));
+
+        if (args.length == 1){
+            return;
+        }
+
+        if (!target.isOnline()) {
+            sender.sendMessage(Languaje.getLangMsg(Languaje.Lang.ES.getId(), "Global.noconectado"));
+            return;
+        }
+        args[0] = "";
+        sendPrivateMessage(target, sender, Utils.buildString(args));
     }
 
     @Override
