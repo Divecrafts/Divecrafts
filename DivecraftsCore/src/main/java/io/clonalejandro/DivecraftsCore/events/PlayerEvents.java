@@ -59,12 +59,17 @@ public class PlayerEvents implements Listener {
         loadPermissions(e.getPlayer());
         checkBoosters(u);
         checkFly(u);
-        checkDisguise(u);
+        //checkDisguise(u);
 
         if (u.getUserData().getRank().getRank() > 0)
-            e.setJoinMessage(Utils.colorize(String.format("%s &ejoined the game", e.getPlayer().getDisplayName())));//TODO: Add to api lang
+            e.setJoinMessage(Utils.colorize(String.format("%s &ejoined the game", e.getPlayer().getDisplayName())));
 
-        if (!u.isOnRank(SCmd.Rank.ADMIN)) u.getPlayer().setGameMode(GameMode.SURVIVAL);
+        if (!plugin.getServer().getPluginManager().isPluginEnabled("Essentials")){
+            u.sendHeaderAndFooter(Languaje.getLangMsg(u.getUserData().getLang(), "Global.Header"), Languaje.getLangMsg(u.getUserData().getLang(), "Global.Footer"));
+            u.sendActionBar((Languaje.getLangMsg(u.getUserData().getLang(), "Global.Header")));
+        }
+
+        if (!u.isOnRank(SCmd.Rank.ADMIN) && !plugin.getServer().getPluginManager().isPluginEnabled("Essentials")) u.getPlayer().setGameMode(GameMode.SURVIVAL);
     }
 
     @EventHandler
@@ -143,8 +148,6 @@ public class PlayerEvents implements Listener {
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent e) {
-        SUser u = SServer.getUser(e.getPlayer());
-
         if (e.getAction() == Action.PHYSICAL && e.getClickedBlock().getType() == Material.SOIL) e.setCancelled(true);
     }
 
@@ -159,7 +162,8 @@ public class PlayerEvents implements Listener {
 
         SServer.npc.forEach(npc -> {
             if (npc.getLoc().equals(e.getRightClicked().getLocation())) {
-                if (npc.getInventory() != null) u.openInventory(npc.getInventory());
+                if (npc.getInventory() != null)
+                    u.openInventory(npc.getInventory());
             }
         });
     }
@@ -201,7 +205,8 @@ public class PlayerEvents implements Listener {
 
         if (r.getRank() > 0) {
             e.setFormat(Utils.colorize(p.getDisplayName() + ": &7" + e.getMessage()));
-        } else {
+        }
+        else {
             e.setFormat(p.getDisplayName() + ": §7" + e.getMessage());
         }
     }
@@ -248,7 +253,9 @@ public class PlayerEvents implements Listener {
     }
 
     private void checkDisguise(SUser user){
-        if (!user.getUserData().getDisguise().equals(""))
-            new Disguise(user, user.getUserData().getDisguise());
+        Bukkit.getScheduler().runTaskLater(plugin, () -> {
+            if (!user.getUserData().getDisguise().equals(""))
+                new Disguise(user, user.getUserData().getDisguise());
+        }, 2 * 20L);
     }
 }

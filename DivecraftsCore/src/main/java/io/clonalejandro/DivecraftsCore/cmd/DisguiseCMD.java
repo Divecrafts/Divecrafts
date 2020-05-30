@@ -35,6 +35,11 @@ public class DisguiseCMD extends SCmd {
         final String randomName = getRandomName(names);
         final String targetName = args.length == 1 ? args[0] : randomName;
 
+        if (Disguise.getDisguises().containsKey(u.getName())){
+            u.getPlayer().sendMessage(Utils.colorize("&c&lServer> &fYa estas en disguise"));
+            return;
+        }
+
         if (targetName != null){
             new Disguise(u, targetName);
             u.getPlayer().sendMessage(Languaje.getLangMsg(u.getUserData().getLang(), "Ajustes.cambiado"));
@@ -43,7 +48,7 @@ public class DisguiseCMD extends SCmd {
     }
 
     private String getRandomName(List<String> names){
-        if (names.size() == 0){
+        if (names.size() == 1){
             return null;
         }
 
