@@ -1,5 +1,8 @@
 package io.clonalejandro.Essentials.commands;
 
+import io.clonalejandro.DivecraftsCore.api.SServer;
+import io.clonalejandro.DivecraftsCore.api.SUser;
+import io.clonalejandro.DivecraftsCore.cmd.SCmd;
 import io.clonalejandro.Essentials.Main;
 import io.clonalejandro.Essentials.utils.MysqlManager;
 import io.clonalejandro.Essentials.utils.TeleportWithDelay;
@@ -32,7 +35,7 @@ import java.util.List;
  * All rights reserved for clonalejandro ©Essentials 2017/2020
  */
 
-public class WarpCmd implements CommandExecutor {
+public class WarpCmd extends Cmd implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String arg, String[] args) {
@@ -65,6 +68,8 @@ public class WarpCmd implements CommandExecutor {
     }
 
     private boolean setWarp(CommandSender sender, String[] args){
+        if (checkPermissions(sender, SCmd.Rank.SMOD)) return true;
+
         final Player player = Bukkit.getPlayer(sender.getName());
 
         if (args.length > 0){
@@ -96,6 +101,7 @@ public class WarpCmd implements CommandExecutor {
 
     private boolean warp(CommandSender sender, String[] args){
         final Player player = Bukkit.getPlayer(sender.getName());
+        final SUser user = SServer.getUser(player.getUniqueId());
 
         if (args.length > 0){
             args[0] = MysqlManager.secureQuery(args[0]);
@@ -115,7 +121,7 @@ public class WarpCmd implements CommandExecutor {
 
                 final Location location = new Location(world, x, y, z, yaw, pitch);
 
-                player.sendMessage(Main.translate(String.format("&9&lServer> &fTeletransportando al warp &e%s &fespere &e5seg", args[0])));
+                player.sendMessage(Main.translate(String.format("&9&lServer> &fTeletransportando al warp &e%s%s", args[0], user.getUserData().getRank().getRank() >= SCmd.Rank.MEGALODON.getRank() ? "" : "  &fespere &e5seg")));
                 new TeleportWithDelay(player, location);
             }
             catch (SQLException throwables){
@@ -128,6 +134,8 @@ public class WarpCmd implements CommandExecutor {
     }
 
     private boolean delWarp(CommandSender sender, String[] args){
+        if (checkPermissions(sender, SCmd.Rank.SMOD)) return true;
+
         final Player player = Bukkit.getPlayer(sender.getName());
 
         if (args.length > 0){

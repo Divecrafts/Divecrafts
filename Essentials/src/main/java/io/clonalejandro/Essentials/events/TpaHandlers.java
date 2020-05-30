@@ -2,6 +2,7 @@ package io.clonalejandro.Essentials.events;
 
 import io.clonalejandro.Essentials.Main;
 import io.clonalejandro.Essentials.commands.TpaCmd;
+import io.clonalejandro.Essentials.utils.TeleportWithDelay;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -54,6 +55,9 @@ public class TpaHandlers implements Listener {
 
                 TpaCmd.tpaUsers.remove(key);
                 TpaCmd.tpaType.remove(key);
+
+                if (Main.awaitingPlayersToTeleport.containsKey(value))
+                    Main.awaitingPlayersToTeleport.get(value).cancel();
             }
         });
     }

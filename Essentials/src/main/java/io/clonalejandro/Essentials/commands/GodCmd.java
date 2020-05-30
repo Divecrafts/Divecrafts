@@ -1,5 +1,6 @@
 package io.clonalejandro.Essentials.commands;
 
+import io.clonalejandro.DivecraftsCore.cmd.SCmd;
 import io.clonalejandro.Essentials.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -25,12 +26,14 @@ import java.util.ArrayList;
  * All rights reserved for clonalejandro ©Essentials 2017/2020
  */
 
-public class GodCmd implements CommandExecutor {
+public class GodCmd extends Cmd implements CommandExecutor {
 
     public static ArrayList<String> players = new ArrayList<>();
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String arg, String[] args){
+        if (checkPermissions(sender, SCmd.Rank.MEDUSA)) return true;
+
         if (args.length > 0){
             final Player target = Bukkit.getPlayer(args[0]);
 

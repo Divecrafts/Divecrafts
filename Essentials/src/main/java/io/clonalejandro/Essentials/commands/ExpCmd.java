@@ -1,5 +1,6 @@
 package io.clonalejandro.Essentials.commands;
 
+import io.clonalejandro.DivecraftsCore.cmd.SCmd;
 import io.clonalejandro.Essentials.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -23,9 +24,11 @@ import org.bukkit.entity.Player;
  * All rights reserved for clonalejandro ©Essentials 2017/2020
  */
 
-public class ExpCmd implements CommandExecutor {
+public class ExpCmd extends Cmd implements CommandExecutor {
 
     public boolean onCommand(CommandSender sender, Command cmd, String arg, String[] args) {
+        if (checkPermissions(sender, SCmd.Rank.SMOD)) return true;
+
         if (args.length > 2){
             final Player target = Bukkit.getPlayer(args[1]);
 

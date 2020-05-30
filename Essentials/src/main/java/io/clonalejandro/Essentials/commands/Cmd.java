@@ -28,7 +28,7 @@ public class Cmd {
     public boolean checkPermissions(Player player, SCmd.Rank rank){
         final SUser user = SServer.getUser(player.getUniqueId());
 
-        if (user.getUserData().getRank().getRank() >= rank.getRank())
+        if (user.getUserData().getRank().getRank() < rank.getRank())
             return sendErrMessage(player);
 
         return false;
@@ -39,7 +39,7 @@ public class Cmd {
 
         final SUser user = SServer.getUser(((Player)sender).getUniqueId());
 
-        if (user.getUserData().getRank().getRank() >= rank.getRank())
+        if (user.getUserData().getRank().getRank() < rank.getRank())
             return sendErrMessage(sender);
 
         return false;
