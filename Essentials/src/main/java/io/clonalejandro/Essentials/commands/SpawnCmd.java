@@ -1,5 +1,8 @@
 package io.clonalejandro.Essentials.commands;
 
+import io.clonalejandro.DivecraftsCore.api.SServer;
+import io.clonalejandro.DivecraftsCore.api.SUser;
+import io.clonalejandro.DivecraftsCore.cmd.SCmd;
 import io.clonalejandro.Essentials.Main;
 import io.clonalejandro.Essentials.utils.SpawnYml;
 import io.clonalejandro.Essentials.utils.TeleportWithDelay;
@@ -49,8 +52,9 @@ public class SpawnCmd implements CommandExecutor {
         final float pitch = spawnYml.getFloat("Lobby.pitch");
 
         final Location location = new Location(world, x , y, z, yaw, pitch);
+        final SUser user = SServer.getUser(player.getUniqueId());
 
-        player.sendMessage(Main.translate("&9&lServer> &fTeletransportando al spawn, espere &e5seg"));
+        player.sendMessage(Main.translate(String.format("&9&lServer> &fTeletransportando al spawn%s", user.getUserData().getRank().getRank() >= SCmd.Rank.MEGALODON.getRank() ? "" : ", espere &e5seg")));
         new TeleportWithDelay(player, location);
 
         return true;

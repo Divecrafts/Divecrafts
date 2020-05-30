@@ -108,7 +108,7 @@ public class Disguise {
     }
 
 
-    private boolean setSkin(GameProfile profile, UUID uuid) {
+    private void setSkin(GameProfile profile, UUID uuid) {
         final JsonObject json = Utils.getJson(String.format("https://sessionserver.mojang.com/session/minecraft/profile/%s?unsigned=false", UUIDTypeAdapter.fromUUID(uuid)));
 
         if (json != null) {
@@ -118,9 +118,7 @@ public class Disguise {
 
             profile.getProperties().removeAll("textures");
             profile.getProperties().put("textures", new Property("textures", skin, signature));
-            return true;
         }
-        return false;
     }
 
 

@@ -3,6 +3,7 @@ package io.clonalejandro.DivecraftsCore.cmd;
 import io.clonalejandro.DivecraftsCore.api.SUser;
 import io.clonalejandro.DivecraftsCore.idiomas.Languaje;
 import io.clonalejandro.DivecraftsCore.utils.Disguise;
+import io.clonalejandro.DivecraftsCore.utils.Utils;
 
 import java.util.List;
 import java.util.Random;
@@ -31,11 +32,32 @@ public class DisguiseCMD extends SCmd {
 
     public void run(SUser u, String label, String... args) {
         final List<String> names = plugin.getConfig().getStringList("disguises");
-        final String randomName = names.get(new Random().nextInt(names.size()));
+        final String randomName = getRandomName(names);
         final String targetName = args.length == 1 ? args[0] : randomName;
 
-        new Disguise(u, targetName);
+        if (Disguise.getDisguises().containsKey(u.getName())){
+            u.getPlayer().sendMessage(Utils.colorize("&c&lServer> &fYa estas en disguise"));
+            return;
+        }
 
-        u.getPlayer().sendMessage(Languaje.getLangMsg(u.getUserData().getLang(), "Ajustes.cambiado"));
+        if (targetName != null){
+            new Disguise(u, targetName);
+            u.getPlayer().sendMessage(Languaje.getLangMsg(u.getUserData().getLang(), "Ajustes.cambiado"));
+        }
+        else u.getPlayer().sendMessage(Utils.colorize("&c&lServer> &fThe target is null"));
+    }
+
+    private String getRandomName(List<String> names){
+        if (names.size() == 1){
+            return null;
+        }
+
+        final String randomName = names.get(new Random().nextInt(names.size()));
+
+        if (Disguise.getDisguises().containsKey(randomName)){
+            names.remove(randomName);
+            return getRandomName(names);
+        }
+        return randomName;
     }
 }

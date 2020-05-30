@@ -98,9 +98,9 @@ public class InvManager {
 
                 inv.setItem(7, ItemUtil.createItem(Material.ENDER_PEARL, Languaje.getLangMsg(u.getUserData().getLang(), "Ajustesname.visibilidad"), Arrays.asList(Languaje.getLangMsg(u.getUserData().getLang(), "Itemlores.visibilidad").split("\n"))));
 
-                //Clanes
+                //Fly
                 DyeColor flyColor = u.getUserData().getFly() ? DyeColor.LIME : DyeColor.RED;
-                inv.setItem(10, ItemUtil.createClay(Languaje.getLangMsg(u.getUserData().getLang(), "Ajustesname.clanes"), Arrays.asList(Languaje.getLangMsg(u.getUserData().getLang(), "Itemlores.clanes").split("\n")), flyColor));
+                inv.setItem(10, ItemUtil.createClay(Languaje.getLangMsg(u.getUserData().getLang(), "Ajustesname.fly"), Arrays.asList(Languaje.getLangMsg(u.getUserData().getLang(), "Itemlores.clanes").split("\n")), flyColor));
 
                 //Party
                 DyeColor partyColor = u.getUserData().getPartys() ? DyeColor.LIME : DyeColor.RED;
@@ -125,9 +125,26 @@ public class InvManager {
 
                 inv.setItem(4, new ItemMaker(Material.BOOKSHELF).setName(Languaje.getLangMsg(u.getUserData().getLang(), "Juegosname.lobby")).setLore(loreLobby).build());
 
-                //inv.setItem(20, new ItemMaker(Material.BLAZE_ROD).setName(Languaje.getLangMsg(u.getUserData().getLang(), "Juegosname.ffa")).setLore(Arrays.asList(Languaje.getLangMsg(u.getUserData().getLang(), "Juegoslore.ffa").replace("%players%", String.valueOf(BungeeMensager.getJuegos().get("ffa"))).split("\n"))).build());
+                inv.setItem(10, new ItemMaker(Material.DIAMOND_PICKAXE)
+                        .setName(Languaje.getLangMsg(u.getUserData().getLang(), "Juegosname.survival"))
+                        .setLore(Languaje.getLangMsg(u.getUserData().getLang(), "Juegoslore.survival")
+                                .replace("%players%", String.valueOf(BungeeMensager.getJuegos().get("survival")))
+                                .split("\n"))
+                        .build());
 
-                //inv.setItem(22, new ItemMaker(Material.DIAMOND_CHESTPLATE).setName(Languaje.getLangMsg(u.getUserData().getLang(), "Juegosname.uhc")).setLore(Arrays.asList(Languaje.getLangMsg(u.getUserData().getLang(), "Juegoslore.uhc").replace("%players%", String.valueOf(BungeeMensager.getJuegos().get("uhc"))).split("\n"))).build());
+                inv.setItem(11, new ItemMaker(Material.BLAZE_ROD)
+                        .setName(Languaje.getLangMsg(u.getUserData().getLang(), "Juegosname.ffa"))
+                        .setLore(Arrays.asList(Languaje.getLangMsg(u.getUserData().getLang(), "Juegoslore.ffa")
+                                .replace("%players%", String.valueOf(BungeeMensager.getJuegos().get("ffa")))
+                                .split("\n")))
+                        .build());
+
+                inv.setItem(12, new ItemMaker(Material.GOLDEN_APPLE)
+                        .setName(Languaje.getLangMsg(u.getUserData().getLang(), "Juegosname.uhc"))
+                        .setLore(Arrays.asList(Languaje.getLangMsg(u.getUserData().getLang(), "Juegoslore.uhc")
+                                .replace("%players%", String.valueOf(BungeeMensager.getJuegos().get("uhc")))
+                                .split("\n")))
+                        .build());
 
                 //inv.setItem(24, new ItemMaker(Material.BOW).setName(Languaje.getLangMsg(u.getUserData().getLang(), "Juegosname.sw")).setLore(Arrays.asList(Languaje.getLangMsg(u.getUserData().getLang(), "Juegoslore.sw").replace("%players%", String.valueOf(BungeeMensager.getLobbies().get("lsw") + BungeeMensager.getJuegos().get("sw"))).split("\n"))).build());
 

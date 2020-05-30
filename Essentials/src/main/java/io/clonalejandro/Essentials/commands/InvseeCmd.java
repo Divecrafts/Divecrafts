@@ -1,5 +1,6 @@
 package io.clonalejandro.Essentials.commands;
 
+import io.clonalejandro.DivecraftsCore.cmd.SCmd;
 import io.clonalejandro.Essentials.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -24,10 +25,12 @@ import org.bukkit.inventory.Inventory;
  * All rights reserved for clonalejandro ©Essentials 2017/2020
  */
 
-public class InvseeCmd implements CommandExecutor {
+public class InvseeCmd extends Cmd implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String arg, String[] args) {
+        if (checkPermissions(sender, SCmd.Rank.TMOD)) return true;
+
         if (args.length > 0){
             final Player player = Bukkit.getPlayer(sender.getName());
             final Player target = Bukkit.getPlayer(args[0]);

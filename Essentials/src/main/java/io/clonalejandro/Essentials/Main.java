@@ -2,12 +2,18 @@ package io.clonalejandro.Essentials;
 
 import io.clonalejandro.Essentials.commands.*;
 import io.clonalejandro.Essentials.events.*;
+import io.clonalejandro.Essentials.hooks.VaultHook;
+import io.clonalejandro.Essentials.providers.EconomyProvider;
 import io.clonalejandro.Essentials.utils.MysqlManager;
 import io.clonalejandro.Essentials.utils.SpawnYml;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitTask;
+
+import java.util.HashMap;
 
 /**
  * Created by Alex
@@ -30,6 +36,9 @@ public class Main extends JavaPlugin {
 
     public static Main instance;
     public static SpawnYml spawnYml;
+    public EconomyProvider economyProvider;
+    public VaultHook vaultHook;
+    public final static HashMap<Player, BukkitTask> awaitingPlayersToTeleport = new HashMap<>();
 
     @Override
     public void onEnable() {
@@ -40,8 +49,13 @@ public class Main extends JavaPlugin {
 
             config();
             database();
+
+            economyProvider = new EconomyProvider();
+            vaultHook = new VaultHook();
+
             events(pluginManager);
             commands();
+            vaultHook.hook();
         }
         catch (Exception ex){
             ex.printStackTrace();
@@ -54,6 +68,7 @@ public class Main extends JavaPlugin {
     @Override
     public void onDisable() {
         try {
+            vaultHook.unhook();
             Bukkit.getPluginManager().disablePlugin(instance);
             Bukkit.getConsoleSender().sendMessage(translate("&c&lEssentials> &fplugin disabled!"));
         }
@@ -64,14 +79,13 @@ public class Main extends JavaPlugin {
     }
 
     private void events(final PluginManager pluginManager){
-        pluginManager.registerEvents(new FlyHandler(), this);
         pluginManager.registerEvents(new GodHandler(), this);
         pluginManager.registerEvents(new SpawnHandler(), this);
-        pluginManager.registerEvents(new ChatHandler(), this);
         pluginManager.registerEvents(new SignHandler(), this);
         pluginManager.registerEvents(new VanishHandler(), this);
         pluginManager.registerEvents(new BackHandler(), this);
-        //pluginManager.registerEvents(new TpaHandlers(), this);
+        pluginManager.registerEvents(new TpaHandlers(), this);
+        pluginManager.registerEvents(new ScoreboardHandler(), this);
 
         Bukkit.getConsoleSender().sendMessage(translate("&9&lEssentials> &fregistrando eventos"));
     }
@@ -114,6 +128,10 @@ public class Main extends JavaPlugin {
         getCommand("back").setExecutor(new BackCmd());
         getCommand("broadcast").setExecutor(new BroadcastCmd());
         getCommand("iteminfo").setExecutor(new ItemInfoCmd());
+        getCommand("balance").setExecutor(new EconomyCmd());
+        getCommand("balanceTop").setExecutor(new EconomyCmd());
+        getCommand("deposit").setExecutor(new EconomyCmd());
+        getCommand("withdraw").setExecutor(new EconomyCmd());
 
         Bukkit.getConsoleSender().sendMessage(translate("&9&lEssentials> &fregistrando comandos"));
     }

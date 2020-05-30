@@ -1,6 +1,7 @@
 package io.clonalejandro.Essentials.utils;
 
 import io.clonalejandro.Essentials.Main;
+import org.bukkit.Bukkit;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -39,6 +40,19 @@ public class Economy {
         final String query = MysqlManager.secureQuery("UPDATE economy SET amount=? WHERE uuid=?");
         final PreparedStatement statement = MysqlManager.getConnection().prepareStatement(query);
 
+        this.money -= amount;
+
+        statement.setDouble(1, this.money);
+        statement.setString(2, uuid.toString());
+
+        statement.executeUpdate();
+        return this.money;
+    }
+
+    public double deposit(double amount) throws SQLException {
+        final String query = MysqlManager.secureQuery("UPDATE economy SET amount=? WHERE uuid=?");
+        final PreparedStatement statement = MysqlManager.getConnection().prepareStatement(query);
+
         this.money += amount;
 
         statement.setDouble(1, this.money);
@@ -55,24 +69,19 @@ public class Economy {
         statement.setString(1, uuid.toString());
 
         final ResultSet rs = statement.executeQuery();
-        rs.next();
 
-        return rs.getDouble("amount");
+        return rs.next() ? rs.getDouble("amount") : 0.0D;
     }
 
     public static HashMap<String, Economy> balanceTop(int limit) throws SQLException {
-        final String query = MysqlManager.secureQuery("SELECT * FROM economy order by amount desc limit?");
+        final String query = MysqlManager.secureQuery(String.format("SELECT * FROM economy order by 'amount' asc limit %s", limit));
         final PreparedStatement statement = MysqlManager.getConnection().prepareStatement(query);
-
-        statement.setInt(1, limit);
-
         final ResultSet rs = statement.executeQuery();
         final HashMap<String, Economy> top = new HashMap<>();
 
         while (rs.next()){
             final UUID uuid = UUID.fromString(rs.getString("uuid"));
-            //TODO Resolve username
-            top.put(uuid.toString(), new Economy(uuid));
+            top.put(Bukkit.getOfflinePlayer(uuid).getName(), new Economy(uuid));
         }
 
         return top;

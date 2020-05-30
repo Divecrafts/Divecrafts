@@ -89,7 +89,7 @@ public class GiveBoosterCMD extends SCmd {
                     else throw new SQLException();
                 }
                 catch (SQLException ex) {
-                   sender.sendMessage(Utils.colorize(Main.getPREFIX() + "§cEl jugador no existe"));
+                   sender.sendMessage(Utils.colorize(Main.getPREFIX() + "&cEl jugador no existe"));
                     return;
                 }
             }

@@ -115,12 +115,14 @@ public class PlayerEvents implements Listener {
                         case 4:
                             p.sendMessage(Languaje.getLangMsg(user.getUserData().getLang(), "Global.portalyaenlobby"));
                             break;
-                        case 20:
+                        case 10:
+                            BungeeMensager.conectarExacto(p, "survival");
+                            break;
+                        case 11:
                             BungeeMensager.conectarExacto(p, "ffa");
-                            break;
-                        case 22:
+                        case 12:
                             BungeeMensager.conectarExacto(p, "uhc");
-                            break;
+                            break;/*
                         case 24:
                             BungeeMensager.conectarA(p, "sw");
                             break;
@@ -135,7 +137,7 @@ public class PlayerEvents implements Listener {
                             break;
                         case 34:
                             BungeeMensager.conectarA(p, "ew");
-                            break;
+                            break;*/
                     }
                     break;
                 case "Settings":

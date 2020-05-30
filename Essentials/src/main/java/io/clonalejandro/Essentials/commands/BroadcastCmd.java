@@ -27,7 +27,7 @@ public class BroadcastCmd extends Cmd implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String arg, String[] args) {
-        if (!checkPermissions(sender, SCmd.Rank.TMOD)) return true;
+        if (checkPermissions(sender, SCmd.Rank.TMOD)) return true;
         if (args.length > 0) Bukkit.broadcastMessage(Main.translate(String.format("&a&lServer> &f%s", String.join(" ", args))));
         else sender.sendMessage(Main.translate("&c&lServer> &fformato incorrecto usa &b/broadcast &e<mensaje>"));
         return true;

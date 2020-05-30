@@ -1,5 +1,6 @@
 package io.clonalejandro.Essentials.commands;
 
+import io.clonalejandro.DivecraftsCore.cmd.SCmd;
 import io.clonalejandro.Essentials.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -24,10 +25,12 @@ import org.bukkit.entity.Player;
  * All rights reserved for clonalejandro ©Essentials 2017/2020
  */
 
-public class GamemodeCmd implements CommandExecutor {
+public class GamemodeCmd extends Cmd implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String arg, String[] args){
+        if (checkPermissions(sender, SCmd.Rank.MOD)) return true;
+
         if (args.length == 1){
             updateGamemode(Bukkit.getPlayer(sender.getName()), args[0]);
         }

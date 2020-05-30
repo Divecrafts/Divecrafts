@@ -1,13 +1,13 @@
 package io.clonalejandro.Essentials.commands;
 
+import io.clonalejandro.DivecraftsCore.api.SServer;
+import io.clonalejandro.DivecraftsCore.cmd.SCmd;
 import io.clonalejandro.Essentials.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
-import java.util.ArrayList;
 
 /**
  * Created by Alex
@@ -25,13 +25,11 @@ import java.util.ArrayList;
  * All rights reserved for clonalejandro ©Essentials 2017/2020
  */
 
-public class FlyCmd implements CommandExecutor {
-
-
-    public static ArrayList<String> players = new ArrayList<>();
-
+public class FlyCmd extends Cmd implements CommandExecutor {
 
     public boolean onCommand(CommandSender sender, Command cmd, String arg, String[] args) {
+        if (checkPermissions(sender, SCmd.Rank.MEDUSA)) return true;
+
         if (args.length > 0){
             final Player player = Bukkit.getPlayer(args[0]);
 
@@ -48,14 +46,7 @@ public class FlyCmd implements CommandExecutor {
 
 
     private void goFly(Player player){
-        final boolean canFly = !players.contains(player.getName());
-
-        player.setAllowFlight(canFly);
-        player.setFlying(canFly);
-
-        if (!canFly) players.remove(player.getName());
-        else players.add(player.getName());
-
-        player.sendMessage(Main.translate(String.format("&9&lServer> &fModo fly %s", players.contains(player.getName()) ? "&aactivado" : "&cdesactivado")));
+        SServer.getUser(player.getUniqueId()).toggleFly();
+        player.sendMessage(Main.translate(String.format("&9&lServer> &fModo fly %s", player.getAllowFlight() ? "&aactivado" : "&cdesactivado")));
     }
 }

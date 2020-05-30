@@ -181,7 +181,15 @@ public class ServerManager {
 	}
 	
 	public String getGamesMsg() {//TODO:
-		return "sw-" + datosgames.get("sw") + ",ew-" + datosgames.get("ew") + ",ffa-" + datosgames.get("ffa") + ",fc-" + datosgames.get("fc") + ",uhc-" + datosgames.get("uhc") + ",mum-" + datosgames.get("mum") + ",mb-" + datosgames.get("mb");
+		List<String> res = new ArrayList<>();
+
+		try {
+			Main.getConfigManager().getConfig().getStringList("juegos").forEach(game -> res.add(String.format("%s-%s", game, datosgames.get(game))));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return String.join(",", res);
 	}
 	
 	@SuppressWarnings("static-access")

@@ -10,6 +10,10 @@
 
     <repositories>
         <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+        <repository>
             <id>ReflectionAPI-Repo</id>
             <url>https://clonalejandro.github.io/ReflectionAPI/</url>
         </repository>
@@ -18,12 +22,17 @@
             <url>https://divecrafts.github.io/spigot/</url>
         </repository>
     </repositories>
-
     <dependencies>
         <dependency>
             <groupId>me.clonalejandro</groupId>
             <artifactId>ReflectionAPI</artifactId>
             <version>1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.MilkBowl</groupId>
+            <artifactId>VaultAPI</artifactId>
+            <version>1.7</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>mysql</groupId>

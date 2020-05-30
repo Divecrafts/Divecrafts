@@ -1,5 +1,8 @@
 package io.clonalejandro.Essentials.commands;
 
+import io.clonalejandro.DivecraftsCore.api.SServer;
+import io.clonalejandro.DivecraftsCore.api.SUser;
+import io.clonalejandro.DivecraftsCore.cmd.SCmd;
 import io.clonalejandro.Essentials.Main;
 import io.clonalejandro.Essentials.tasks.TpaTask;
 import io.clonalejandro.Essentials.utils.TeleportWithDelay;
@@ -97,6 +100,7 @@ public class TpaCmd implements CommandExecutor {
     private boolean tpaAccept(CommandSender sender){
         final Player accepter = Bukkit.getPlayer(sender.getName());
         final Player teleporter = tpaUsers.get(accepter);
+        final SUser user = SServer.getUser(teleporter.getUniqueId());
 
         if (teleporter == null){
             accepter.sendMessage(Main.translate("&c&lServer> &fNo dispones de solicitudes de teletransporte"));
@@ -106,7 +110,7 @@ public class TpaCmd implements CommandExecutor {
         switch (tpaType.get(accepter)){
             case TPA:
                 accepter.sendMessage(Main.translate("&9&lServer> &fSolicitud de teletransporte aceptada!"));
-                teleporter.sendMessage(Main.translate("&9&lServer> &fTu solicitud de teletransporte ha sido aceptada, serás teletransportado en &e5seg"));
+                teleporter.sendMessage(Main.translate(String.format("&9&lServer> &fTu solicitud de teletransporte ha sido aceptada, serás teletransportado%s", user.getUserData().getRank().getRank() >= SCmd.Rank.MEGALODON.getRank() ? "" : " en &e5seg")));
 
                 AtomicInteger timeA = new AtomicInteger(5);
                 new BukkitRunnable() {
@@ -123,7 +127,7 @@ public class TpaCmd implements CommandExecutor {
                 }.runTaskTimer(Main.instance, 1, 20L);
                 break;
             case TPAHERE:
-                accepter.sendMessage(Main.translate("&9&lServer> &fSolicitud de teletransporte aceptada, serás teletransportado en &e5seg"));
+                accepter.sendMessage(Main.translate(String.format("&9&lServer> &fSolicitud de teletransporte aceptada, serás teletransportado%s", user.getUserData().getRank().getRank() >= SCmd.Rank.MEGALODON.getRank() ? "" : " en &e5seg")));
                 teleporter.sendMessage(Main.translate("&9&lServer> &fTu solicitud de teletransporte a ti ha sido aceptada"));
 
                 AtomicInteger timeB = new AtomicInteger(5);

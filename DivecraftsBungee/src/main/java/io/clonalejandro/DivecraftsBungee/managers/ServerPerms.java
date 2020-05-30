@@ -15,6 +15,7 @@ public class  ServerPerms {
 		svperms.add("lew");
 		svperms.add("lfc");
 		svperms.add("lobby");
+		svperms.add("survival");
 		svperms.add("ffa");
 		svgames.add("ew");
 		svgames.add("sw");

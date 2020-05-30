@@ -59,6 +59,8 @@ commands:
     usage: /<command>
   home:
     usage: /<command>
+    aliases:
+      - homes
   delhome:
     usage: /<command>
   warp:
@@ -74,4 +76,16 @@ commands:
   broadcast:
     usage: /<command>
   iteminfo:
+    usage: /<command>
+  balance:
+    usage: /<command>
+    aliases:
+      - bal
+  balanceTop:
+    usage: /<command>
+    aliases:
+      - baltop
+  deposit:
+    usage: /<command>
+  withdraw:
     usage: /<command>

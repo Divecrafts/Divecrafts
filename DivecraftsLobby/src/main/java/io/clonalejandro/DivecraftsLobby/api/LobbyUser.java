@@ -1,5 +1,6 @@
 package io.clonalejandro.DivecraftsLobby.api;
 
+import io.clonalejandro.DivecraftsCore.api.SServer;
 import io.clonalejandro.DivecraftsCore.api.SUser;
 import io.clonalejandro.DivecraftsCore.cmd.SCmd;
 import io.clonalejandro.DivecraftsCore.idiomas.Languaje;
@@ -15,7 +16,6 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scoreboard.Team;
 
 import java.util.Arrays;
 import java.util.UUID;
@@ -83,20 +83,22 @@ public class LobbyUser extends SUser {
         board.text(9, Utils.colorize(Languaje.getLangMsg(getUserData().getLang(), "Scoreboardlobby.rango") + "&" + rank));
         board.text(8, Utils.colorize("&4"));
         board.text(7, Utils.colorize("&5"));
-        board.text(6, Utils.colorize(Languaje.getLangMsg(getUserData().getLang(), "Scoreboardlobby.monedas") + getUserData().getCoins()));
+        board.text(6, Utils.colorize("&6"));
         board.text(5, Utils.colorize("&2"));
         board.text(4, Utils.colorize("&fLobby: &a#" + (Bukkit.getServerId().equalsIgnoreCase("lobby") ? "1" :  Bukkit.getServerId().charAt(Bukkit.getServerId().length() -1))));
         board.text(3, Utils.colorize("&f"));
         board.text(2, Utils.colorize("&3"));
         board.text(1, Utils.colorize("&ewww.divecrafts.net"));
 
-        board.team("keys", Utils.colorize("&fKeys: &a"));
-        board.team("boosters", Utils.colorize("&fBoosters: &a"));
+        board.team("boosters", Utils.colorize("&fBoosters: &a"));//TODO: Add lang support
         board.team("players", Languaje.getLangMsg(getUserData().getLang(), "Scoreboardlobby.jugadores"));
+        board.team("keys", Utils.colorize("&fKeys: &a"));
+        board.team("coins", Languaje.getLangMsg(getUserData().getLang(), "Scoreboardlobby.monedas"));
 
         board.getTeam("boosters").addEntry(Utils.colorize("&4"));
         board.getTeam("players").addEntry(Utils.colorize("&f"));
         board.getTeam("keys").addEntry(Utils.colorize("&5"));
+        board.getTeam("coins").addEntry(Utils.colorize("&6"));
 
         new BukkitRunnable() {
             @Override
@@ -138,10 +140,12 @@ public class LobbyUser extends SUser {
                 }
 
                 board.setName(sbName);
+                SUser user = SServer.getUser(getUuid());
 
-                board.getTeam("boosters").setSuffix(String.valueOf(getUserData().getBoosters().size()));
+                board.getTeam("boosters").setSuffix(String.valueOf(user.getUserData().getBoosters().size()));
                 board.getTeam("players").setSuffix(String.valueOf(Bukkit.getOnlinePlayers().size()));
-                board.getTeam("keys").setSuffix(String.valueOf(getUserData().getKeys()));
+                board.getTeam("keys").setSuffix(String.valueOf(user.getUserData().getKeys()));
+                board.getTeam("coins").setSuffix(String.valueOf(user.getUserData().getCoins()));
 
                 board.build(getPlayer());
             }

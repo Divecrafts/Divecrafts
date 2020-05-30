@@ -1,5 +1,6 @@
 package io.clonalejandro.Essentials.commands;
 
+import io.clonalejandro.DivecraftsCore.cmd.SCmd;
 import io.clonalejandro.Essentials.Main;
 import io.clonalejandro.Essentials.utils.TeleportWithDelay;
 import org.bukkit.Bukkit;
@@ -27,12 +28,14 @@ import java.util.HashMap;
  * All rights reserved for clonalejandro ©Essentials 2017/2020
  */
 
-public class BackCmd implements CommandExecutor {
+public class BackCmd extends Cmd implements CommandExecutor {
 
     public final static HashMap<Player, Location> lastLocation = new HashMap<>();
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String arg, String[] args) {
+        if (checkPermissions(sender, SCmd.Rank.NEMO)) return true;
+
         final Player player = Bukkit.getPlayer(sender.getName());
 
         if (lastLocation.containsKey(player)){

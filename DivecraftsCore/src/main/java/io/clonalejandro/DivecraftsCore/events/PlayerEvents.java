@@ -1,5 +1,6 @@
 package io.clonalejandro.DivecraftsCore.events;
 
+import com.yapzhenyie.GadgetsMenu.api.GadgetsMenuAPI;
 import io.clonalejandro.DivecraftsCore.Main;
 import io.clonalejandro.DivecraftsCore.api.SBooster;
 import io.clonalejandro.DivecraftsCore.api.SServer;
@@ -57,13 +58,18 @@ public class PlayerEvents implements Listener {
         Utils.updateUserColor(u);
         loadPermissions(e.getPlayer());
         checkBoosters(u);
+        checkFly(u);
+        //checkDisguise(u);
 
-        if (!u.getUserData().getDisguise().equals(""))
-            new Disguise(u, u.getUserData().getDisguise());
+        if (u.getUserData().getRank().getRank() > 0)
+            e.setJoinMessage(Utils.colorize(String.format("%s &ejoined the game", e.getPlayer().getDisplayName())));
 
-        e.setJoinMessage(Utils.colorize(String.format("%s &ejoined the game", e.getPlayer().getDisplayName())));
+        if (!plugin.getServer().getPluginManager().isPluginEnabled("Essentials")){
+            u.sendHeaderAndFooter(Languaje.getLangMsg(u.getUserData().getLang(), "Global.Header"), Languaje.getLangMsg(u.getUserData().getLang(), "Global.Footer"));
+            u.sendActionBar((Languaje.getLangMsg(u.getUserData().getLang(), "Global.Header")));
+        }
 
-        if (!u.isOnRank(SCmd.Rank.ADMIN)) u.getPlayer().setGameMode(GameMode.SURVIVAL);
+        if (!u.isOnRank(SCmd.Rank.ADMIN) && !plugin.getServer().getPluginManager().isPluginEnabled("Essentials")) u.getPlayer().setGameMode(GameMode.SURVIVAL);
     }
 
     @EventHandler
@@ -142,8 +148,6 @@ public class PlayerEvents implements Listener {
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent e) {
-        SUser u = SServer.getUser(e.getPlayer());
-
         if (e.getAction() == Action.PHYSICAL && e.getClickedBlock().getType() == Material.SOIL) e.setCancelled(true);
     }
 
@@ -158,7 +162,8 @@ public class PlayerEvents implements Listener {
 
         SServer.npc.forEach(npc -> {
             if (npc.getLoc().equals(e.getRightClicked().getLocation())) {
-                if (npc.getInventory() != null) u.openInventory(npc.getInventory());
+                if (npc.getInventory() != null)
+                    u.openInventory(npc.getInventory());
             }
         });
     }
@@ -200,7 +205,8 @@ public class PlayerEvents implements Listener {
 
         if (r.getRank() > 0) {
             e.setFormat(Utils.colorize(p.getDisplayName() + ": &7" + e.getMessage()));
-        } else {
+        }
+        else {
             e.setFormat(p.getDisplayName() + ": §7" + e.getMessage());
         }
     }
@@ -237,5 +243,19 @@ public class PlayerEvents implements Listener {
         task.runTaskTimer(plugin, 0L, 60 * 20L);
 
         user.getTasks().add(task);
+    }
+
+    private void checkFly(SUser user){
+        Bukkit.getScheduler().runTaskLater(plugin, () -> {
+            user.getPlayer().setAllowFlight(user.getUserData().getFly());
+            user.getPlayer().setFlying(user.getUserData().getFly());
+        }, 4);
+    }
+
+    private void checkDisguise(SUser user){
+        Bukkit.getScheduler().runTaskLater(plugin, () -> {
+            if (!user.getUserData().getDisguise().equals(""))
+                new Disguise(user, user.getUserData().getDisguise());
+        }, 2 * 20L);
     }
 }

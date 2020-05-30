@@ -1,5 +1,6 @@
 package io.clonalejandro.Essentials.commands;
 
+import io.clonalejandro.DivecraftsCore.cmd.SCmd;
 import io.clonalejandro.Essentials.Main;
 import io.clonalejandro.Essentials.utils.TeleportWithDelay;
 import org.bukkit.Bukkit;
@@ -24,10 +25,12 @@ import org.bukkit.entity.Player;
  * All rights reserved for clonalejandro ©Essentials 2017/2020
  */
 
-public class TpCmd implements CommandExecutor {
+public class TpCmd extends Cmd implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String arg, String[] args) {
+        if (checkPermissions(sender, SCmd.Rank.TMOD)) return true;
+
         if (cmd.getName().equalsIgnoreCase("tp")) return tp(sender, args);
         else if (cmd.getName().equalsIgnoreCase("tphere")) return tphere(sender, args);
         else if (cmd.getName().equalsIgnoreCase("tpall")) return tpall(sender);

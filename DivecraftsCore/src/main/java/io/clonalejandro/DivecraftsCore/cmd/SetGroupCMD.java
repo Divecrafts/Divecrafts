@@ -18,13 +18,13 @@ import java.util.UUID;
 public class SetGroupCMD extends SCmd {
 
     public SetGroupCMD() {
-        super("setgroup", Rank.ADMIN, "darRank", "setrank", "rango");
+        super("setgroup", Rank.DEV, "darRank", "setrank", "rango");
     }
 
     @Override
     public void run(SUser user, String label, String[] args) {
         if (args.length == 0) {
-            user.getPlayer().sendMessage(Main.getPREFIX() + "§6Tu Rango: §" + Rank.groupColor(user.getUserData().getRank()) + user.getUserData().getRank().toString());
+            user.getPlayer().sendMessage(Utils.colorize(Main.getPREFIX() + "&fTu Rango: &" + Rank.groupColor(user.getUserData().getRank()) + user.getUserData().getRank()));
             return;
         }
 
@@ -34,19 +34,19 @@ public class SetGroupCMD extends SCmd {
                 i = Integer.parseInt(args[0]);
             } catch (NumberFormatException ex) {
                 SUser target = SServer.getUser(plugin.getServer().getPlayer(args[0]));
-                Rank g = target.getUserData().getRank();
-                user.getPlayer().sendMessage(Main.getPREFIX() + "*§6El rango de §c" + target.getName() + " §6es §" + Rank.groupColor(g) + g.toString());
+                Rank rank = target.getUserData().getRank();
+                user.getPlayer().sendMessage(Utils.colorize(Main.getPREFIX() + "&fEl rango de &e" + target.getName() + " &fes &" + Rank.groupColor(rank) + rank));
                 return;
             }
 
             if (i > Rank.values().length - 1) {
-                user.getPlayer().sendMessage(Main.getPREFIX() + "§cEste número es más grande de los rangos que hay");
+                user.getPlayer().sendMessage(Utils.colorize(Main.getPREFIX() + "&fEste número es más grande de los rangos que hay"));
                 return;
             }
 
             user.getUserData().setRank(Rank.values()[i]);
             user.save();
-            user.getPlayer().sendMessage(Main.getPREFIX() + "§3Rango cambiado: §" + Rank.groupColor(Rank.values()[i]) + Rank.values()[i].toString());
+            user.getPlayer().sendMessage(Utils.colorize(Main.getPREFIX() + "&fRango cambiado: &" + Rank.groupColor(Rank.values()[i]) + Rank.values()[i]));
             return;
         }
 
