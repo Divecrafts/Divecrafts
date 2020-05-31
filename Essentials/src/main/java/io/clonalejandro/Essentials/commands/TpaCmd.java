@@ -100,20 +100,21 @@ public class TpaCmd implements CommandExecutor {
     private boolean tpaAccept(CommandSender sender){
         final Player accepter = Bukkit.getPlayer(sender.getName());
         final Player teleporter = tpaUsers.get(accepter);
-        final SUser user = SServer.getUser(teleporter.getUniqueId());
 
         if (teleporter == null){
             accepter.sendMessage(Main.translate("&c&lServer> &fNo dispones de solicitudes de teletransporte"));
             return true;
         }
 
+        final SUser user = SServer.getUser(teleporter.getUniqueId());
+
         switch (tpaType.get(accepter)){
             case TPA:
                 accepter.sendMessage(Main.translate("&9&lServer> &fSolicitud de teletransporte aceptada!"));
                 teleporter.sendMessage(Main.translate(String.format("&9&lServer> &fTu solicitud de teletransporte ha sido aceptada, serás teletransportado%s", user.getUserData().getRank().getRank() >= SCmd.Rank.MEGALODON.getRank() ? "" : " en &e5seg")));
 
-                AtomicInteger timeA = new AtomicInteger(5);
-                new BukkitRunnable() {
+                AtomicInteger timeA = new AtomicInteger(user.getUserData().getRank().getRank() >= SCmd.Rank.MEGALODON.getRank() ? 0 : 5);
+                Main.awaitingPlayersToTeleport.put(teleporter, new BukkitRunnable() {
                     @Override
                     public void run() {
                         if (timeA.get() != 0) timeA.getAndDecrement();
@@ -124,14 +125,14 @@ public class TpaCmd implements CommandExecutor {
                             cancel();
                         }
                     }
-                }.runTaskTimer(Main.instance, 1, 20L);
+                }.runTaskTimer(Main.instance, 1, 20L));
                 break;
             case TPAHERE:
                 accepter.sendMessage(Main.translate(String.format("&9&lServer> &fSolicitud de teletransporte aceptada, serás teletransportado%s", user.getUserData().getRank().getRank() >= SCmd.Rank.MEGALODON.getRank() ? "" : " en &e5seg")));
                 teleporter.sendMessage(Main.translate("&9&lServer> &fTu solicitud de teletransporte a ti ha sido aceptada"));
 
-                AtomicInteger timeB = new AtomicInteger(5);
-                new BukkitRunnable() {
+                AtomicInteger timeB = new AtomicInteger(user.getUserData().getRank().getRank() >= SCmd.Rank.MEGALODON.getRank() ? 0 : 5);
+                Main.awaitingPlayersToTeleport.put(accepter, new BukkitRunnable() {
                     @Override
                     public void run() {
                         if (!tpaUsers.containsKey(accepter)) cancel();
@@ -143,7 +144,7 @@ public class TpaCmd implements CommandExecutor {
                             cancel();
                         }
                     }
-                }.runTaskTimer(Main.instance, 1, 20L);
+                }.runTaskTimer(Main.instance, 1, 20L));
                 break;
         }
 

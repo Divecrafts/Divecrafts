@@ -1,5 +1,7 @@
 package io.clonalejandro.Essentials.commands;
 
+import io.clonalejandro.DivecraftsCore.api.SServer;
+import io.clonalejandro.DivecraftsCore.api.SUser;
 import io.clonalejandro.DivecraftsCore.cmd.SCmd;
 import io.clonalejandro.Essentials.Main;
 import io.clonalejandro.Essentials.utils.TeleportWithDelay;
@@ -37,11 +39,11 @@ public class BackCmd extends Cmd implements CommandExecutor {
         if (checkPermissions(sender, SCmd.Rank.NEMO)) return true;
 
         final Player player = Bukkit.getPlayer(sender.getName());
+        final SUser user = SServer.getUser(player);
 
         if (lastLocation.containsKey(player)){
             final Location location = lastLocation.get(player);
-
-            player.sendMessage(Main.translate("&9&lServer> &fTeletransportando a la última localización, espere &e5seg"));
+            player.sendMessage(Main.translate(String.format("&9&lServer> &fTeletransportando a la última localización%s", user.getUserData().getRank().getRank() >= SCmd.Rank.MEGALODON.getRank() ? ", espere &e5seg" : "")));
             new TeleportWithDelay(player, location);
         }
         else player.sendMessage(Main.translate("&c&lServer> &fNo tienes localizaciones anteriores"));

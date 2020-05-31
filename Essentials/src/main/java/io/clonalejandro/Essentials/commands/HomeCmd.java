@@ -107,11 +107,14 @@ public class HomeCmd extends Cmd implements CommandExecutor {
                     MysqlManager.getConnection().createStatement().executeUpdate(query);
                     player.sendMessage(Main.translate(String.format("&9&lServer> &fSe ha creado un home llamado: &e%s", args[0])));
                     return true;
-                } else if (homes.size() >= 1 && homes.size() < 4) {
+                }
+                else if (homes.size() >= 1 && homes.size() < 4) {
                     if (checkPermissions(player, SCmd.Rank.NEMO)) return true;
-                } else if (homes.size() > 3 && homes.size() <= 10) {
+                }
+                else if (homes.size() > 3 && homes.size() <= 10) {
                     if (checkPermissions(player, SCmd.Rank.KRAKEN)) return true;
-                } else if (homes.size() > 10) {
+                }
+                else if (homes.size() > 10) {
                     if (checkPermissions(player, SCmd.Rank.POSEIDON)) return true;
                 }
                 MysqlManager.getConnection().createStatement().executeUpdate(query);
@@ -120,7 +123,7 @@ public class HomeCmd extends Cmd implements CommandExecutor {
                 throwables.printStackTrace();
                 player.sendMessage(Main.translate("&c&lServer> &falgo salió mal"));
             }
-        } else player.sendMessage(Main.translate("&c&lServer> &fformato incorrecto usa &b/sethome &e<jugador>"));
+        } else player.sendMessage(Main.translate("&c&lServer> &fformato incorrecto usa &b/sethome &e<nombre>"));
 
         return true;
     }

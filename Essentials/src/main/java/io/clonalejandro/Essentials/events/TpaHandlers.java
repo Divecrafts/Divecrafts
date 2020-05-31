@@ -10,6 +10,8 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 
+import java.util.Iterator;
+
 /**
  * Created by Alex
  * On 01/05/2020
@@ -46,7 +48,12 @@ public class TpaHandlers implements Listener {
     }
 
     private void cancelTpa(Player player){
-        TpaCmd.tpaUsers.forEach((key, value) -> {
+        final Iterator<Player> it = TpaCmd.tpaUsers.keySet().iterator();
+
+        while (it.hasNext()){
+            Player key = it.next();
+            Player value = TpaCmd.tpaUsers.get(key);
+
             if (value == player){
                 if (key.isOnline())
                     key.sendMessage(Main.translate(String.format("&c&lServer> &fEl jugador &e%s &fha rechazado tu peticion", value.getName())));
@@ -56,9 +63,17 @@ public class TpaHandlers implements Listener {
                 TpaCmd.tpaUsers.remove(key);
                 TpaCmd.tpaType.remove(key);
 
-                if (Main.awaitingPlayersToTeleport.containsKey(value))
+                if (Main.awaitingPlayersToTeleport.containsKey(value)) {
                     Main.awaitingPlayersToTeleport.get(value).cancel();
+                    Main.awaitingPlayersToTeleport.remove(value);
+                }
             }
-        });
+        }
+
+        if (Main.awaitingPlayersToTeleport.containsKey(player)) {
+            Main.awaitingPlayersToTeleport.get(player).cancel();
+            player.sendMessage(Main.translate("&c&lServer> &fTeletransporte cancelada"));
+            Main.awaitingPlayersToTeleport.remove(player);
+        }
     }
 }
