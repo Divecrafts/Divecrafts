@@ -86,6 +86,7 @@ public class Main extends JavaPlugin {
         pluginManager.registerEvents(new BackHandler(), this);
         pluginManager.registerEvents(new TpaHandlers(), this);
         pluginManager.registerEvents(new ScoreboardHandler(), this);
+        pluginManager.registerEvents(new CreeperHandler(), this);
 
         Bukkit.getConsoleSender().sendMessage(translate("&9&lEssentials> &fregistrando eventos"));
     }
@@ -132,6 +133,7 @@ public class Main extends JavaPlugin {
         getCommand("balanceTop").setExecutor(new EconomyCmd());
         getCommand("deposit").setExecutor(new EconomyCmd());
         getCommand("withdraw").setExecutor(new EconomyCmd());
+        getCommand("pay").setExecutor(new EconomyCmd());
 
         Bukkit.getConsoleSender().sendMessage(translate("&9&lEssentials> &fregistrando comandos"));
     }

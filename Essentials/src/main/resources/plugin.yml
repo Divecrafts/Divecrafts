@@ -81,6 +81,7 @@ commands:
     usage: /<command>
     aliases:
       - bal
+      - money
   balanceTop:
     usage: /<command>
     aliases:
@@ -89,3 +90,5 @@ commands:
     usage: /<command>
   withdraw:
     usage: /<command>
+  pay:
+    usage: /<commnad>

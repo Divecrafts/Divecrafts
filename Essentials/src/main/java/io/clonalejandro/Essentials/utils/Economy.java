@@ -2,12 +2,12 @@ package io.clonalejandro.Essentials.utils;
 
 import io.clonalejandro.Essentials.Main;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Created by Alex
@@ -73,16 +73,22 @@ public class Economy {
         return rs.next() ? rs.getDouble("amount") : 0.0D;
     }
 
-    public static HashMap<String, Economy> balanceTop(int limit) throws SQLException {
-        final String query = MysqlManager.secureQuery(String.format("SELECT * FROM economy order by 'amount' asc limit %s", limit));
+    public OfflinePlayer getPlayer(){
+        return Bukkit.getOfflinePlayer(this.uuid);
+    }
+
+    public static List<Economy> balanceTop(int limit) throws SQLException {
+        final String query = MysqlManager.secureQuery(String.format("SELECT * FROM economy order by amount limit %s", limit));
         final PreparedStatement statement = MysqlManager.getConnection().prepareStatement(query);
         final ResultSet rs = statement.executeQuery();
-        final HashMap<String, Economy> top = new HashMap<>();
+        final List<Economy> top = new ArrayList<>();
 
         while (rs.next()){
             final UUID uuid = UUID.fromString(rs.getString("uuid"));
-            top.put(Bukkit.getOfflinePlayer(uuid).getName(), new Economy(uuid));
+            top.add(new Economy(uuid));
         }
+
+        Collections.reverse(top);
 
         return top;
     }
