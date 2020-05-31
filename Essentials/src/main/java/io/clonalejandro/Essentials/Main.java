@@ -87,6 +87,7 @@ public class Main extends JavaPlugin {
         pluginManager.registerEvents(new TpaHandlers(), this);
         pluginManager.registerEvents(new ScoreboardHandler(), this);
         pluginManager.registerEvents(new CreeperHandler(), this);
+        pluginManager.registerEvents(new PermissionHandler(), this);
 
         Bukkit.getConsoleSender().sendMessage(translate("&9&lEssentials> &fregistrando eventos"));
     }
