@@ -92,3 +92,10 @@ commands:
     usage: /<command>
   pay:
     usage: /<commnad>
+  individualpermission:
+    usage: /<command>
+    aliases:
+      - indperm
+      - inp
+      - inperm
+      - pene

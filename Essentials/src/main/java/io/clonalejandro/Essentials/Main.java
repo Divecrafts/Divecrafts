@@ -134,6 +134,7 @@ public class Main extends JavaPlugin {
         getCommand("deposit").setExecutor(new EconomyCmd());
         getCommand("withdraw").setExecutor(new EconomyCmd());
         getCommand("pay").setExecutor(new EconomyCmd());
+        getCommand("individualpermission").setExecutor(new PermissionCmd());
 
         Bukkit.getConsoleSender().sendMessage(translate("&9&lEssentials> &fregistrando comandos"));
     }
