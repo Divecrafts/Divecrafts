@@ -1,11 +1,13 @@
 package io.clonalejandro.Essentials.events;
 
+import io.clonalejandro.DivecraftsCore.api.SServer;
 import io.clonalejandro.Essentials.Main;
 import io.clonalejandro.Essentials.utils.SpawnYml;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -30,29 +32,25 @@ import org.bukkit.inventory.ItemStack;
  */
 
 public class SpawnHandler implements Listener {
-    final ItemStack[] kit = new ItemStack[]{
-            new ItemStack(Material.IRON_SWORD),
-            new ItemStack(Material.IRON_AXE),
-            new ItemStack(Material.IRON_PICKAXE),
-            new ItemStack(Material.IRON_SHOVEL),
-            new ItemStack(Material.IRON_HELMET),
-            new ItemStack(Material.IRON_CHESTPLATE),
-            new ItemStack(Material.IRON_LEGGINGS),
-            new ItemStack(Material.IRON_BOOTS),
-            new ItemStack(Material.BREAD, 16)
-    };
 
     @EventHandler
     public void onPlayerJoinEvent(PlayerJoinEvent event){
+        event.setJoinMessage(null);
         if (!event.getPlayer().hasPlayedBefore()){
             event.getPlayer().teleport(new Spawn().getLocation());
-            event.getPlayer().getInventory().addItem(kit);
         }
     }
 
     @EventHandler (priority = EventPriority.HIGHEST)
     public void onPlayerRespawn(PlayerRespawnEvent event){
+        final Player player = event.getPlayer();
         event.setRespawnLocation(new Spawn().getLocation());
+
+        //If is fly
+        if (SServer.getUser(player).getUserData().getFly()){
+            player.setAllowFlight(true);
+            player.setFlying(true);
+        }
     }
 
     static class Spawn {

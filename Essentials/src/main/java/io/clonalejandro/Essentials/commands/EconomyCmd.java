@@ -3,13 +3,16 @@ package io.clonalejandro.Essentials.commands;
 import io.clonalejandro.DivecraftsCore.cmd.SCmd;
 import io.clonalejandro.DivecraftsCore.utils.Utils;
 import io.clonalejandro.Essentials.Main;
+import io.clonalejandro.Essentials.providers.EconomyProvider;
 import io.clonalejandro.Essentials.utils.Economy;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 import java.sql.SQLException;
-import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by Alex
@@ -31,51 +34,96 @@ public class EconomyCmd extends Cmd implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String arg, String[] args) {
-        if (checkPermissions(sender, SCmd.Rank.SMOD)) return true;
-        else if (cmd.getName().equalsIgnoreCase("balancetop")) balanceTop(sender);
+        if (cmd.getName().equalsIgnoreCase("balancetop")) balanceTop(sender);
         else if (cmd.getName().equalsIgnoreCase("deposit")) deposit(sender, args);
         else if (cmd.getName().equalsIgnoreCase("withdraw")) withdraw(sender, args);
         else if (cmd.getName().equalsIgnoreCase("balance")) balance(sender, args);
+        else if (cmd.getName().equalsIgnoreCase("pay")) pay(sender, args);
         return true;
     }
 
+    private void pay(CommandSender sender, String[] args){
+        if (args.length > 1){
+            final Player me = Bukkit.getPlayer(sender.getName());
+            final Player player = Bukkit.getPlayer(args[0]);
+
+            if (player != null){
+                try {
+                    final double amount = Double.parseDouble(args[1]);
+                    EconomyProvider provider = Main.instance.economyProvider;
+
+                    if (provider.has(me, amount)){
+                        provider.withdrawPlayer(me, amount);
+                        provider.depositPlayer(player, amount);
+
+                        player.sendMessage(Utils.colorize(String.format("&a&lServer> &fAñadidos &b%s$ &fa tu cuenta del jugador &e%s", amount, me.getName())));
+                        me.sendMessage(Utils.colorize(String.format("&a&lServer> &fEliminados &b%s$ &fde tu cuenta", amount)));
+                    }
+                    else sender.sendMessage(Utils.colorize("&c&lServer> &fNo tienes suficiente dinero"));
+                }
+                catch (Exception ex) {
+                    sender.sendMessage(Utils.colorize("&c&lServer> &fLa cantidad debe de ser decimal"));
+                }
+            }
+            else sender.sendMessage(Utils.colorize("&c&lServer> &fEl jugador especificado ha de estar conectado"));
+        }
+        else sender.sendMessage(Utils.colorize("&c&lServer> &fformato incorrecto usa &b/pay &e<jugador> <cantidad>"));
+    }
 
     private void deposit(CommandSender sender, String[] args) {
+        if (checkPermissions(sender, SCmd.Rank.SMOD)) return;
         if (args.length > 1){
+            final Player player = Bukkit.getPlayer(args[0]);
+
             Main.instance.economyProvider.depositPlayer(args[0], Double.parseDouble(args[1]));
             sender.sendMessage(Utils.colorize(String.format("&a&lServer> &fAñadidos &b%s$ a la cuenta de &e%s", args[1], args[0])));
+
+            if (player != null){
+                player.sendMessage(Utils.colorize(String.format("&a&lServer> &fAñadidos &b%s$ &fa tu cuenta", args[1])));
+            }
         }
-        else sender.sendMessage(Utils.colorize("&c&lServer> &fformato incorrecto usa &b/deposit &e<player> <cantidad>"));
+        else sender.sendMessage(Utils.colorize("&c&lServer> &fformato incorrecto usa &b/deposit &e<jugador> <cantidad>"));
     }
 
     private void withdraw(CommandSender sender, String[] args) {
+        if (checkPermissions(sender, SCmd.Rank.SMOD)) return;
         if (args.length > 1){
-            Main.instance.economyProvider.withdrawPlayer(args[0], Double.parseDouble(args[1]));
-            sender.sendMessage(Utils.colorize(String.format("&a&lServer> &fEliminados &b%s$ de la cuenta de &e%s", args[1], args[0])));
+            final Player player = Bukkit.getPlayer(args[0]);
+            final double amount = Double.parseDouble(args[1]);
+            final EconomyProvider provider = Main.instance.economyProvider;
+
+            if (player != null){
+                provider.withdrawPlayer(player.getName(), amount);
+                sender.sendMessage(Utils.colorize(String.format("&a&lServer> &fEliminados &b%s$ &fde la cuenta de &e%s", amount, player.getName())));
+                player.sendMessage(Utils.colorize(String.format("&a&lServer> &fEliminados &b%s$ &fde tu cuenta", amount)));
+            }
+            else {
+                sender.sendMessage(Utils.colorize("&c&lServer> &fEl jugador especificado ha de estar conectado"));
+            }
         }
-        else sender.sendMessage(Utils.colorize("&c&lServer> &fformato incorrecto usa &b/withdraw &e<player> <cantidad>"));
+        else sender.sendMessage(Utils.colorize("&c&lServer> &fformato incorrecto usa &b/withdraw &e<jugador> <cantidad>"));
     }
 
     private void balance(CommandSender sender, String[] args){
-        if (args.length > 0){
-            double money = Main.instance.economyProvider.getBalance(args[0]);
-            sender.sendMessage(Utils.colorize(String.format("&a&lServer> La cuenta de &e%s es de &b%s$", args[0], money)));
-        }
-        else sender.sendMessage(Utils.colorize("&c&lServer> &fformato incorrecto usa &b/balance &e<player>"));
+        final EconomyProvider provider = Main.instance.economyProvider;
+        final double money = provider.getBalance(args.length > 0 ? args[0] : sender.getName());
+
+        sender.sendMessage(Utils.colorize(String.format("&a&lServer> &fLa cuenta de &e%s es de &b%s$", args.length > 0 ? args[0] : sender.getName(), money)));
     }
 
     private void balanceTop(CommandSender sender) {
         try {
-            final HashMap<String, Economy> top = Economy.balanceTop(10);
-            top.forEach((playerName, economy) -> {
+            final List<Economy> top = Economy.balanceTop(10);
+            top.forEach((economy) -> {
                 try {
-                    sender.sendMessage(Utils.colorize(String.format("&e%s &fhas &b%s$", playerName, economy.balance())));
-                } catch (SQLException throwables) {
+                    sender.sendMessage(Utils.colorize(String.format("&e%s &fhas &b%s$", economy.getPlayer().getName(), economy.balance())));
+                }
+                catch (SQLException throwables) {
                     throwables.printStackTrace();
                 }
             });
         }
-        catch (SQLException throwables) {
+        catch (Exception throwables) {
             throwables.printStackTrace();
         }
     }

@@ -34,24 +34,31 @@ public class TeleportWithDelay {
         Main.awaitingPlayersToTeleport.put(player, Bukkit.getScheduler().runTaskLater(Main.instance, () -> {
             player.sendMessage(Main.translate(msg));
             player.teleport(location);
+            Main.awaitingPlayersToTeleport.remove(player);
         }, 20L * 5));
     }
 
     public TeleportWithDelay(final Player player, final Location location){
         final SUser user = SServer.getUser(player.getUniqueId());
         addToLastLocation(player);
-        Main.awaitingPlayersToTeleport.put(player, Bukkit.getScheduler().runTaskLater(Main.instance, () ->
-                player.teleport(location), user.getUserData().getRank().getRank() >= SCmd.Rank.MEGALODON.getRank() ? 0 : 20L * 5
-        ));
+        Main.awaitingPlayersToTeleport.put(player,
+                Bukkit.getScheduler().runTaskLater(Main.instance, () -> {
+                    player.teleport(location);
+                    Main.awaitingPlayersToTeleport.remove(player);
+                }, user.getUserData().getRank().getRank() >= SCmd.Rank.MEGALODON.getRank() ? 0 : 20L * 5)
+        );
     }
 
     public TeleportWithDelay(final Player player, final Location location, final int time){
         final SUser user = SServer.getUser(player.getUniqueId());
         addToLastLocation(player);
         if (time > 0)
-            Main.awaitingPlayersToTeleport.put(player, Bukkit.getScheduler().runTaskLater(Main.instance, () ->
-                player.teleport(location), user.getUserData().getRank().getRank() >= SCmd.Rank.MEGALODON.getRank() ? 0 : 20L * time
-            ));
+            Main.awaitingPlayersToTeleport.put(player,
+                    Bukkit.getScheduler().runTaskLater(Main.instance, () -> {
+                        player.teleport(location);
+                        Main.awaitingPlayersToTeleport.remove(player);
+                    }, user.getUserData().getRank().getRank() >= SCmd.Rank.MEGALODON.getRank() ? 0 : 20L * time)
+            );
         else player.teleport(location);
     }
 
@@ -61,6 +68,7 @@ public class TeleportWithDelay {
             Main.awaitingPlayersToTeleport.put(player, Bukkit.getScheduler().runTaskLater(Main.instance, () -> {
                 player.sendMessage(Main.translate(msg));
                 player.teleport(location);
+                Main.awaitingPlayersToTeleport.remove(player);
             }, 20L * time));
         else player.teleport(location);
     }
