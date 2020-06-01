@@ -109,10 +109,10 @@ public class HomeCmd extends Cmd implements CommandExecutor {
                     return true;
                 }
                 else if (homes.size() >= 1 && homes.size() < 4) {
-                    if (checkPermissions(player, SCmd.Rank.NEMO)) return true;
+                    if (checkPermissions(player, SCmd.Rank.NEMO) || !player.hasPermission("essentials.homes.nemo")) return true;
                 }
                 else if (homes.size() > 3 && homes.size() <= 10) {
-                    if (checkPermissions(player, SCmd.Rank.KRAKEN)) return true;
+                    if (checkPermissions(player, SCmd.Rank.KRAKEN) || (!player.hasPermission("essentials.homes.nemo") && !player.hasPermission("essentials.homes.kraken"))) return true;
                 }
                 else if (homes.size() > 10) {
                     if (checkPermissions(player, SCmd.Rank.POSEIDON)) return true;
