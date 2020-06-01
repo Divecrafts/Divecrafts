@@ -84,7 +84,8 @@ public class EconomyProvider implements net.milkbowl.vault.economy.Economy {
     @Override
     public double getBalance(String playerName) {
         try {
-            return new Economy(Bukkit.getOfflinePlayer(playerName).getUniqueId()).balance();
+            final double amount = new Economy(Bukkit.getOfflinePlayer(playerName).getUniqueId()).balance();
+            return round(amount);
         }
         catch (SQLException throwables){
             throwables.printStackTrace();
@@ -95,7 +96,8 @@ public class EconomyProvider implements net.milkbowl.vault.economy.Economy {
     @Override
     public double getBalance(OfflinePlayer offlinePlayer) {
         try {
-            return new Economy(offlinePlayer.getUniqueId()).balance();
+            final double amount = new Economy(offlinePlayer.getUniqueId()).balance();
+            return round(amount);
         }
         catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -279,5 +281,10 @@ public class EconomyProvider implements net.milkbowl.vault.economy.Economy {
     @Override
     public boolean createPlayerAccount(OfflinePlayer offlinePlayer, String s) {
         return false;
+    }
+
+
+    private double round(double d){
+        return Math.round(d * 10) / 10.0;
     }
 }

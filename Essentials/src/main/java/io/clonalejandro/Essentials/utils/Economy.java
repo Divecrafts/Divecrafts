@@ -70,7 +70,7 @@ public class Economy {
 
         final ResultSet rs = statement.executeQuery();
 
-        return rs.next() ? rs.getDouble("amount") : 0.0D;
+        return round(rs.next() ? rs.getDouble("amount") : 0.0D);
     }
 
     public OfflinePlayer getPlayer(){
@@ -91,5 +91,9 @@ public class Economy {
         Collections.reverse(top);
 
         return top;
+    }
+
+    private double round(double d){
+        return Math.round(d * 10) / 10.0;
     }
 }
