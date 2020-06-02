@@ -2,7 +2,9 @@ package io.clonalejandro.Essentials.commands;
 
 import io.clonalejandro.DivecraftsCore.api.SServer;
 import io.clonalejandro.DivecraftsCore.cmd.SCmd;
+import io.clonalejandro.DivecraftsCore.utils.Utils;
 import io.clonalejandro.Essentials.Main;
+import io.clonalejandro.Essentials.events.FlyHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -30,7 +32,9 @@ public class FlyCmd extends Cmd implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command cmd, String arg, String[] args) {
         if (checkPermissions(sender, SCmd.Rank.MEDUSA)) return true;
 
-        if (args.length > 0){
+        if (checkPermissions(sender, SCmd.Rank.TMOD) && FlyHandler.disabledWorlds.contains(((Player) sender).getWorld().getName().toLowerCase()))
+            sender.sendMessage(Utils.colorize("&c&lServer> &fNo puedes volar en este mundo"));
+        else if (args.length > 0){
             final Player player = Bukkit.getPlayer(args[0]);
 
             if (player == null){

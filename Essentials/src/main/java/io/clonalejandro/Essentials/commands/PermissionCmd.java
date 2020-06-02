@@ -43,15 +43,15 @@ public class PermissionCmd extends Cmd implements CommandExecutor {
                     return true;
                 }
 
-                sender.sendMessage(String.format("&9&lServer> &fHas %s a &e%s &fel permiso &e%s",
+                sender.sendMessage(Utils.colorize(String.format("&9&lServer> &fHas %s a &e%s &fel permiso &e%s",
                         mode.equalsIgnoreCase("add") ? "añadido" : "eliminado",
                         target.getName(),
                         node
-                ));
+                )));
             }
             else sender.sendMessage(Utils.colorize("&c&lServer> &fEl jugador ha de estar online"));
         }
-        else sender.sendMessage(Utils.colorize("&c&lServer> &fformato incorrecto usa &b/perm <add|remove> &e<jugador> &e<nodo>"));
+        else sender.sendMessage(Utils.colorize("&c&lServer> &fformato incorrecto usa &b/indperm &e<add|remove> <jugador> &e<nodo>"));
 
         return true;
     }

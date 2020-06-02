@@ -39,7 +39,7 @@ public class BackCmd extends Cmd implements CommandExecutor {
         final Player player = Bukkit.getPlayer(sender.getName());
         final SUser user = SServer.getUser(player);
 
-        if (checkPermissions(sender, SCmd.Rank.NEMO) || !player.hasPermission("essentials.back")) return true;
+        if (checkPermissions(sender, SCmd.Rank.NEMO) && !player.hasPermission("essentials.back")) return true;
 
         if (lastLocation.containsKey(player)){
             final Location location = lastLocation.get(player);

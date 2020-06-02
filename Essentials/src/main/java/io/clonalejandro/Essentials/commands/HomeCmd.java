@@ -4,11 +4,10 @@ import io.clonalejandro.DivecraftsCore.api.SServer;
 import io.clonalejandro.DivecraftsCore.api.SUser;
 import io.clonalejandro.DivecraftsCore.cmd.SCmd;
 import io.clonalejandro.Essentials.Main;
+import io.clonalejandro.Essentials.objects.Home;
 import io.clonalejandro.Essentials.utils.MysqlManager;
 import io.clonalejandro.Essentials.utils.TeleportWithDelay;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -19,7 +18,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 
 /**
  * Created by Alex
@@ -53,32 +52,25 @@ public class HomeCmd extends Cmd implements CommandExecutor {
 
         if (args.length == 0 || arg.equalsIgnoreCase("homes")) {
             List<String> names = new ArrayList<>();
-            Objects.requireNonNull(getHomes(player)).forEach(home -> names.add(home.name));
+            Objects.requireNonNull(getHomes(player)).forEach(home -> names.add(home.getName()));
             player.sendMessage(Main.translate(String.format("&9&lServer> &fTus homes: &e%s", String.join(", ", names))));
         }
         else {
-            final List<Home> homes = getHomes(player);
-            if (homes != null) {
-                final AtomicReference<Home> home = new AtomicReference<>();
-                homes.forEach(lHome -> {
-                    if (lHome.getName().equalsIgnoreCase(args[0]))
-                        home.set(lHome);
-                });
+            final List<Home> homes = Objects.requireNonNull(getHomes(player)).stream()
+                    .filter(h -> h.getName().equalsIgnoreCase(args[0]))
+                    .collect(Collectors.toList());
 
-                if (home.get() != null) {
-                    final Location location = new Location(
-                            home.get().getWorld(),
-                            home.get().getX(),
-                            home.get().getY(),
-                            home.get().getZ(),
-                            home.get().getYaw(),
-                            home.get().getPitch()
-                    );
+            if (homes.get(0) != null) {
+                final Home home = homes.get(0);
+                new TeleportWithDelay(player, home.getLocation());
 
-                    player.sendMessage(Main.translate(String.format("&9&lServer> &fTeletransportando al home: &e%s%s", args[0], user.getUserData().getRank().getRank() >= SCmd.Rank.MEGALODON.getRank() ? "" : " &fespere &e5seg")));
-                    new TeleportWithDelay(player, location);
-                } else player.sendMessage(Main.translate("&c&lServer> &fEse home no existe"));
-            } else player.sendMessage(Main.translate("&c&lServer> &fEse home no existe"));
+                player.sendMessage(Main.translate(String.format(
+                        "&9&lServer> &fTeletransportando al home: &e%s%s",
+                        home.getName(),
+                        user.getUserData().getRank().getRank() >= SCmd.Rank.MEGALODON.getRank() ? "" : " &fespere &e5seg"
+                )));
+            }
+            else player.sendMessage(Main.translate("&c&lServer> &fEse home no existe"));
         }
         return true;
     }
@@ -109,21 +101,23 @@ public class HomeCmd extends Cmd implements CommandExecutor {
                     return true;
                 }
                 else if (homes.size() >= 1 && homes.size() < 4) {
-                    if (checkPermissions(player, SCmd.Rank.NEMO) || !player.hasPermission("essentials.homes.nemo")) return true;
+                    if (checkPermissions(player, SCmd.Rank.NEMO) && !player.hasPermission("essentials.homes.nemo")) return true;
                 }
                 else if (homes.size() > 3 && homes.size() <= 10) {
-                    if (checkPermissions(player, SCmd.Rank.KRAKEN) || (!player.hasPermission("essentials.homes.nemo") && !player.hasPermission("essentials.homes.kraken"))) return true;
+                    if (checkPermissions(player, SCmd.Rank.KRAKEN) && !player.hasPermission("essentials.homes.nemo") && !player.hasPermission("essentials.homes.kraken")) return true;
                 }
                 else if (homes.size() > 10) {
                     if (checkPermissions(player, SCmd.Rank.POSEIDON)) return true;
                 }
                 MysqlManager.getConnection().createStatement().executeUpdate(query);
                 player.sendMessage(Main.translate(String.format("&9&lServer> &fSe ha creado un home llamado: &e%s", args[0])));
-            } catch (SQLException throwables) {
+            }
+            catch (SQLException throwables) {
                 throwables.printStackTrace();
                 player.sendMessage(Main.translate("&c&lServer> &falgo salió mal"));
             }
-        } else player.sendMessage(Main.translate("&c&lServer> &fformato incorrecto usa &b/sethome &e<nombre>"));
+        }
+        else player.sendMessage(Main.translate("&c&lServer> &fformato incorrecto usa &b/sethome &e<nombre>"));
 
         return true;
     }
@@ -175,50 +169,5 @@ public class HomeCmd extends Cmd implements CommandExecutor {
         }
 
         return null;
-    }
-
-
-    static class Home {
-        private final String name, world;
-        private final double x, y, z;
-        private final float yaw, pitch;
-
-        public Home(String name, String world, double x, double y, double z, float yaw, float pitch) {
-            this.name = name;
-            this.world = world;
-            this.x = x;
-            this.y = y;
-            this.z = z;
-            this.yaw = yaw;
-            this.pitch = pitch;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public World getWorld() {
-            return Bukkit.getWorld(this.world);
-        }
-
-        public double getX() {
-            return x;
-        }
-
-        public double getY() {
-            return y;
-        }
-
-        public double getZ() {
-            return z;
-        }
-
-        public float getYaw() {
-            return yaw;
-        }
-
-        public float getPitch() {
-            return pitch;
-        }
     }
 }

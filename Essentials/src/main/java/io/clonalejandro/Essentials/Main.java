@@ -9,11 +9,13 @@ import io.clonalejandro.Essentials.utils.SpawnYml;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.bukkit.permissions.PermissionAttachment;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.util.HashMap;
+import java.util.UUID;
 
 /**
  * Created by Alex
@@ -37,6 +39,7 @@ public class Main extends JavaPlugin {
     public static Main instance;
     public static SpawnYml spawnYml;
     public EconomyProvider economyProvider;
+    public HashMap<UUID, PermissionAttachment> perms = new HashMap<>();
     public VaultHook vaultHook;
     public final static HashMap<Player, BukkitTask> awaitingPlayersToTeleport = new HashMap<>();
 
@@ -87,7 +90,9 @@ public class Main extends JavaPlugin {
         pluginManager.registerEvents(new TpaHandlers(), this);
         pluginManager.registerEvents(new ScoreboardHandler(), this);
         pluginManager.registerEvents(new CreeperHandler(), this);
-        pluginManager.registerEvents(new PermissionHandler(), this);
+        pluginManager.registerEvents(new FlyHandler(), this);
+        pluginManager.registerEvents(new SpawnerEvents(), this);
+        pluginManager.registerEvents(new WarpHandler(), this);
 
         Bukkit.getConsoleSender().sendMessage(translate("&9&lEssentials> &fregistrando eventos"));
     }
@@ -136,6 +141,8 @@ public class Main extends JavaPlugin {
         getCommand("withdraw").setExecutor(new EconomyCmd());
         getCommand("pay").setExecutor(new EconomyCmd());
         getCommand("individualpermission").setExecutor(new PermissionCmd());
+        getCommand("givespawner").setExecutor(new SpawnerCmd());
+        getCommand("repair").setExecutor(new RepairCmd());
 
         Bukkit.getConsoleSender().sendMessage(translate("&9&lEssentials> &fregistrando comandos"));
     }
