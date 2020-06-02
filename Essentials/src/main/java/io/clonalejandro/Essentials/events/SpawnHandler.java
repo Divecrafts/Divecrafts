@@ -5,15 +5,12 @@ import io.clonalejandro.Essentials.Main;
 import io.clonalejandro.Essentials.utils.SpawnYml;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerRespawnEvent;
-import org.bukkit.inventory.ItemStack;
+import org.bukkit.event.player.*;
 
 /**
  * Created by Alex
@@ -33,12 +30,24 @@ import org.bukkit.inventory.ItemStack;
 
 public class SpawnHandler implements Listener {
 
-    @EventHandler
+    @EventHandler (priority = EventPriority.HIGHEST)
     public void onPlayerJoinEvent(PlayerJoinEvent event){
-        event.setJoinMessage(null);
-        if (!event.getPlayer().hasPlayedBefore()){
+        if (!event.getPlayer().hasPlayedBefore())
             event.getPlayer().teleport(new Spawn().getLocation());
-        }
+    }
+
+    @EventHandler (priority = EventPriority.HIGHEST)
+    public void onPlayerLoginEvent(PlayerLoginEvent event){
+        if (!event.getPlayer().hasPlayedBefore())
+            event.getPlayer().teleport(new Spawn().getLocation());
+    }
+
+    public void onPlayerKickEvent(PlayerKickEvent event){
+        event.setLeaveMessage(null);
+    }
+
+    public void onPlayerQuitEvent(PlayerQuitEvent event){
+        event.setQuitMessage(null);
     }
 
     @EventHandler (priority = EventPriority.HIGHEST)
