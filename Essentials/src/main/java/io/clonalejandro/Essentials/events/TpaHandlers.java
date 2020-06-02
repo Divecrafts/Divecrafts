@@ -48,6 +48,8 @@ public class TpaHandlers implements Listener {
     }
 
     private void cancelTpa(Player player){
+
+        /*
         final Iterator<Player> it = TpaCmd.tpaUsers.keySet().iterator();
 
         while (it.hasNext()){
@@ -68,7 +70,7 @@ public class TpaHandlers implements Listener {
                     Main.awaitingPlayersToTeleport.remove(value);
                 }
             }
-        }
+        }*/
 
         if (Main.awaitingPlayersToTeleport.containsKey(player)) {
             Main.awaitingPlayersToTeleport.get(player).cancel();
