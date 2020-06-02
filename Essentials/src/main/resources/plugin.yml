@@ -1,8 +1,12 @@
 name: Essentials
-version: 1.0
+version: "1.0"
 author: clonalejandro
 description: §fdescripción§f:§a Plugin essentials para survival
 main: io.clonalejandro.Essentials.Main
+api-version: "1.15"
+softdepend:
+  - DivecraftsCore
+  - Vault
 commands:
   exp:
     usage: /<command>
@@ -99,3 +103,9 @@ commands:
       - inp
       - inperm
       - pene
+  givespawner:
+    usage: /<command>
+    aliases:
+      - gives
+  repair:
+    usage: /<command>
