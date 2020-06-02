@@ -1,6 +1,5 @@
 package io.clonalejandro.DivecraftsCore.events;
 
-import com.yapzhenyie.GadgetsMenu.api.GadgetsMenuAPI;
 import io.clonalejandro.DivecraftsCore.Main;
 import io.clonalejandro.DivecraftsCore.api.SBooster;
 import io.clonalejandro.DivecraftsCore.api.SServer;
@@ -9,7 +8,9 @@ import io.clonalejandro.DivecraftsCore.cmd.SCmd;
 import io.clonalejandro.DivecraftsCore.idiomas.Languaje;
 import io.clonalejandro.DivecraftsCore.utils.Disguise;
 import io.clonalejandro.DivecraftsCore.utils.Utils;
+
 import lombok.AllArgsConstructor;
+
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
@@ -29,12 +30,13 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 
 @AllArgsConstructor
 public class PlayerEvents implements Listener {
 
     private final Main plugin;
-    public HashMap<Player, PermissionAttachment> perms = new HashMap<Player, PermissionAttachment>();
+    public HashMap<UUID, PermissionAttachment> perms = new HashMap<>();
     public PlayerEvents(Main instance) {
         plugin = instance;
     }
@@ -217,6 +219,18 @@ public class PlayerEvents implements Listener {
         final PermissionAttachment attachment = player.addAttachment(Main.getInstance());
         final List<String> permissions = new ArrayList<>();
 
+        try {
+            if (Bukkit.getServer().getPluginManager().isPluginEnabled("Essentials")){
+                Class<?> clazz = Class.forName("io.clonalejandro.Essentials.objects.Permission");
+                Object permission = clazz.getConstructor(UUID.class).newInstance(user.getUuid());
+                List<String> individualPermissions = (List<String>) clazz.getMethod("get").invoke(permission);
+                permissions.addAll(individualPermissions);
+            }
+        }
+        catch (Exception ex){
+            //ex.printStackTrace();
+        }
+
         if (rankId > 0){
             for (int i = 0; i <= rankId; i++) {
                 permissions.addAll(Main.getInstance().getConfig().getStringList(String.format("Permissions.%s.perms", i)));
@@ -224,8 +238,13 @@ public class PlayerEvents implements Listener {
         }
         else permissions.addAll(Main.getInstance().getConfig().getStringList(String.format("Permissions.%s.perms", rankId)));
 
-        permissions.forEach(permission -> attachment.setPermission(permission, true));
-        perms.put(player, attachment);
+        permissions.forEach(permission -> {
+            if (permission.contains("*"))
+                //resolveWildCard(player);
+            attachment.setPermission(permission, true);
+        });
+
+        perms.put(player.getUniqueId(), attachment);
     }
 
     private void checkBoosters(SUser user){

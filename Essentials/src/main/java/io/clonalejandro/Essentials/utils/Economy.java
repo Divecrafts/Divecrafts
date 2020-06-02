@@ -70,7 +70,7 @@ public class Economy {
 
         final ResultSet rs = statement.executeQuery();
 
-        return rs.next() ? rs.getDouble("amount") : 0.0D;
+        return round(rs.next() ? rs.getDouble("amount") : 0.0D);
     }
 
     public OfflinePlayer getPlayer(){
@@ -78,8 +78,7 @@ public class Economy {
     }
 
     public static List<Economy> balanceTop(int limit) throws SQLException {
-        final String query = MysqlManager.secureQuery(String.format("SELECT * FROM economy order by amount limit %s", limit));
-        final PreparedStatement statement = MysqlManager.getConnection().prepareStatement(query);
+        final PreparedStatement statement = MysqlManager.getConnection().prepareStatement(String.format("SELECT * FROM economy order by amount limit %s", limit));
         final ResultSet rs = statement.executeQuery();
         final List<Economy> top = new ArrayList<>();
 
@@ -91,5 +90,9 @@ public class Economy {
         Collections.reverse(top);
 
         return top;
+    }
+
+    private double round(double d){
+        return Math.round(d * 10) / 10.0;
     }
 }

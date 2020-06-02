@@ -19,3 +19,9 @@ CREATE TABLE Homes (
     yaw float NOT NULL,
     pitch float NOT NULL
 );
+
+CREATE TABLE Permissions (
+    id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    uuid varchar(128) NOT NULL,
+    node varchar(64) NOT NULL
+)

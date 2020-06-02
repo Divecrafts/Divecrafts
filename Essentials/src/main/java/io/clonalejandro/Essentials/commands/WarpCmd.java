@@ -4,6 +4,8 @@ import io.clonalejandro.DivecraftsCore.api.SServer;
 import io.clonalejandro.DivecraftsCore.api.SUser;
 import io.clonalejandro.DivecraftsCore.cmd.SCmd;
 import io.clonalejandro.Essentials.Main;
+import io.clonalejandro.Essentials.guis.WarpGui;
+import io.clonalejandro.Essentials.objects.Warp;
 import io.clonalejandro.Essentials.utils.MysqlManager;
 import io.clonalejandro.Essentials.utils.TeleportWithDelay;
 import org.bukkit.Bukkit;
@@ -48,22 +50,11 @@ public class WarpCmd extends Cmd implements CommandExecutor {
 
     private boolean warps(CommandSender sender){
         final Player player = Bukkit.getPlayer(sender.getName());
-        final String query = "SELECT name FROM Warps;";
+        final List<Warp> warps = getWarps(player);
+        final List<String> warpNames = new ArrayList<>();
 
-        try {
-            final ResultSet result = MysqlManager.getConnection().createStatement().executeQuery(query);
-            final List<String> warps = new ArrayList<>();
-
-            while (result.next()){
-                warps.add(result.getString("name"));
-            }
-
-            player.sendMessage(Main.translate(String.format("&9&lServer> &fLa lista de warps es: &e%s", String.join(", ", warps))));
-        }
-        catch (SQLException throwables){
-            player.sendMessage(Main.translate("&c&lServer> &fNo hay warps guardados"));
-        }
-
+        warps.forEach(warp -> warpNames.add(warp.getName()));
+        player.sendMessage(Main.translate(String.format("&9&lServer> &fLa lista de warps es: &e%s", String.join(", ", warpNames))));
         return true;
     }
 
@@ -94,7 +85,7 @@ public class WarpCmd extends Cmd implements CommandExecutor {
                 player.sendMessage(Main.translate("&c&lServer> &falgo salió mal"));
             }
         }
-        else player.sendMessage(Main.translate("&c&lServer> &fformato incorrecto usa &b/warp &e<nombre>"));
+        else player.sendMessage(Main.translate("&c&lServer> &fformato incorrecto usa &b/setwarp &e<nombre>"));
 
         return true;
     }
@@ -112,14 +103,7 @@ public class WarpCmd extends Cmd implements CommandExecutor {
 
                 result.next();
 
-                final World world = Bukkit.getWorld(result.getString("world"));
-                final double x = result.getDouble("x");
-                final double y = result.getDouble("y");
-                final double z = result.getDouble("z");
-                final float yaw = result.getFloat("yaw");
-                final float pitch = result.getFloat("pitch");
-
-                final Location location = new Location(world, x, y, z, yaw, pitch);
+                final Location location = new Warp(result).getLocation();
 
                 player.sendMessage(Main.translate(String.format("&9&lServer> &fTeletransportando al warp &e%s%s", args[0], user.getUserData().getRank().getRank() >= SCmd.Rank.MEGALODON.getRank() ? "" : "  &fespere &e5seg")));
                 new TeleportWithDelay(player, location);
@@ -128,7 +112,7 @@ public class WarpCmd extends Cmd implements CommandExecutor {
                 player.sendMessage(Main.translate("&c&lServer> &fEse warp no existe"));
             }
         }
-        else player.sendMessage(Main.translate("&c&lServer> &fformato incorrecto usa &b/warp &e<nombre>"));
+        else new WarpGui(getWarps(player), player);
 
         return true;
     }
@@ -153,5 +137,22 @@ public class WarpCmd extends Cmd implements CommandExecutor {
         else player.sendMessage(Main.translate("&c&lServer> &fformato incorrecto usa &b/delwarp &e<nombre>"));
 
         return true;
+    }
+
+    private List<Warp> getWarps(Player player){
+        final String query = "SELECT * FROM Warps";
+        final List<Warp> warps = new ArrayList<>();
+
+        try {
+            final ResultSet result = MysqlManager.getConnection().createStatement().executeQuery(query);
+
+            while (result.next())
+                warps.add(new Warp(result));
+        }
+        catch (SQLException throwables){
+            player.sendMessage(Main.translate("&c&lServer> &fNo hay warps guardados"));
+        }
+
+        return warps;
     }
 }

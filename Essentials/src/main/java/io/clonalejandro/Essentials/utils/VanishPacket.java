@@ -1,9 +1,7 @@
 package io.clonalejandro.Essentials.utils;
 
 import io.clonalejandro.DivecraftsCore.utils.ReflectionAPI;
-import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Bukkit;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 import java.lang.reflect.Array;

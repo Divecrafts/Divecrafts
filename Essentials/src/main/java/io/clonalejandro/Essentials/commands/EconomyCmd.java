@@ -107,8 +107,7 @@ public class EconomyCmd extends Cmd implements CommandExecutor {
     private void balance(CommandSender sender, String[] args){
         final EconomyProvider provider = Main.instance.economyProvider;
         final double money = provider.getBalance(args.length > 0 ? args[0] : sender.getName());
-
-        sender.sendMessage(Utils.colorize(String.format("&a&lServer> &fLa cuenta de &e%s es de &b%s$", args.length > 0 ? args[0] : sender.getName(), money)));
+        sender.sendMessage(Utils.colorize(String.format("&a&lServer> &fLa cuenta de &e%s &fes de &b%s$", args.length > 0 ? args[0] : sender.getName(), money)));
     }
 
     private void balanceTop(CommandSender sender) {
