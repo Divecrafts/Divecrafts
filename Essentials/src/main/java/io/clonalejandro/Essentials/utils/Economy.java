@@ -78,8 +78,7 @@ public class Economy {
     }
 
     public static List<Economy> balanceTop(int limit) throws SQLException {
-        final String query = MysqlManager.secureQuery(String.format("SELECT * FROM economy order by amount limit %s", limit));
-        final PreparedStatement statement = MysqlManager.getConnection().prepareStatement(query);
+        final PreparedStatement statement = MysqlManager.getConnection().prepareStatement(String.format("SELECT * FROM economy order by amount limit %s", limit));
         final ResultSet rs = statement.executeQuery();
         final List<Economy> top = new ArrayList<>();
 
