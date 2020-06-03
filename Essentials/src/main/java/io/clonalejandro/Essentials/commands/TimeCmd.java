@@ -29,7 +29,7 @@ public class TimeCmd extends Cmd implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String arg, String[] args) {
-        if (checkPermissions(sender, SCmd.Rank.SMOD)) return true;
+        if (checkPermissions(sender, SCmd.Rank.MOD)) return true;
 
         if (args.length > 0){
             final Player player = Bukkit.getPlayer(sender.getName());

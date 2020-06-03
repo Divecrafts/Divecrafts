@@ -27,7 +27,7 @@ import org.bukkit.entity.Player;
 public class ExpCmd extends Cmd implements CommandExecutor {
 
     public boolean onCommand(CommandSender sender, Command cmd, String arg, String[] args) {
-        if (checkPermissions(sender, SCmd.Rank.SMOD)) return true;
+        if (checkPermissions(sender, SCmd.Rank.MOD)) return true;
 
         if (args.length > 2){
             final Player target = Bukkit.getPlayer(args[1]);

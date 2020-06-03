@@ -59,7 +59,7 @@ public class WarpCmd extends Cmd implements CommandExecutor {
     }
 
     private boolean setWarp(CommandSender sender, String[] args){
-        if (checkPermissions(sender, SCmd.Rank.SMOD)) return true;
+        if (checkPermissions(sender, SCmd.Rank.SMOD) && !sender.hasPermission("essentials.setwarp")) return true;
 
         final Player player = Bukkit.getPlayer(sender.getName());
 
@@ -118,7 +118,7 @@ public class WarpCmd extends Cmd implements CommandExecutor {
     }
 
     private boolean delWarp(CommandSender sender, String[] args){
-        if (checkPermissions(sender, SCmd.Rank.SMOD)) return true;
+        if (checkPermissions(sender, SCmd.Rank.SMOD) && !sender.hasPermission("essentials.delwarp")) return true;
 
         final Player player = Bukkit.getPlayer(sender.getName());
 
