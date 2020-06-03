@@ -91,7 +91,6 @@ public class Main extends JavaPlugin {
         pluginManager.registerEvents(new ScoreboardHandler(), this);
         pluginManager.registerEvents(new CreeperHandler(), this);
         pluginManager.registerEvents(new FlyHandler(), this);
-        pluginManager.registerEvents(new SpawnerEvents(), this);
         pluginManager.registerEvents(new WarpHandler(), this);
 
         Bukkit.getConsoleSender().sendMessage(translate("&9&lEssentials> &fregistrando eventos"));
@@ -141,7 +140,6 @@ public class Main extends JavaPlugin {
         getCommand("withdraw").setExecutor(new EconomyCmd());
         getCommand("pay").setExecutor(new EconomyCmd());
         getCommand("individualpermission").setExecutor(new PermissionCmd());
-        getCommand("givespawner").setExecutor(new SpawnerCmd());
         getCommand("repair").setExecutor(new RepairCmd());
 
         Bukkit.getConsoleSender().sendMessage(translate("&9&lEssentials> &fregistrando comandos"));
