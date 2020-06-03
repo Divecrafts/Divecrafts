@@ -131,7 +131,6 @@ public class Main extends JavaPlugin {
         getCommand("delwarp").setExecutor(new WarpCmd());
         getCommand("warps").setExecutor(new WarpCmd());
         getCommand("back").setExecutor(new BackCmd());
-        getCommand("broadcast").setExecutor(new BroadcastCmd());
         getCommand("iteminfo").setExecutor(new ItemInfoCmd());
         getCommand("balance").setExecutor(new EconomyCmd());
         getCommand("balanceTop").setExecutor(new EconomyCmd());
