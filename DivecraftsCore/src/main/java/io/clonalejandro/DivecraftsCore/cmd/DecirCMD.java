@@ -6,11 +6,14 @@ import io.clonalejandro.DivecraftsCore.api.SUser;
 import io.clonalejandro.DivecraftsCore.idiomas.Languaje;
 import io.clonalejandro.DivecraftsCore.utils.Sounds;
 import io.clonalejandro.DivecraftsCore.utils.Utils;
+import lombok.Getter;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.entity.Player;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 public class DecirCMD extends SCmd {
@@ -18,6 +21,8 @@ public class DecirCMD extends SCmd {
     public DecirCMD() {
         super("decir", Rank.USUARIO, Arrays.asList("w", "m", "msg", "mensaje"));
     }
+
+    @Getter private final static HashMap<Player, Player> lastPlayerMsg = new HashMap<>();
 
     private static void sendPrivateMessage(SUser target, SUser from, String mensaje) {
         target.getPlayer().sendMessage(Languaje.getLangMsg(target.getUserData().getLang(), "Msg.desde").replace("%player%", from.getName()) + mensaje);
@@ -35,18 +40,23 @@ public class DecirCMD extends SCmd {
     public void run(SUser user, String lbl, String[] args) {
         SUser target = SServer.getUser(Main.getInstance().getServer().getPlayer(args[0]));
 
-        if (args.length == 1){
+        if (args.length <= 1){
             return;
         }
         if (user == target) {
             user.getPlayer().sendMessage(Languaje.getLangMsg(user.getUserData().getLang(), "Msg.noatimismo"));
             return;
         }
-        if (!target.isOnline()) {
+        if (target == null || !target.isOnline()) {
             user.getPlayer().sendMessage(Languaje.getLangMsg(user.getUserData().getLang(), "Global.noconectado"));
             return;
         }
         args[0] = "";
+
+        if (lastPlayerMsg.get(user.getPlayer()) == null)
+            lastPlayerMsg.remove(user.getPlayer());
+        lastPlayerMsg.put(user.getPlayer(), target.getPlayer());
+
         sendPrivateMessage(target, user, Utils.buildString(args));
     }
 
@@ -58,7 +68,7 @@ public class DecirCMD extends SCmd {
             return;
         }
 
-        if (!target.isOnline()) {
+        if (target == null || !target.isOnline()) {
             sender.sendMessage(Languaje.getLangMsg(Languaje.Lang.ES.getId(), "Global.noconectado"));
             return;
         }

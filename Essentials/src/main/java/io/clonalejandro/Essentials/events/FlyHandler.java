@@ -1,6 +1,9 @@
 package io.clonalejandro.Essentials.events;
 
 import io.clonalejandro.DivecraftsCore.Main;
+import io.clonalejandro.DivecraftsCore.api.SServer;
+import io.clonalejandro.DivecraftsCore.api.SUser;
+import io.clonalejandro.DivecraftsCore.cmd.SCmd;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -59,9 +62,13 @@ public class FlyHandler implements Listener {
 
     private void toggleFly(final Player player, final boolean mode){
         Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
-            if (player.getAllowFlight()){
-                player.setAllowFlight(mode);
-                player.setFlying(mode);
+            SUser user = SServer.getUser(player.getUniqueId());
+
+            if (user != null && user.getUserData().getRank().getRank() < SCmd.Rank.BUILDER.getRank()) {
+                if (player.getAllowFlight()) {
+                    player.setAllowFlight(!mode);
+                    player.setFlying(!mode);
+                }
             }
         }, 20L);
     }

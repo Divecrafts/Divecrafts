@@ -60,7 +60,10 @@ public class HomeCmd extends Cmd implements CommandExecutor {
                     .filter(h -> h.getName().equalsIgnoreCase(args[0]))
                     .collect(Collectors.toList());
 
-            if (homes.get(0) != null) {
+            if (homes.size() == 0){
+                player.sendMessage(Main.translate("&c&lServer> &fEse home no existe"));
+            }
+            else if (homes.get(0) != null) {
                 final Home home = homes.get(0);
                 new TeleportWithDelay(player, home.getLocation());
 

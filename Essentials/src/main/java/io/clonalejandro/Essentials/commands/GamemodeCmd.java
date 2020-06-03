@@ -29,7 +29,7 @@ public class GamemodeCmd extends Cmd implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String arg, String[] args){
-        if (checkPermissions(sender, SCmd.Rank.MOD)) return true;
+        if (checkPermissions(sender, SCmd.Rank.BUILDER)) return true;
 
         if (args.length == 1){
             updateGamemode(Bukkit.getPlayer(sender.getName()), args[0]);

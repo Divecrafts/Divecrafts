@@ -25,10 +25,7 @@ import org.bukkit.permissions.PermissionAttachment;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @AllArgsConstructor
 public class PlayerEvents implements Listener {
@@ -176,14 +173,17 @@ public class PlayerEvents implements Listener {
     ArrayList<String> nulledWords = new ArrayList<>();
 
     @EventHandler
-    public void onPlayerChat(AsyncPlayerChatEvent e) throws SQLException, ClassNotFoundException {
-        Player p = e.getPlayer();
-        SUser mu = SServer.getUser(p);
+    public void onPlayerChat(AsyncPlayerChatEvent e){
+        final Player p = e.getPlayer();
+        final SUser mu = SServer.getUser(p);
+        final String[] domains = new String[]{".com", ".net", ".es", ".org", ".com.ar", ".ar", ".mx"};
+        final boolean containsDomain = e.getMessage().contains(String.join("", Arrays.asList(domains)));
 
         if (!mu.getUserData().getChat()) {
             mu.getPlayer().sendMessage(Languaje.getLangMsg(mu.getUserData().getLang(), "Chat.desabilitado"));
             e.setCancelled(true);
         }
+
         for (Player o : Bukkit.getOnlinePlayers()) {
             SUser mo = SServer.getUser(o.getUniqueId());
             if (!mo.getUserData().getChat()) e.getRecipients().remove(o);
@@ -196,19 +196,15 @@ public class PlayerEvents implements Listener {
             }
         }
 
-        if (e.getMessage().contains(".")) {
+        if (containsDomain && e.getMessage().matches("^(?=.*[^.]$)((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.?){4}$")) {
             mu.getPlayer().sendMessage(Languaje.getLangMsg(mu.getUserData().getLang(), "Chat.noips"));
             e.setCancelled(true);
         }
 
         SCmd.Rank r = mu.getUserData().getRank();
 
-        if (r.getRank() > 0) {
-            e.setFormat(Utils.colorize(p.getDisplayName() + ": &7" + e.getMessage()));
-        }
-        else {
-            e.setFormat(p.getDisplayName() + ": §7" + e.getMessage());
-        }
+        if (r.getRank() > 0) e.setFormat(Utils.colorize(p.getDisplayName() + ": &f" + e.getMessage()));
+        else e.setFormat(p.getDisplayName() + ": §7" + e.getMessage());
     }
 
     private void loadPermissions(Player player){

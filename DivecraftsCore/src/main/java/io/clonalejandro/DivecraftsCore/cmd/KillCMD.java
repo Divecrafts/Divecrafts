@@ -10,13 +10,13 @@ import java.util.List;
 public class KillCMD extends SCmd {
 
     public KillCMD() {
-        super("kill", Rank.ADMIN, "matar");
+        super("kill", Rank.MOD, "matar");
     }
 
     @Override
     public void run(SUser user, String label, String[] args) {
         if (args.length == 0) {
-            user.getPlayer().damage(user.getPlayer().getHealth());
+            user.getPlayer().setHealth(0D);
         }
         if (args.length == 1) {
             SUser target = SServer.getUser(plugin.getServer().getPlayer(args[0]));
@@ -25,7 +25,7 @@ public class KillCMD extends SCmd {
                 userNotOnline(user);
                 return;
             }
-            target.getPlayer().damage(target.getPlayer().getHealth());
+            target.getPlayer().setHealth(0D);
         }
     }
 

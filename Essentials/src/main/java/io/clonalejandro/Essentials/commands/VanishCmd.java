@@ -1,5 +1,6 @@
 package io.clonalejandro.Essentials.commands;
 
+import io.clonalejandro.DivecraftsCore.cmd.SCmd;
 import io.clonalejandro.Essentials.Main;
 import io.clonalejandro.Essentials.utils.VanishPacket;
 import org.bukkit.Bukkit;
@@ -24,10 +25,12 @@ import org.bukkit.entity.Player;
  * All rights reserved for clonalejandro ©Essentials 2017/2020
  */
 
-public class VanishCmd implements CommandExecutor {
+public class VanishCmd extends Cmd implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String arg, String[] args) {
+        if (checkPermissions(sender, SCmd.Rank.TMOD)) return true;
+
         final Player player = Bukkit.getPlayer(sender.getName());
 
         player.sendMessage(Main.translate(String.format("&a&lServer> &fModo vanish %s", VanishPacket.isVanish(player) ? "&cdesactivado" : "&aactivado")));

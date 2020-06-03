@@ -76,7 +76,7 @@ public class EconomyCmd extends Cmd implements CommandExecutor {
             final Player player = Bukkit.getPlayer(args[0]);
 
             Main.instance.economyProvider.depositPlayer(args[0], Double.parseDouble(args[1]));
-            sender.sendMessage(Utils.colorize(String.format("&a&lServer> &fAñadidos &b%s$ a la cuenta de &e%s", args[1], args[0])));
+            sender.sendMessage(Utils.colorize(String.format("&a&lServer> &fAñadidos &b%s$ &fa la cuenta de &e%s", args[1], args[0])));
 
             if (player != null){
                 player.sendMessage(Utils.colorize(String.format("&a&lServer> &fAñadidos &b%s$ &fa tu cuenta", args[1])));

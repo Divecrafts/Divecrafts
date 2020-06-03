@@ -30,7 +30,7 @@ import org.bukkit.entity.Player;
  * All rights reserved for clonalejandro ©Essentials 2017/2020
  */
 
-public class SpawnCmd implements CommandExecutor {
+public class SpawnCmd extends Cmd implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String arg, String[] args) {
@@ -61,6 +61,8 @@ public class SpawnCmd implements CommandExecutor {
     }
 
     private boolean setSpawn(SpawnYml spawnYml, Player player){
+        if (checkPermissions(player, SCmd.Rank.SMOD)) return true;
+
         final String world = player.getWorld().getName();
         final double x = player.getLocation().getX();
         final double y = player.getLocation().getY();

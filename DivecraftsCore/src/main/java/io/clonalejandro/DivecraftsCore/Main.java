@@ -42,7 +42,7 @@ public class Main extends JavaPlugin {
         awd.enable();
 
         try {
-          mySQL = new MySQL("localhost", "divecrafts", "root", "patata123");
+          mySQL = new MySQL(getConfig().getString("MySQL.host"), "divecrafts", "root", "patata123");
           mySQL.openConnection();
         } catch (SQLException e) {
             Log.log(Log.ERROR, "Imposible conectar con la MySQL, desactivando el plugin");

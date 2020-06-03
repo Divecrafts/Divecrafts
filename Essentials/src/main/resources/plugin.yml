@@ -77,8 +77,6 @@ commands:
     usage: /<command>
   back:
     usage: /<command>
-  broadcast:
-    usage: /<command>
   iteminfo:
     usage: /<command>
   balance:

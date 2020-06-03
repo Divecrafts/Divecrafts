@@ -28,6 +28,7 @@ public class SCommands implements TabCompleter {
         cmds.add(new AfkCMD());
         cmds.add(new AyudaCMD());
         cmds.add(new DecirCMD());
+        cmds.add(new ResponderCMD());
         cmds.add(new HelpOPCMD());
         cmds.add(new KillAllCMD());
         cmds.add(new KillCMD());

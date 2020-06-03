@@ -39,7 +39,6 @@ public class Main extends JavaPlugin {
     public static Main instance;
     public static SpawnYml spawnYml;
     public EconomyProvider economyProvider;
-    public HashMap<UUID, PermissionAttachment> perms = new HashMap<>();
     public VaultHook vaultHook;
     public final static HashMap<Player, BukkitTask> awaitingPlayersToTeleport = new HashMap<>();
 
@@ -132,7 +131,6 @@ public class Main extends JavaPlugin {
         getCommand("delwarp").setExecutor(new WarpCmd());
         getCommand("warps").setExecutor(new WarpCmd());
         getCommand("back").setExecutor(new BackCmd());
-        getCommand("broadcast").setExecutor(new BroadcastCmd());
         getCommand("iteminfo").setExecutor(new ItemInfoCmd());
         getCommand("balance").setExecutor(new EconomyCmd());
         getCommand("balanceTop").setExecutor(new EconomyCmd());
@@ -146,7 +144,7 @@ public class Main extends JavaPlugin {
     }
 
     private void database(){
-        new MysqlManager("localhost", 3306, getConfig().getString("database"), "root", "patata123");
+        new MysqlManager(getConfig().getString("host"), 3306, getConfig().getString("database"), "root", "patata123");
         Bukkit.getConsoleSender().sendMessage(Main.translate("&9&lEssentials> &fdatabase connected"));
     }
 
