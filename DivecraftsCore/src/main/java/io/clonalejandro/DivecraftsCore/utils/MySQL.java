@@ -99,9 +99,10 @@ public class MySQL {
                 inserStats.setString(1, p.getUniqueId().toString());
                 inserStats.executeUpdate();
 
-                PreparedStatement inserSettings = openConnection().prepareStatement("INSERT INTO `settings` (`uuid`, `visible`) VALUES (?, ?)");
+                PreparedStatement inserSettings = openConnection().prepareStatement("INSERT INTO `settings` (`uuid`, `visible`, `disguise`) VALUES (?, ?, ?)");
                 inserSettings.setString(1, p.getUniqueId().toString());
                 inserSettings.setInt(2, 0);
+                inserSettings.setString(3, "");
                 inserSettings.executeUpdate();
 
             } catch (SQLException ex) {
@@ -151,7 +152,7 @@ public class MySQL {
             statementStats.setInt(17, data.getMum_reroll());
             statementStats.setString(18, u.getUuid().toString());
             statementStats.executeUpdate();
-
+            
             //Settings
             PreparedStatement statementSett = openConnection().prepareStatement("UPDATE `settings` SET `fly`=?,`visible`=?,`chat`=?,`party`=?,`lang`=?,`disguise`=? WHERE `uuid`=?");
             statementSett.setBoolean(1, data.getFly());
