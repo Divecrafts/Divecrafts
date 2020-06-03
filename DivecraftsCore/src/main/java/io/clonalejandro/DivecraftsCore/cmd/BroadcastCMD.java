@@ -29,7 +29,7 @@ import java.util.List;
 public class BroadcastCMD extends SCmd {
 
     public BroadcastCMD() {
-        super("broadcast", Rank.USUARIO, Arrays.asList("br", "difundir"));
+        super("broadcast", Rank.TMOD, Arrays.asList("br", "difundir"));
     }
 
     @Override
