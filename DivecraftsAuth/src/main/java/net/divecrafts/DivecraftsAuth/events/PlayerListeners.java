@@ -6,6 +6,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
@@ -36,13 +37,13 @@ public class PlayerListeners implements Listener {
         event.setJoinMessage(null);
 
         PotionEffect nightVision = new PotionEffect(PotionEffectType.NIGHT_VISION, Integer.MAX_VALUE, 1, false, false);
-        PotionEffect nospeed = new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 1, false, false);
+        //PotionEffect nospeed = new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 1, false, false);
 
-        event.getPlayer().addPotionEffect(nospeed, true);
+        //event.getPlayer().addPotionEffect(nospeed, true);
         event.getPlayer().addPotionEffect(nightVision, true);
         event.getPlayer().setLevel(0);
         event.getPlayer().setExp(0);
-        event.getPlayer().setWalkSpeed(1);
+        //event.getPlayer().setWalkSpeed(1);
     }
 
     @EventHandler
@@ -58,7 +59,7 @@ public class PlayerListeners implements Listener {
     @EventHandler
     public void onDamageEvent(EntityDamageEvent event){
         if (event.getEntity() instanceof Player){
-            ((Player) event.getEntity()).setHealth(20);
+            event.setCancelled(true);
         }
     }
 
