@@ -32,7 +32,7 @@ import java.util.UUID;
 public class GiveBoosterCMD extends SCmd {
 
     public GiveBoosterCMD() {
-        super("givebooster", Rank.ADMIN, "giveboost");
+        super("givebooster", Rank.SMOD, "giveboost");
     }
 
     @Override
