@@ -8,9 +8,7 @@ import io.clonalejandro.DivecraftsCore.cmd.SCmd;
 import io.clonalejandro.DivecraftsCore.idiomas.Languaje;
 import io.clonalejandro.DivecraftsCore.utils.Disguise;
 import io.clonalejandro.DivecraftsCore.utils.Utils;
-
 import lombok.AllArgsConstructor;
-
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
@@ -36,7 +34,7 @@ import java.util.UUID;
 public class PlayerEvents implements Listener {
 
     private final Main plugin;
-    public HashMap<UUID, PermissionAttachment> perms = new HashMap<>();
+    public HashMap<Player, PermissionAttachment> perms = new HashMap<>();
     public PlayerEvents(Main instance) {
         plugin = instance;
     }
@@ -238,13 +236,10 @@ public class PlayerEvents implements Listener {
         }
         else permissions.addAll(Main.getInstance().getConfig().getStringList(String.format("Permissions.%s.perms", rankId)));
 
-        permissions.forEach(permission -> {
-            if (permission.contains("*"))
-                //resolveWildCard(player);
-            attachment.setPermission(permission, true);
-        });
+        permissions.addAll(Main.getInstance().getConfig().getStringList(String.format("Permissions.%s.noheredar", rankId)));
+        permissions.forEach(permission -> attachment.setPermission(permission, true));
 
-        perms.put(player.getUniqueId(), attachment);
+        perms.put(player, attachment);
     }
 
     private void checkBoosters(SUser user){
@@ -265,6 +260,7 @@ public class PlayerEvents implements Listener {
     }
 
     private void checkFly(SUser user){
+        if (user.getUserData().getFly() == null) return;
         Bukkit.getScheduler().runTaskLater(plugin, () -> {
             user.getPlayer().setAllowFlight(user.getUserData().getFly());
             user.getPlayer().setFlying(user.getUserData().getFly());

@@ -1,6 +1,8 @@
 package io.clonalejandro.Essentials.events;
 
 import io.clonalejandro.DivecraftsCore.api.SServer;
+import io.clonalejandro.DivecraftsCore.api.SUser;
+import io.clonalejandro.DivecraftsCore.cmd.SCmd;
 import io.clonalejandro.Essentials.Main;
 import io.clonalejandro.Essentials.utils.SpawnYml;
 import org.bukkit.Bukkit;
@@ -30,22 +32,28 @@ import org.bukkit.event.player.*;
 
 public class SpawnHandler implements Listener {
 
-    @EventHandler (priority = EventPriority.HIGHEST)
-    public void onPlayerJoinEvent(PlayerJoinEvent event){
-        if (!event.getPlayer().hasPlayedBefore())
-            event.getPlayer().teleport(new Spawn().getLocation());
-    }
-
-    @EventHandler (priority = EventPriority.HIGHEST)
+    @EventHandler (priority = EventPriority.LOWEST)
     public void onPlayerLoginEvent(PlayerLoginEvent event){
         if (!event.getPlayer().hasPlayedBefore())
             event.getPlayer().teleport(new Spawn().getLocation());
     }
 
+    @EventHandler (priority = EventPriority.LOWEST)
+    public void onPlayerJoinEvent(PlayerJoinEvent event){
+        final SUser user = SServer.getUser(event.getPlayer());
+
+        if (user.getUserData().getRank().getRank() < SCmd.Rank.NEMO.getRank())
+            event.setJoinMessage(null);
+        if (!event.getPlayer().hasPlayedBefore())
+            event.getPlayer().teleport(new Spawn().getLocation());
+    }
+
+    @EventHandler
     public void onPlayerKickEvent(PlayerKickEvent event){
         event.setLeaveMessage(null);
     }
 
+    @EventHandler
     public void onPlayerQuitEvent(PlayerQuitEvent event){
         event.setQuitMessage(null);
     }

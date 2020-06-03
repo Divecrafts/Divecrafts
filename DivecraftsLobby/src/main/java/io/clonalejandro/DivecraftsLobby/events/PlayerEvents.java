@@ -2,6 +2,7 @@ package io.clonalejandro.DivecraftsLobby.events;
 
 import io.clonalejandro.DivecraftsCore.api.SServer;
 import io.clonalejandro.DivecraftsCore.api.SUser;
+import io.clonalejandro.DivecraftsCore.cmd.SCmd;
 import io.clonalejandro.DivecraftsCore.idiomas.Languaje;
 import io.clonalejandro.DivecraftsCore.utils.BungeeMensager;
 import io.clonalejandro.DivecraftsCore.utils.Hologramas;
@@ -144,12 +145,15 @@ public class PlayerEvents implements Listener {
                     switch (event.getSlot()) {
                         case 1:
                         case 10:
-                            user.getUserData().setFly(!user.getUserData().getFly());
-                            user.toggleFly();
-                            InvManager.openInventory(p, InvManager.InvType.SETTINGS);
-                            user.getPlayer().playSound(user.getPlayer().getLocation(), Sound.ORB_PICKUP, 1F, 1F);
-                            user.getPlayer().sendMessage(Languaje.getLangMsg(user.getUserData().getLang(), "Ajustes.cambiado"));
-                            user.save();
+                            if (user.getUserData().getRank().getRank() >= SCmd.Rank.MEGALODON.getRank()){
+                                user.getUserData().setFly(!user.getUserData().getFly());
+                                user.toggleFly();
+                                InvManager.openInventory(p, InvManager.InvType.SETTINGS);
+                                user.getPlayer().playSound(user.getPlayer().getLocation(), Sound.ORB_PICKUP, 1F, 1F);
+                                user.getPlayer().sendMessage(Languaje.getLangMsg(user.getUserData().getLang(), "Ajustes.cambiado"));
+                                user.save();
+                            }
+                            else user.getPlayer().sendMessage(Languaje.getLangMsg(user.getUserData().getLang(), "Global.cmdnopuedes"));
                             break;
                         case 3:
                         case 12:
