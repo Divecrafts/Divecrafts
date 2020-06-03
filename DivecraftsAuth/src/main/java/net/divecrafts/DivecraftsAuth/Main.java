@@ -31,7 +31,7 @@ public class Main extends JavaPlugin {
 
     @Override
     public void onEnable(){
-        Bukkit.getConsoleSender().sendMessage(translate("&a&lEssentials> &fplugin enabled!"));
+        Bukkit.getConsoleSender().sendMessage(translate("&a&lDivecraftsAuth> &fplugin enabled!"));
         try {
             instance = this;
             final PluginManager pluginManager = Bukkit.getPluginManager();
