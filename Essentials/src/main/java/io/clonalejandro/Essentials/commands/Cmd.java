@@ -35,13 +35,7 @@ public class Cmd {
     }
 
     public boolean checkPermissions(CommandSender sender, SCmd.Rank rank){
-        if  (!(sender instanceof Player)) return sendErrMessage(sender);
-
-        final SUser user = SServer.getUser(((Player)sender).getUniqueId());
-
-        if (user.getUserData().getRank().getRank() < rank.getRank())
-            return sendErrMessage(sender);
-
+        if  (sender instanceof Player) return checkPermissions((Player) sender, rank);
         return false;
     }
 
