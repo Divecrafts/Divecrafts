@@ -8,9 +8,7 @@ import io.clonalejandro.DivecraftsCore.cmd.SCmd;
 import io.clonalejandro.DivecraftsCore.idiomas.Languaje;
 import io.clonalejandro.DivecraftsCore.utils.Disguise;
 import io.clonalejandro.DivecraftsCore.utils.Utils;
-
 import lombok.AllArgsConstructor;
-
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
@@ -262,6 +260,7 @@ public class PlayerEvents implements Listener {
     }
 
     private void checkFly(SUser user){
+        if (user.getUserData().getFly() == null) return;
         Bukkit.getScheduler().runTaskLater(plugin, () -> {
             user.getPlayer().setAllowFlight(user.getUserData().getFly());
             user.getPlayer().setFlying(user.getUserData().getFly());
