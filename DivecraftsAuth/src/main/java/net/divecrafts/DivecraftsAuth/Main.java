@@ -6,6 +6,7 @@ import net.divecrafts.DivecraftsAuth.events.PlayerListeners;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Difficulty;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -36,6 +37,7 @@ public class Main extends JavaPlugin {
             instance = this;
             final PluginManager pluginManager = Bukkit.getPluginManager();
 
+            Bukkit.getWorld("world").setDifficulty(Difficulty.PEACEFUL);
             events(pluginManager);
         }
         catch (Exception ex){
