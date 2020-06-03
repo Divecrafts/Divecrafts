@@ -36,7 +36,7 @@ import java.util.UUID;
 public class PlayerEvents implements Listener {
 
     private final Main plugin;
-    public HashMap<UUID, PermissionAttachment> perms = new HashMap<>();
+    public HashMap<Player, PermissionAttachment> perms = new HashMap<>();
     public PlayerEvents(Main instance) {
         plugin = instance;
     }
@@ -238,13 +238,10 @@ public class PlayerEvents implements Listener {
         }
         else permissions.addAll(Main.getInstance().getConfig().getStringList(String.format("Permissions.%s.perms", rankId)));
 
-        permissions.forEach(permission -> {
-            if (permission.contains("*"))
-                //resolveWildCard(player);
-            attachment.setPermission(permission, true);
-        });
+        permissions.addAll(Main.getInstance().getConfig().getStringList(String.format("Permissions.%s.noheredar", rankId)));
+        permissions.forEach(permission -> attachment.setPermission(permission, true));
 
-        perms.put(player.getUniqueId(), attachment);
+        perms.put(player, attachment);
     }
 
     private void checkBoosters(SUser user){
