@@ -146,7 +146,7 @@ public class Main extends JavaPlugin {
     }
 
     private void database(){
-        new MysqlManager("localhost", 3306, getConfig().getString("database"), "root", "patata123");
+        new MysqlManager(getConfig().getString("database"), 3306, getConfig().getString("database"), "root", "patata123");
         Bukkit.getConsoleSender().sendMessage(Main.translate("&9&lEssentials> &fdatabase connected"));
     }
 
