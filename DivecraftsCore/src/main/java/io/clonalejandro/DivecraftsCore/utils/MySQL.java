@@ -89,10 +89,11 @@ public class MySQL {
                 if (rs.next()) return;
                 //if (!rs.getString("name").equalsIgnoreCase("")) return;
                 System.out.println("Creando tabla para " + p.getName());
-                PreparedStatement inserDatos = openConnection().prepareStatement("INSERT INTO `data` (`uuid`, `name`, `grupo`) VALUES (?, ?, ?)");
+                PreparedStatement inserDatos = openConnection().prepareStatement("INSERT INTO `data` (`uuid`, `name`, `grupo`, `lastConnect`) VALUES (?, ?, ?, ?)");
                 inserDatos.setString(1, p.getUniqueId().toString());
                 inserDatos.setString(2, p.getName());
                 inserDatos.setInt(3, 0);
+                inserDatos.setTimestamp(4, new Timestamp(new java.util.Date().getTime()));
                 inserDatos.executeUpdate();
 
                 PreparedStatement inserStats = openConnection().prepareStatement("INSERT INTO `stats` (`uuid`) VALUES (?)");
