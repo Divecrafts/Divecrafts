@@ -64,6 +64,8 @@ public class Utils {
         user.getPlayer().setDisplayName(Utils.colorize(name));
         user.getPlayer().setCustomName(Utils.colorize(name));
         user.getPlayer().setCustomNameVisible(true);
+
+        new TagAPI();
     }
 
     /**

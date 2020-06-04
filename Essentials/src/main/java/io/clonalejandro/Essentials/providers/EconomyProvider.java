@@ -63,22 +63,22 @@ public class EconomyProvider implements net.milkbowl.vault.economy.Economy {
 
     @Override
     public boolean hasAccount(String s) {
-        return false;
+        return true;
     }
 
     @Override
     public boolean hasAccount(OfflinePlayer offlinePlayer) {
-        return false;
+        return true;
     }
 
     @Override
     public boolean hasAccount(String s, String s1) {
-        return false;
+        return true;
     }
 
     @Override
     public boolean hasAccount(OfflinePlayer offlinePlayer, String s) {
-        return false;
+        return true;
     }
 
     @Override

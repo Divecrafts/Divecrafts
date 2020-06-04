@@ -48,7 +48,7 @@ public class Disguise {
         user.getPlayer().setCustomName(Utils.colorize(name));
         user.getPlayer().setCustomNameVisible(true);
 
-        new TagApi(user.getPlayer(), username);
+        new TagAPI();
 
         applySkin(user, username);
 
