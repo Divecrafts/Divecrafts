@@ -1,5 +1,8 @@
 package io.clonalejandro.Essentials.events;
 
+import io.clonalejandro.DivecraftsCore.api.SServer;
+import io.clonalejandro.DivecraftsCore.api.SUser;
+import io.clonalejandro.DivecraftsCore.cmd.SCmd;
 import io.clonalejandro.Essentials.utils.VanishPacket;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -29,7 +32,8 @@ public class VanishHandler implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event){
         VanishPacket.getVanishPlayers().forEach(vanishPlayer -> {
             final Player player = Bukkit.getPlayer(vanishPlayer);
-            if (player != null)
+            final SUser user = SServer.getUser(event.getPlayer());
+            if (player != null && user.getUserData().getRank().getRank() < SCmd.Rank.TMOD.getRank())
                 VanishPacket.vanishForPlayer(player, event.getPlayer());
         });
     }

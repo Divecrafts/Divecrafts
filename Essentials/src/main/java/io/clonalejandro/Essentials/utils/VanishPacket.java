@@ -1,5 +1,7 @@
 package io.clonalejandro.Essentials.utils;
 
+import io.clonalejandro.DivecraftsCore.api.SServer;
+import io.clonalejandro.DivecraftsCore.cmd.SCmd;
 import io.clonalejandro.DivecraftsCore.utils.ReflectionAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -49,7 +51,10 @@ public class VanishPacket extends ReflectionAPI {
     }
 
     public static void setVanish(final Player player){
-        Bukkit.getOnlinePlayers().forEach(onlinePlayer -> {
+        Bukkit.getOnlinePlayers()
+                .stream()
+                .filter(onlinePlayer -> SServer.getUser(onlinePlayer).getUserData().getRank().getRank() < SCmd.Rank.TMOD.getRank())
+                .forEach(onlinePlayer -> {
             try {
                 final Object handle = ReflectionAPI.getHandle(player);
                 final Object entities = Array.newInstance(handle.getClass(), 1);
@@ -72,7 +77,10 @@ public class VanishPacket extends ReflectionAPI {
     }
 
     public static void removeVanish(final Player player){
-        Bukkit.getOnlinePlayers().forEach(onlinePlayer -> {
+        Bukkit.getOnlinePlayers()
+                .stream()
+                .filter(onlinePlayer -> SServer.getUser(onlinePlayer).getUserData().getRank().getRank() < SCmd.Rank.TMOD.getRank())
+                .forEach(onlinePlayer -> {
            try {
                final Object handle = ReflectionAPI.getHandle(player);
                final Object entities = Array.newInstance(handle.getClass(), 1);
