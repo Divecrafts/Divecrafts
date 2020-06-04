@@ -1,16 +1,17 @@
 package io.clonalejandro.DivecraftsCore.utils;
 
+import io.clonalejandro.DivecraftsCore.Main;
+import io.clonalejandro.DivecraftsCore.api.SServer;
+import io.clonalejandro.DivecraftsCore.api.SUser;
+import io.clonalejandro.DivecraftsCore.cmd.SCmd;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.Collection;
+import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.Team;
 
 /**
  * Created by Alex
- * On 03/05/2020
+ * On 04/06/2020
  *
  * -- SOCIAL NETWORKS --
  *
@@ -24,60 +25,30 @@ import java.util.Collection;
  * All rights reserved for clonalejandro ©DivecraftsCore 2017/2020
  */
 
-public class TagApi {
+public class TagAPI {
 
-    public TagApi(Player player, String name){
-        try {
-            name = Utils.colorize(name);
-            setTag(player, name.length() > 15 ? name.substring(0, 15) : name);
-        }
-        catch (Exception ex) {
-            ex.printStackTrace();
-        }
+    public TagAPI(){
+        Bukkit.getScheduler().runTaskLater(Main.getInstance(), () ->
+                Bukkit.getOnlinePlayers().forEach(players ->
+                        Bukkit.getOnlinePlayers().forEach(target -> {
+                            final String str = getColor(SServer.getUser(target));
+                            final String tag = str.length() > 16 ? str.substring(0, 16) : str;
+                            final Team team = players.getScoreboard().getTeam(target.getName()) == null ?
+                                    players.getScoreboard().registerNewTeam(target.getName()) :
+                                    players.getScoreboard().getTeam(target.getName());
+
+                            team.setPrefix(tag);
+                            team.addPlayer(target);
+                        })
+                ), 20L);
     }
 
-    private void setTag(Player player, String name) throws InvocationTargetException, IllegalAccessException, NoSuchFieldException{
-        try {
-            Method getHandle = player.getClass().getMethod("getHandle");
-            Object entityPlayer = getHandle.invoke(player);
-            boolean gameProfileExists = false;
-            try {
-                Class.forName("net.minecraft.util.com.mojang.authlib.GameProfile");
-                gameProfileExists = true;
-            } catch (ClassNotFoundException ignored) {
-            }
-            try {
-                Class.forName("com.mojang.authlib.GameProfile");
-                gameProfileExists = true;
-            } catch (ClassNotFoundException ignored) {
-            }
-            if (!gameProfileExists) {
-                Field nameField = entityPlayer.getClass().getSuperclass().getDeclaredField("name");
-                nameField.setAccessible(true);
-                nameField.set(entityPlayer, name);
-            } else {
-                Object profile = entityPlayer.getClass().getMethod("getProfile").invoke(entityPlayer);
-                Field ff = profile.getClass().getDeclaredField("name");
-                ff.setAccessible(true);
-                ff.set(profile, name);
-            }
-            if (Bukkit.class.getMethod("getOnlinePlayers", new Class<?>[0]).getReturnType() == Collection.class) {
-                Collection<? extends Player> players = (Collection<? extends Player>) Bukkit.class.getMethod("getOnlinePlayers").invoke(null);
-                for (Player p : players) {
-                    p.hidePlayer(player);
-                    p.showPlayer(player);
-                }
-            }
-            else {
-                Player[] players = ((Player[]) Bukkit.class.getMethod("getOnlinePlayers").invoke(null));
-                for (Player p : players) {
-                    p.hidePlayer(player);
-                    p.showPlayer(player);
-                }
-            }
-        }
-        catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        }
+    private String getColor(SUser user){
+        final SCmd.Rank rank = user.getUserData().getRank();
+        final String color = user.getUserData().getNickcolor().isEmpty() ? "&7" : "&" + user.getUserData().getNickcolor();
+        final String prefix = rank.getRank() > 0 ? "&" + SCmd.Rank.groupColor(rank) + rank.getPrefix() + " " : "";
+        final String name = prefix + color + user.getPlayer().getName();
+
+        return Utils.colorize(name.replace(user.getPlayer().getName(), ""));
     }
 }
