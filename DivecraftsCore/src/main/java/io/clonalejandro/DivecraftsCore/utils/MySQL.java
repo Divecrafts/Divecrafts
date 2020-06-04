@@ -102,7 +102,7 @@ public class MySQL {
 
                 PreparedStatement inserSettings = openConnection().prepareStatement("INSERT INTO `settings` (`uuid`, `visible`, `disguise`) VALUES (?, ?, ?)");
                 inserSettings.setString(1, p.getUniqueId().toString());
-                inserSettings.setInt(2, 0);
+                inserSettings.setInt(2, 2);
                 inserSettings.setString(3, "");
                 inserSettings.executeUpdate();
 
