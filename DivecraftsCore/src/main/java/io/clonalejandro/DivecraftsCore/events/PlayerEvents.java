@@ -30,6 +30,8 @@ import java.util.*;
 public class PlayerEvents implements Listener {
 
     private final Main plugin;
+    private final List<String> nulledWords = new ArrayList<>();
+
     public HashMap<Player, PermissionAttachment> perms = new HashMap<>();
     public PlayerEvents(Main instance) {
         plugin = instance;
@@ -169,14 +171,14 @@ public class PlayerEvents implements Listener {
         if (e.toWeatherState()) e.setCancelled(true);
     }
 
-    ArrayList<String> nulledWords = new ArrayList<>();
-
     @EventHandler
     public void onPlayerChat(AsyncPlayerChatEvent e){
+        e.setMessage(e.getMessage().replace("%", "%%"));
+
         final Player p = e.getPlayer();
         final SUser mu = SServer.getUser(p);
         final String[] domains = new String[]{".com", ".net", ".es", ".org", ".com.ar", ".ar", ".mx"};
-        final boolean containsDomain = e.getMessage().contains(String.join("", Arrays.asList(domains)));
+        final boolean containsDomain = String.join("", Arrays.asList(domains)).contains(e.getMessage());
 
         if (!mu.getUserData().getChat()) {
             mu.getPlayer().sendMessage(Languaje.getLangMsg(mu.getUserData().getLang(), "Chat.desabilitado"));
@@ -195,9 +197,16 @@ public class PlayerEvents implements Listener {
             }
         }
 
-        if (containsDomain || e.getMessage().matches("^(?=.*[^.]$)((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.?){4}$")) {
-            mu.getPlayer().sendMessage(Languaje.getLangMsg(mu.getUserData().getLang(), "Chat.noips"));
-            e.setCancelled(true);
+        for (String domain : domains){
+            if (e.getMessage().contains(domain)){
+                mu.getPlayer().sendMessage(Languaje.getLangMsg(mu.getUserData().getLang(), "Chat.noips"));
+                e.setCancelled(true);
+            }
+            /*
+            if (word.matches("^(?=.*[^.]$)((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.?){4}$")){
+                mu.getPlayer().sendMessage(Languaje.getLangMsg(mu.getUserData().getLang(), "Chat.noips"));
+                e.setCancelled(true);
+            }*/
         }
 
         SCmd.Rank r = mu.getUserData().getRank();
