@@ -24,7 +24,6 @@ import org.bukkit.event.weather.WeatherChangeEvent;
 import org.bukkit.permissions.PermissionAttachment;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.sql.SQLException;
 import java.util.*;
 
 @AllArgsConstructor
@@ -196,7 +195,7 @@ public class PlayerEvents implements Listener {
             }
         }
 
-        if (containsDomain && e.getMessage().matches("^(?=.*[^.]$)((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.?){4}$")) {
+        if (containsDomain || e.getMessage().matches("^(?=.*[^.]$)((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.?){4}$")) {
             mu.getPlayer().sendMessage(Languaje.getLangMsg(mu.getUserData().getLang(), "Chat.noips"));
             e.setCancelled(true);
         }
@@ -256,10 +255,14 @@ public class PlayerEvents implements Listener {
     }
 
     private void checkFly(SUser user){
-        if (user.getUserData().getFly() == null) return;
         Bukkit.getScheduler().runTaskLater(plugin, () -> {
-            user.getPlayer().setAllowFlight(user.getUserData().getFly());
-            user.getPlayer().setFlying(user.getUserData().getFly());
+            try {
+                user.getPlayer().setAllowFlight(user.getUserData().getFly());
+                user.getPlayer().setFlying(user.getUserData().getFly());
+            }
+            catch (Exception ex){
+                //ignore
+            }
         }, 4);
     }
 
