@@ -4,6 +4,7 @@ import io.clonalejandro.Essentials.commands.*;
 import io.clonalejandro.Essentials.events.*;
 import io.clonalejandro.Essentials.hooks.VaultHook;
 import io.clonalejandro.Essentials.providers.EconomyProvider;
+import io.clonalejandro.Essentials.tasks.AutoRestart;
 import io.clonalejandro.Essentials.tasks.ClearLag;
 import io.clonalejandro.Essentials.utils.MysqlManager;
 import io.clonalejandro.Essentials.utils.SpawnYml;
@@ -66,6 +67,7 @@ public class Main extends JavaPlugin {
             events(pluginManager);
             commands();
             initClearLag();
+            initAutoRestart();
             vaultHook.hook();
         }
         catch (Exception ex){
@@ -160,9 +162,14 @@ public class Main extends JavaPlugin {
 
     private void initClearLag(){
         final ClearLag task = new ClearLag();
-
         tasks.add(task);
-        task.runTaskTimer(this, 0L, 20 * 60 * 15);
+        task.runTaskTimer(this, 0L, 20L);
+    }
+
+    private void initAutoRestart(){
+        final AutoRestart task = new AutoRestart();
+        tasks.add(task);
+        task.runTaskTimer(this, 0L, 20L);
     }
 
     public static String translate(String msg){
