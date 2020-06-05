@@ -78,7 +78,7 @@ public class Economy {
     }
 
     public static List<Economy> balanceTop(int limit) throws SQLException {
-        final PreparedStatement statement = MysqlManager.getConnection().prepareStatement(String.format("SELECT * FROM economy order by amount limit %s", limit));
+        final PreparedStatement statement = MysqlManager.getConnection().prepareStatement(String.format("SELECT * FROM economy order by amount desc limit %s", limit));
         final ResultSet rs = statement.executeQuery();
         final List<Economy> top = new ArrayList<>();
 
@@ -86,8 +86,6 @@ public class Economy {
             final UUID uuid = UUID.fromString(rs.getString("uuid"));
             top.add(new Economy(uuid));
         }
-
-        Collections.reverse(top);
 
         return top;
     }
