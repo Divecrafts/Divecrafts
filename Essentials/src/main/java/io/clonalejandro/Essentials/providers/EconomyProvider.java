@@ -28,12 +28,12 @@ public class EconomyProvider implements net.milkbowl.vault.economy.Economy {
 
     @Override
     public boolean isEnabled() {
-        return false;
+        return true;
     }
 
     @Override
     public String getName() {
-        return null;
+        return "EssentialsEconomy";
     }
 
     @Override
