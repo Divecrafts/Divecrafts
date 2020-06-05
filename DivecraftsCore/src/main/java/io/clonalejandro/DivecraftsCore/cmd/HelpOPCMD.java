@@ -4,7 +4,9 @@ package io.clonalejandro.DivecraftsCore.cmd;
 import io.clonalejandro.DivecraftsCore.api.SServer;
 import io.clonalejandro.DivecraftsCore.api.SUser;
 import io.clonalejandro.DivecraftsCore.idiomas.Languaje;
+import io.clonalejandro.DivecraftsCore.utils.Sounds;
 import io.clonalejandro.DivecraftsCore.utils.Utils;
+import org.bukkit.Bukkit;
 
 public class HelpOPCMD extends SCmd {
 
@@ -20,10 +22,11 @@ public class HelpOPCMD extends SCmd {
     }
 
     private void hp(SUser user, String msg) {
-        plugin.getServer().getOnlinePlayers().forEach(p -> {
+        Bukkit.getOnlinePlayers().forEach(p -> {
             SUser u = SServer.getUser(p);
             if (u.isOnRank(Rank.TMOD)) {
                 u.getPlayer().sendMessage(Utils.colorize("&c&lHELPOP> &e" + user.getName() + "&r: " + msg));
+                u.sendSound(Sounds.LEVEL_UP);
             }
         });
     }
