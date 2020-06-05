@@ -16,12 +16,9 @@ public class AyudaCMD extends SCmd {
 
     @Override
     public void run(SUser user, String label, String[] args) {
-        if (args.length == 0) {
-            user.sendDiv();
-            user.getPlayer().sendMessage(Languaje.getLangMsg(user.getUserData().getLang(), "Ayuda.titulo"));
-            user.getPlayer().sendMessage("");
-            user.sendDiv();
-        }
+        if (args.length > 0 && Integer.parseInt(args[0]) > 10)
+            user.getPlayer().sendMessage(Languaje.getLangMsg(user.getUserData().getLang(), String.format("Ayuda.pagina%s", args[0])).split("\n"));
+        else user.getPlayer().sendMessage(Languaje.getLangMsg(user.getUserData().getLang(), "Ayuda.pagina1"));
     }
 
     @Override
