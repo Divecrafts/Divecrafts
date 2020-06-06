@@ -53,11 +53,14 @@ public class DecirCMD extends SCmd {
         }
         args[0] = "";
 
-        if (lastPlayerMsg.get(user.getPlayer()) == null)
-            lastPlayerMsg.remove(user.getPlayer());
-        lastPlayerMsg.put(user.getPlayer(), target.getPlayer());
+        if (lastPlayerMsg.get(target.getPlayer()) == null)
+            lastPlayerMsg.remove(target.getPlayer());
+        lastPlayerMsg.put(target.getPlayer(), user.getPlayer());
 
-        sendPrivateMessage(target, user, Utils.buildString(args));
+        sendPrivateMessage(target, user, user.getUserData().getRank().getRank() > 0 ?
+                Utils.colorize(Utils.buildString(args)) :
+                Utils.buildString(args)
+        );
     }
 
     @Override
@@ -73,7 +76,7 @@ public class DecirCMD extends SCmd {
             return;
         }
         args[0] = "";
-        sendPrivateMessage(target, sender, Utils.buildString(args));
+        sendPrivateMessage(target, sender, Utils.colorize(Utils.buildString(args)));
     }
 
     @Override

@@ -46,9 +46,10 @@ public class ScoreboardHandler implements Listener {
             final ResultSet rs = statement1.executeQuery();
 
             if (!rs.next()){
-                final PreparedStatement statement2 = MysqlManager.getConnection().prepareStatement("INSERT INTO economy VALUES(?, ?)");
+                final PreparedStatement statement2 = MysqlManager.getConnection().prepareStatement("INSERT INTO economy VALUES(?, ?, ?)");
                 statement2.setString(1, event.getPlayer().getUniqueId().toString());
                 statement2.setDouble(2, 1300D);
+                statement2.setString(3, event.getPlayer().getName());
                 statement2.executeUpdate();
             }
         }
@@ -64,27 +65,32 @@ public class ScoreboardHandler implements Listener {
         final String rankColored = SCmd.Rank.groupColor(user.getUserData().getRank()) + user.getUserData().getRank().getPrefix();
         final String rank = user.getUserData().getRank() == SCmd.Rank.USUARIO ? rankColored + "&lUSER" : rankColored;
 
+        final String sBoosters = Utils.colorize("&fBoosters: ");//TODO: Add lang support
+        final String sPlayers = Languaje.getLangMsg(user.getUserData().getLang(), "Scoreboardlobby.jugadoresPrefix");
+        final String sWorld = Languaje.getLangMsg(user.getUserData().getLang(), "Scoreboardsurvival.mundoPrefix");
+        final String sCoins = Languaje.getLangMsg(user.getUserData().getLang(), "Scoreboardsurvival.monedasPrefix");
+
         board.setName(Utils.colorize(sbName));
         board.text(10, Utils.colorize("&1"));
         board.text(9, Utils.colorize(Languaje.getLangMsg(user.getUserData().getLang(), "Scoreboardlobby.rango") + "&" + rank));
-        board.text(8, Utils.colorize("&4"));
-        board.text(7, Utils.colorize("&5"));
-        board.text(6, Utils.colorize("&6"));
+        board.text(8, sBoosters);
+        board.text(7, sWorld);
+        board.text(6, sCoins);
         board.text(5, Utils.colorize("&2"));
         board.text(4, Utils.colorize("&fServer: &aSurvival"));
-        board.text(3, Utils.colorize("&f"));
+        board.text(3, sPlayers);
         board.text(2, Utils.colorize("&3"));
         board.text(1, Utils.colorize("&ewww.divecrafts.net"));
 
-        board.team("boosters", Utils.colorize("&fBoosters: &a"));//TODO: Add lang support
-        board.team("players", Languaje.getLangMsg(user.getUserData().getLang(), "Scoreboardlobby.jugadores"));
-        board.team("world", Languaje.getLangMsg(user.getUserData().getLang(), "Scoreboardsurvival.mundo"));
-        board.team("coins", Languaje.getLangMsg(user.getUserData().getLang(), "Scoreboardsurvival.monedas"));
+        board.team("boosters", "");
+        board.team("players", "");
+        board.team("world", "");
+        board.team("coins", "");
 
-        board.getTeam("boosters").addEntry(Utils.colorize("&4"));
-        board.getTeam("players").addEntry(Utils.colorize("&f"));
-        board.getTeam("world").addEntry(Utils.colorize("&5"));
-        board.getTeam("coins").addEntry(Utils.colorize("&6"));
+        board.getTeam("boosters").addEntry(sBoosters);
+        board.getTeam("players").addEntry(sPlayers);
+        board.getTeam("world").addEntry(sWorld);
+        board.getTeam("coins").addEntry(sCoins);
 
         new BukkitRunnable() {
             @Override
@@ -127,10 +133,18 @@ public class ScoreboardHandler implements Listener {
 
                 board.setName(sbName);
 
-                board.getTeam("boosters").setSuffix(Utils.colorize("&a" + user.getUserData().getBoosters().size()));
-                board.getTeam("players").setSuffix(Utils.colorize("&a" + Bukkit.getOnlinePlayers().size()));
-                board.getTeam("world").setSuffix(Utils.colorize("&d" + user.getPlayer().getWorld().getName()));
-                board.getTeam("coins").setSuffix(Utils.colorize("&6" + Main.instance.economyProvider.getBalance(user.getPlayer())));
+                board.getTeam("boosters").setSuffix(
+                        Utils.colorize("&a") + user.getUserData().getBoosters().size()
+                );
+                board.getTeam("players").setSuffix(
+                        Languaje.getLangMsg(user.getUserData().getLang(), "Scoreboardlobby.jugadoresSuffix") + Bukkit.getOnlinePlayers().size()
+                );
+                board.getTeam("world").setSuffix(
+                        Languaje.getLangMsg(user.getUserData().getLang(), "Scoreboardsurvival.mundoSuffix") + user.getPlayer().getWorld().getName()
+                );
+                board.getTeam("coins").setSuffix(
+                        Languaje.getLangMsg(user.getUserData().getLang(), "Scoreboardsurvival.monedasSuffix") + Main.instance.economyProvider.getBalance(user.getPlayer())
+                );
 
                 board.build(user.getPlayer());
             }

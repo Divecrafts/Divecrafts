@@ -66,9 +66,9 @@ public class ResponderCMD extends SCmd {
             return;
         }
 
-        if (DecirCMD.getLastPlayerMsg().get(user.getPlayer()) == null)
-            DecirCMD.getLastPlayerMsg().remove(user.getPlayer());
-        DecirCMD.getLastPlayerMsg().put(user.getPlayer(), target.getPlayer());
+        if (DecirCMD.getLastPlayerMsg().get(target.getPlayer()) == null)
+            DecirCMD.getLastPlayerMsg().remove(target.getPlayer());
+        DecirCMD.getLastPlayerMsg().put(target.getPlayer(), user.getPlayer());
 
         sendPrivateMessage(target, user, Utils.buildString(args));
     }

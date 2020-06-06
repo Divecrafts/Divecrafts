@@ -53,7 +53,7 @@ public class CMD_Party extends Command {
                 StringBuilder sb = new StringBuilder();
                 for (int amount = 1; amount < args.length; amount++)
                     sb.append(args[amount]).append(" ");
-                party.broadcastMessage(player.getName() + " &8& &7" + sb.toString());
+                party.broadcastMessage(TextUtils.formatText("&e" + player.getName() + ": &7" + sb.toString()));
             }
             else {
                 try {
@@ -78,7 +78,7 @@ public class CMD_Party extends Command {
                         e.printStackTrace();
                     }
                     for (ProxiedPlayer others : party.getPlayers())
-                        player.sendMessage(new TextComponent("- " + others.getName()));
+                        player.sendMessage(new TextComponent(TextUtils.formatText("&b- " + others.getName())));
                 }
                 else {
                     try {

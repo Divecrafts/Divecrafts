@@ -4,15 +4,12 @@ import io.clonalejandro.Essentials.commands.*;
 import io.clonalejandro.Essentials.events.*;
 import io.clonalejandro.Essentials.hooks.VaultHook;
 import io.clonalejandro.Essentials.providers.EconomyProvider;
-import io.clonalejandro.Essentials.tasks.ClearLag;
+import io.clonalejandro.Essentials.tasks.AutoRestart;
 import io.clonalejandro.Essentials.utils.MysqlManager;
 import io.clonalejandro.Essentials.utils.SpawnYml;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
-import org.bukkit.permissions.PermissionAttachment;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -21,8 +18,6 @@ import org.bukkit.scheduler.BukkitTask;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.UUID;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Created by Alex
@@ -65,7 +60,7 @@ public class Main extends JavaPlugin {
 
             events(pluginManager);
             commands();
-            initClearLag();
+            initAutoRestart();
             vaultHook.hook();
         }
         catch (Exception ex){
@@ -158,11 +153,10 @@ public class Main extends JavaPlugin {
         Bukkit.getConsoleSender().sendMessage(Main.translate("&9&lEssentials> &fdatabase connected"));
     }
 
-    private void initClearLag(){
-        final ClearLag task = new ClearLag();
-
+    private void initAutoRestart(){
+        final AutoRestart task = new AutoRestart();
         tasks.add(task);
-        task.runTaskTimer(this, 0L, 20 * 60 * 15);
+        task.runTaskTimer(this, 0L, 20L);
     }
 
     public static String translate(String msg){

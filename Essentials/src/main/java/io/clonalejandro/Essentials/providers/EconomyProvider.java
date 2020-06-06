@@ -28,12 +28,12 @@ public class EconomyProvider implements net.milkbowl.vault.economy.Economy {
 
     @Override
     public boolean isEnabled() {
-        return false;
+        return true;
     }
 
     @Override
     public String getName() {
-        return null;
+        return "EssentialsEconomy";
     }
 
     @Override
@@ -47,8 +47,8 @@ public class EconomyProvider implements net.milkbowl.vault.economy.Economy {
     }
 
     @Override
-    public String format(double v) {
-        return null;
+    public String format(double amount) {
+        return String.format("$%s", amount);
     }
 
     @Override
@@ -84,7 +84,7 @@ public class EconomyProvider implements net.milkbowl.vault.economy.Economy {
     @Override
     public double getBalance(String playerName) {
         try {
-            final double amount = new Economy(Bukkit.getOfflinePlayer(playerName).getUniqueId()).balance();
+            final double amount = new Economy(playerName).balance();
             return round(amount);
         }
         catch (SQLException throwables){
@@ -138,7 +138,7 @@ public class EconomyProvider implements net.milkbowl.vault.economy.Economy {
     @Override
     public EconomyResponse withdrawPlayer(String playerName, double amount) {
         try {
-            new Economy(Bukkit.getPlayer(playerName).getUniqueId()).withdraw(amount);
+            new Economy(playerName).withdraw(amount);
             return new EconomyResponse(amount, getBalance(playerName), EconomyResponse.ResponseType.SUCCESS, "");
         }
         catch (SQLException throwables) {
@@ -172,7 +172,7 @@ public class EconomyProvider implements net.milkbowl.vault.economy.Economy {
     @Override
     public EconomyResponse depositPlayer(String playerName, double amount) {
         try {
-            new Economy(Bukkit.getOfflinePlayer(playerName).getUniqueId()).deposit(amount);
+            new Economy(playerName).deposit(amount);
             return new EconomyResponse(amount, getBalance(playerName), EconomyResponse.ResponseType.SUCCESS, "");
         }
         catch (Exception ex) {
