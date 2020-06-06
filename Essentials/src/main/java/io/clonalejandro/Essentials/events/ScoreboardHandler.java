@@ -95,7 +95,7 @@ public class ScoreboardHandler implements Listener {
         new BukkitRunnable() {
             @Override
             public void run() {
-                if (user.getPlayer() == null) {
+                if (user.getPlayer() == null || !user.getPlayer().isOnline()) {
                     cancel();
                     return;
                 }

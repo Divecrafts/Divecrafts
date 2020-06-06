@@ -3,6 +3,10 @@ package io.clonalejandro.Essentials.objects;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.entity.Player;
+
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by Alex
@@ -24,6 +28,8 @@ public class Home {
     private final String name, world;
     private final double x, y, z;
     private final float yaw, pitch;
+
+    public static HashMap<Player, List<Home>> homes = new HashMap<>();
 
     public Home(String name, String world, double x, double y, double z, float yaw, float pitch) {
         this.name = name;

@@ -145,10 +145,10 @@ public class Economy {
 
             final PreparedStatement statement1 = MysqlManager.getConnection().prepareStatement("SELECT * FROM economy WHERE name=?");
             final PreparedStatement statement2 = MysqlManager.getConnection().prepareStatement("UPDATE economy SET name=? WHERE uuid=?");
-            statement1.setString(1, this.name);
+            statement1.setString(1, getPlayer().getName());
 
             if (!statement1.executeQuery().next()) {
-                statement2.setString(1, this.name);
+                statement2.setString(1, getPlayer().getName() == null ? "" : getPlayer().getName());
                 statement2.setString(2, this.uuid.toString());
 
                 statement2.executeUpdate();
