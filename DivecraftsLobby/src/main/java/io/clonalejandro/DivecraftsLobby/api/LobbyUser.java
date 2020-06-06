@@ -78,27 +78,32 @@ public class LobbyUser extends SUser {
         final String rankColored = SCmd.Rank.groupColor(getUserData().getRank()) + getUserData().getRank().getPrefix();
         final String rank = getUserData().getRank() == SCmd.Rank.USUARIO ? rankColored + "&lUSER" : rankColored;
 
+        final String sBoosters = Utils.colorize("&fBoosters: &a");//TODO: Add lang support
+        final String sPlayers = Languaje.getLangMsg(getUserData().getLang(), "Scoreboardlobby.jugadores");
+        final String sKeys =  Utils.colorize("&fKeys: &a");
+        final String sCoins = Languaje.getLangMsg(getUserData().getLang(), "Scoreboardlobby.monedas");
+
         board.setName(Utils.colorize(sbName));
         board.text(10, Utils.colorize("&1"));
         board.text(9, Utils.colorize(Languaje.getLangMsg(getUserData().getLang(), "Scoreboardlobby.rango") + "&" + rank));
-        board.text(8, Utils.colorize("&4"));
-        board.text(7, Utils.colorize("&5"));
-        board.text(6, Utils.colorize("&6"));
+        board.text(8, sBoosters);
+        board.text(7, sKeys);
+        board.text(6, sCoins);
         board.text(5, Utils.colorize("&2"));
         board.text(4, Utils.colorize("&fLobby: &a#" + (Bukkit.getServerId().equalsIgnoreCase("lobby") ? "1" :  Bukkit.getServerId().charAt(Bukkit.getServerId().length() -1))));
-        board.text(3, Utils.colorize("&f"));
+        board.text(3, sPlayers);
         board.text(2, Utils.colorize("&3"));
         board.text(1, Utils.colorize("&ewww.divecrafts.net"));
 
-        board.team("boosters", Utils.colorize("&fBoosters: &a"));//TODO: Add lang support
-        board.team("players", Languaje.getLangMsg(getUserData().getLang(), "Scoreboardlobby.jugadores"));
-        board.team("keys", Utils.colorize("&fKeys: &a"));
-        board.team("coins", Languaje.getLangMsg(getUserData().getLang(), "Scoreboardlobby.monedas"));
+        board.team("boosters", "");
+        board.team("players", "");
+        board.team("keys", "");
+        board.team("coins", "");
 
-        board.getTeam("boosters").addEntry(Utils.colorize("&4"));
-        board.getTeam("players").addEntry(Utils.colorize("&f"));
-        board.getTeam("keys").addEntry(Utils.colorize("&5"));
-        board.getTeam("coins").addEntry(Utils.colorize("&6"));
+        board.getTeam("boosters").addEntry(sBoosters);
+        board.getTeam("players").addEntry(sPlayers);
+        board.getTeam("keys").addEntry(sKeys);
+        board.getTeam("coins").addEntry(sCoins);
 
         new BukkitRunnable() {
             @Override
