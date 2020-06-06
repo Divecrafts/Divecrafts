@@ -27,55 +27,135 @@ import java.util.*;
 
 public class Economy {
 
-    private final Main plugin = Main.instance;
-    private final UUID uuid;
+    private Main plugin = Main.instance;
+    private UUID uuid;
+    private String name = null;
     private double money;
 
     public Economy(UUID uuid) throws SQLException {
         this.uuid = uuid;
         this.money = balance();
+
+        this.checkIfExists();
+    }
+
+    public Economy(String name) throws SQLException {
+        this.name = name;
+        this.money = balance();
+
+        this.checkIfExists();
     }
 
     public double withdraw(double amount) throws SQLException {
-        final String query = MysqlManager.secureQuery("UPDATE economy SET amount=? WHERE uuid=?");
-        final PreparedStatement statement = MysqlManager.getConnection().prepareStatement(query);
+        if (name == null){
+            final String query = MysqlManager.secureQuery("UPDATE economy SET amount=? WHERE uuid=?");
+            final PreparedStatement statement = MysqlManager.getConnection().prepareStatement(query);
 
-        this.money -= amount;
+            this.money -= amount;
 
-        statement.setDouble(1, this.money);
-        statement.setString(2, uuid.toString());
+            statement.setDouble(1, this.money);
+            statement.setString(2, this.uuid.toString());
 
-        statement.executeUpdate();
+            statement.executeUpdate();
+        }
+        else {
+            final String query = MysqlManager.secureQuery("UPDATE economy SET amount=? WHERE name=?");
+            final PreparedStatement statement = MysqlManager.getConnection().prepareStatement(query);
+
+            this.money -= amount;
+
+            statement.setDouble(1, this.money);
+            statement.setString(2, this.name);
+
+            statement.executeUpdate();
+        }
+
         return this.money;
     }
 
     public double deposit(double amount) throws SQLException {
-        final String query = MysqlManager.secureQuery("UPDATE economy SET amount=? WHERE uuid=?");
-        final PreparedStatement statement = MysqlManager.getConnection().prepareStatement(query);
+        if (name == null){
+            final String query = MysqlManager.secureQuery("UPDATE economy SET amount=? WHERE uuid=?");
+            final PreparedStatement statement = MysqlManager.getConnection().prepareStatement(query);
 
-        this.money += amount;
+            this.money += amount;
 
-        statement.setDouble(1, this.money);
-        statement.setString(2, uuid.toString());
+            statement.setDouble(1, this.money);
+            statement.setString(2, this.uuid.toString());
 
-        statement.executeUpdate();
+            statement.executeUpdate();
+        }
+        else {
+            final String query = MysqlManager.secureQuery("UPDATE economy SET amount=? WHERE name=?");
+            final PreparedStatement statement = MysqlManager.getConnection().prepareStatement(query);
+
+            this.money += amount;
+
+            statement.setDouble(1, this.money);
+            statement.setString(2, this.name);
+
+            statement.executeUpdate();
+        }
         return this.money;
     }
 
     public double balance() throws SQLException {
-        final String query = MysqlManager.secureQuery("SELECT * FROM economy WHERE uuid=?");
-        final PreparedStatement statement = MysqlManager.getConnection().prepareStatement(query);
+        if (name == null){
+            final String query = MysqlManager.secureQuery("SELECT * FROM economy WHERE uuid=?");
+            final PreparedStatement statement = MysqlManager.getConnection().prepareStatement(query);
 
-        statement.setString(1, uuid.toString());
+            statement.setString(1, this.uuid.toString());
 
-        final ResultSet rs = statement.executeQuery();
+            final ResultSet rs = statement.executeQuery();
 
-        return round(rs.next() ? rs.getDouble("amount") : 0.0D);
+            return round(rs.next() ? rs.getDouble("amount") : 0.0D);
+        }
+        else {
+            final String query = MysqlManager.secureQuery("SELECT * FROM economy WHERE name=?");
+            final PreparedStatement statement = MysqlManager.getConnection().prepareStatement(query);
+
+            statement.setString(1, this.name);
+
+            final ResultSet rs = statement.executeQuery();
+
+            return round(rs.next() ? rs.getDouble("amount") : 0.0D);
+        }
     }
 
     public OfflinePlayer getPlayer(){
         return Bukkit.getOfflinePlayer(this.uuid);
     }
+
+    public void checkIfExists() throws SQLException {
+        if (this.name != null){
+            final PreparedStatement statement1 = MysqlManager.getConnection().prepareStatement("SELECT * FROM economy WHERE name=?");
+            final PreparedStatement statement2 = MysqlManager.getConnection().prepareStatement("INSERT INTO economy VALUES(?,?,?)");
+            statement1.setString(1, this.name);
+
+            if (!statement1.executeQuery().next()){
+                statement2.setString(1, UUID.randomUUID().toString());
+                statement2.setDouble(2, 1300D);
+                statement2.setString(3, this.name);
+
+                statement2.executeUpdate();
+            }
+        }
+        else {
+            this.name = getPlayer().getName();
+
+            final PreparedStatement statement1 = MysqlManager.getConnection().prepareStatement("SELECT * FROM economy WHERE name=?");
+            final PreparedStatement statement2 = MysqlManager.getConnection().prepareStatement("UPDATE economy SET name=? WHERE uuid=?");
+            statement1.setString(1, this.name);
+
+            if (!statement1.executeQuery().next()) {
+                statement2.setString(1, this.name);
+                statement2.setString(2, this.uuid.toString());
+
+                statement2.executeUpdate();
+            }
+        }
+    }
+
 
     public static List<Economy> balanceTop(int limit) throws SQLException {
         final PreparedStatement statement = MysqlManager.getConnection().prepareStatement(String.format("SELECT * FROM economy order by amount desc limit %s", limit));
