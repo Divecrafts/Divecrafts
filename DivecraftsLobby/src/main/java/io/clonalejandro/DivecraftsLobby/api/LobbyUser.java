@@ -108,7 +108,7 @@ public class LobbyUser extends SUser {
         new BukkitRunnable() {
             @Override
             public void run() {
-                if (getPlayer() == null) {
+                if (getPlayer() == null || !getPlayer().isOnline()) {
                     cancel();
                     return;
                 }
