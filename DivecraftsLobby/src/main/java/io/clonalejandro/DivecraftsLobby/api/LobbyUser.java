@@ -78,10 +78,10 @@ public class LobbyUser extends SUser {
         final String rankColored = SCmd.Rank.groupColor(getUserData().getRank()) + getUserData().getRank().getPrefix();
         final String rank = getUserData().getRank() == SCmd.Rank.USUARIO ? rankColored + "&lUSER" : rankColored;
 
-        final String sBoosters = Utils.colorize("&fBoosters: &a");//TODO: Add lang support
-        final String sPlayers = Languaje.getLangMsg(getUserData().getLang(), "Scoreboardlobby.jugadores");
-        final String sKeys =  Utils.colorize("&fKeys: &a");
-        final String sCoins = Languaje.getLangMsg(getUserData().getLang(), "Scoreboardlobby.monedas");
+        final String sBoosters = Utils.colorize("&fBoosters: ");//TODO: Add lang support
+        final String sPlayers = Languaje.getLangMsg(getUserData().getLang(), "Scoreboardlobby.jugadoresPrefix");
+        final String sKeys =  Utils.colorize("&fKeys: ");
+        final String sCoins = Languaje.getLangMsg(getUserData().getLang(), "Scoreboardlobby.monedasPrefix");
 
         board.setName(Utils.colorize(sbName));
         board.text(10, Utils.colorize("&1"));
@@ -100,7 +100,7 @@ public class LobbyUser extends SUser {
         board.team("keys", "");
         board.team("coins", "");
 
-        board.getTeam("boosters").addEntry(sBoosters);
+        board.getTeam("boosters").addEntry(Utils.colorize(sBoosters));
         board.getTeam("players").addEntry(sPlayers);
         board.getTeam("keys").addEntry(sKeys);
         board.getTeam("coins").addEntry(sCoins);
@@ -147,10 +147,18 @@ public class LobbyUser extends SUser {
                 board.setName(sbName);
                 SUser user = SServer.getUser(getUuid());
 
-                board.getTeam("boosters").setSuffix(String.valueOf(user.getUserData().getBoosters().size()));
-                board.getTeam("players").setSuffix(String.valueOf(Bukkit.getOnlinePlayers().size()));
-                board.getTeam("keys").setSuffix(String.valueOf(user.getUserData().getKeys()));
-                board.getTeam("coins").setSuffix(String.valueOf(user.getUserData().getCoins()));
+                board.getTeam("boosters").setSuffix(
+                        Utils.colorize("&a") + user.getUserData().getBoosters().size()
+                );
+                board.getTeam("players").setSuffix(
+                        Languaje.getLangMsg(user.getUserData().getLang(), "Scoreboardlobby.jugadoresSuffix") + Bukkit.getOnlinePlayers().size()
+                );
+                board.getTeam("keys").setSuffix(
+                        Utils.colorize("&a") + user.getUserData().getKeys()
+                );
+                board.getTeam("coins").setSuffix(
+                        Languaje.getLangMsg(user.getUserData().getLang(), "Scoreboardlobby.monedasSuffix") + user.getUserData().getCoins()
+                );
 
                 board.build(getPlayer());
             }
