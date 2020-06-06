@@ -3,6 +3,7 @@ package io.clonalejandro.Essentials;
 import io.clonalejandro.Essentials.commands.*;
 import io.clonalejandro.Essentials.events.*;
 import io.clonalejandro.Essentials.hooks.VaultHook;
+import io.clonalejandro.Essentials.objects.Warp;
 import io.clonalejandro.Essentials.providers.EconomyProvider;
 import io.clonalejandro.Essentials.tasks.AutoRestart;
 import io.clonalejandro.Essentials.utils.MysqlManager;
@@ -15,6 +16,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -62,6 +65,7 @@ public class Main extends JavaPlugin {
             commands();
             initAutoRestart();
             vaultHook.hook();
+            loadWarps();
         }
         catch (Exception ex){
             ex.printStackTrace();
@@ -96,6 +100,7 @@ public class Main extends JavaPlugin {
         pluginManager.registerEvents(new CreeperHandler(), this);
         pluginManager.registerEvents(new FlyHandler(), this);
         pluginManager.registerEvents(new WarpHandler(), this);
+        pluginManager.registerEvents(new HomeHandler(), this);
 
         Bukkit.getConsoleSender().sendMessage(translate("&9&lEssentials> &fregistrando eventos"));
     }
@@ -157,6 +162,25 @@ public class Main extends JavaPlugin {
         final AutoRestart task = new AutoRestart();
         tasks.add(task);
         task.runTaskTimer(this, 0L, 20L);
+    }
+
+    private void loadWarps(){
+        Bukkit.getScheduler().runTaskLaterAsynchronously(this, () -> {
+            final String query = "SELECT * FROM Warps";
+            final List<Warp> warps = new ArrayList<>();
+
+            try {
+                final ResultSet result = MysqlManager.getConnection().createStatement().executeQuery(query);
+
+                while (result.next())
+                    warps.add(new Warp(result));
+            }
+            catch (SQLException ignored){
+
+            }
+
+            Warp.warpList.addAll(warps);
+        }, 20L);
     }
 
     public static String translate(String msg){

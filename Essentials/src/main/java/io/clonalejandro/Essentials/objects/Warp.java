@@ -6,6 +6,8 @@ import org.bukkit.World;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Alex
@@ -29,6 +31,8 @@ public class Warp {
     private String world;
     private double x, y, z;
     private float yaw, pitch;
+
+    public static List<Warp> warpList = new ArrayList<>();
 
     public Warp(String name, String world, double x, double y, double z, float yaw, float pitch) {
         this.name = name;

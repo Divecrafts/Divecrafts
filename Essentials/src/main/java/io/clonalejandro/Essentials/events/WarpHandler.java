@@ -3,12 +3,10 @@ package io.clonalejandro.Essentials.events;
 import io.clonalejandro.DivecraftsCore.utils.Utils;
 import io.clonalejandro.Essentials.objects.Warp;
 import io.clonalejandro.Essentials.utils.MysqlManager;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.sql.PreparedStatement;

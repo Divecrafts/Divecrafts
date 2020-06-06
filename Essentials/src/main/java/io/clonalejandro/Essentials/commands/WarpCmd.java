@@ -10,7 +10,6 @@ import io.clonalejandro.Essentials.utils.MysqlManager;
 import io.clonalejandro.Essentials.utils.TeleportWithDelay;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -20,6 +19,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by Alex
@@ -50,7 +50,7 @@ public class WarpCmd extends Cmd implements CommandExecutor {
 
     private boolean warps(CommandSender sender){
         final Player player = Bukkit.getPlayer(sender.getName());
-        final List<Warp> warps = getWarps(player);
+        final List<Warp> warps = getWarps();
         final List<String> warpNames = new ArrayList<>();
 
         warps.forEach(warp -> warpNames.add(warp.getName()));
@@ -64,26 +64,32 @@ public class WarpCmd extends Cmd implements CommandExecutor {
         final Player player = Bukkit.getPlayer(sender.getName());
 
         if (args.length > 0){
-            args[0] = MysqlManager.secureQuery(args[0]);
-            final String query = String.format(
-                    "INSERT INTO Warps VALUES (\"%s\", \"%s\", %s, %s, %s, %s, %s);",
-                    args[0],
-                    player.getWorld().getName(),
-                    player.getLocation().getX(),
-                    player.getLocation().getY(),
-                    player.getLocation().getZ(),
-                    player.getLocation().getYaw(),
-                    player.getLocation().getPitch()
-            );
+            final Runnable task = () -> {
+                args[0] = MysqlManager.secureQuery(args[0]);
+                final Warp warp = new Warp(args[0], player.getWorld().getName(), player.getLocation().getX(), player.getLocation().getY(), player.getLocation().getZ(), player.getLocation().getYaw(), player.getLocation().getPitch());
+                final String query = String.format(
+                        "INSERT INTO Warps VALUES (\"%s\", \"%s\", %s, %s, %s, %s, %s);",
+                        warp.getName(),
+                        warp.getWorld().getName(),
+                        warp.getX(),
+                        warp.getY(),
+                        warp.getZ(),
+                        warp.getYaw(),
+                        warp.getPitch()
+                );
 
-            try {
-                MysqlManager.getConnection().createStatement().executeUpdate(query);
-                player.sendMessage(Main.translate(String.format("&9&lServer> &fHas creado el warp &e%s", args[0])));
-            }
-            catch (SQLException throwables) {
-                throwables.printStackTrace();
-                player.sendMessage(Main.translate("&c&lServer> &falgo salió mal"));
-            }
+                try {
+                    MysqlManager.getConnection().createStatement().executeUpdate(query);
+                    player.sendMessage(Main.translate(String.format("&9&lServer> &fHas creado el warp &e%s", args[0])));
+                    Warp.warpList.add(warp);
+                }
+                catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                    player.sendMessage(Main.translate("&c&lServer> &falgo salió mal"));
+                }
+            };
+
+            runTask(task);
         }
         else player.sendMessage(Main.translate("&c&lServer> &fformato incorrecto usa &b/setwarp &e<nombre>"));
 
@@ -96,24 +102,18 @@ public class WarpCmd extends Cmd implements CommandExecutor {
 
         if (args.length > 0){
             args[0] = MysqlManager.secureQuery(args[0]);
-            final String query = String.format("SELECT * FROM Warps WHERE name=\"%s\";", args[0]);
-
-            try {
-                final ResultSet result = MysqlManager.getConnection().createStatement().executeQuery(query);
-
-                result.next();
-
-                final Location location = new Warp(result).getLocation();
-
+            final List<Warp> warps = getWarps().stream()
+                    .filter(w -> w.getName().equalsIgnoreCase(args[0]))
+                    .collect(Collectors.toList());
+            if (warps.size() != 0){
+                final Warp warp = warps.get(0);
+                final Location location = warp.getLocation();
                 player.sendMessage(Main.translate(String.format("&9&lServer> &fTeletransportando al warp &e%s%s", args[0], user.getUserData().getRank().getRank() >= SCmd.Rank.MEGALODON.getRank() ? "" : "  &fespere &e5seg")));
                 new TeleportWithDelay(player, location);
             }
-            catch (SQLException throwables){
-                player.sendMessage(Main.translate("&c&lServer> &fEse warp no existe"));
-            }
+            else player.sendMessage(Main.translate("&c&lServer> &fEse warp no existe"));
         }
-        else new WarpGui(getWarps(player), player);
-
+        else new WarpGui(getWarps(), player);
         return true;
     }
 
@@ -123,36 +123,40 @@ public class WarpCmd extends Cmd implements CommandExecutor {
         final Player player = Bukkit.getPlayer(sender.getName());
 
         if (args.length > 0){
-            args[0] = MysqlManager.secureQuery(args[0]);
-            final String query = String.format("DELETE FROM Warps WHERE name=\"%s\";", args[0]);
+            final Runnable task = () -> {
+                args[0] = MysqlManager.secureQuery(args[0]);
+                final String query = String.format("DELETE FROM Warps WHERE name=\"%s\";", args[0]);
 
-            try {
-                MysqlManager.getConnection().createStatement().executeUpdate(query);
-                player.sendMessage(Main.translate(String.format("&9&lServer> &fSe ha borrado el warp &e%s", args[0])));
-            }
-            catch (SQLException throwables) {
-                player.sendMessage(Main.translate("&c&lServer> &fEse warp no existe"));
-            }
+                try {
+                    MysqlManager.getConnection().createStatement().executeUpdate(query);
+                    player.sendMessage(Main.translate(String.format("&9&lServer> &fSe ha borrado el warp &e%s", args[0])));
+
+                    if (Warp.warpList.size() != 0){
+                        final List<Warp> warps = getWarps().stream()
+                                .filter(w -> w.getName().equalsIgnoreCase(args[0]))
+                                .collect(Collectors.toList());
+
+                        if (warps.size() != 0)
+                            Warp.warpList.remove(warps.get(0));
+                    }
+                }
+                catch (SQLException throwables) {
+                    player.sendMessage(Main.translate("&c&lServer> &fEse warp no existe"));
+                }
+            };
+
+            runTask(task);
         }
         else player.sendMessage(Main.translate("&c&lServer> &fformato incorrecto usa &b/delwarp &e<nombre>"));
 
         return true;
     }
 
-    private List<Warp> getWarps(Player player){
-        final String query = "SELECT * FROM Warps";
-        final List<Warp> warps = new ArrayList<>();
+    private List<Warp> getWarps(){
+        return Warp.warpList;
+    }
 
-        try {
-            final ResultSet result = MysqlManager.getConnection().createStatement().executeQuery(query);
-
-            while (result.next())
-                warps.add(new Warp(result));
-        }
-        catch (SQLException throwables){
-            player.sendMessage(Main.translate("&c&lServer> &fNo hay warps guardados"));
-        }
-
-        return warps;
+    private void runTask(Runnable runnable) {
+        Bukkit.getScheduler().runTask(Main.instance, runnable);
     }
 }
