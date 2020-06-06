@@ -221,6 +221,7 @@ public class PlayerEvents implements Listener {
         final PermissionAttachment attachment = player.addAttachment(Main.getInstance());
         final List<String> permissions = new ArrayList<>();
 
+        /* TODO: Migrate
         try {
             if (Bukkit.getServer().getPluginManager().isPluginEnabled("Essentials")){
                 Class<?> clazz = Class.forName("io.clonalejandro.Essentials.objects.Permission");
@@ -230,8 +231,7 @@ public class PlayerEvents implements Listener {
             }
         }
         catch (Exception ex){
-            //ex.printStackTrace();
-        }
+        }*/
 
         if (rankId > 0){
             for (int i = 0; i <= rankId; i++) {
