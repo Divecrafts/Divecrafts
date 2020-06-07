@@ -8,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by Alex
@@ -159,15 +160,25 @@ public class Economy {
 
     public static List<Economy> balanceTop(int limit) throws SQLException {
         final PreparedStatement statement = MysqlManager.getConnection().prepareStatement(String.format("SELECT * FROM economy order by amount desc limit %s", limit));
-        final ResultSet rs = statement.executeQuery();
         final List<Economy> top = new ArrayList<>();
 
-        while (rs.next()){
-            final UUID uuid = UUID.fromString(rs.getString("uuid"));
-            top.add(new Economy(uuid));
-        }
+        Bukkit.getScheduler().runTaskAsynchronously(Main.instance, () -> {
+            try {
+                final ResultSet rs = statement.executeQuery();
 
-        return top;
+                while (rs.next()){
+                    final UUID uuid = UUID.fromString(rs.getString("uuid"));
+                    top.add(new Economy(uuid));
+                }
+            }
+            catch (Exception ex){
+                ex.printStackTrace();
+            }
+        });
+
+        return top.stream()
+                .filter(eco -> eco.getPlayer() != null && eco.getPlayer().getName() != null)
+                .collect(Collectors.toList());
     }
 
     private double round(double d){
