@@ -113,14 +113,7 @@ public class EconomyCmd extends Cmd implements CommandExecutor {
     private void balanceTop(CommandSender sender) {
         try {
             final List<Economy> top = Economy.balanceTop(10);
-            top.forEach((economy) -> {
-                try {
-                    sender.sendMessage(Utils.colorize(String.format("&e%s &fhas &b%s$", economy.getPlayer().getName(), economy.balance())));
-                }
-                catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-            });
+            top.forEach((economy) -> sender.sendMessage(Utils.colorize(String.format("&e%s &fhas &b%s$", economy.getPlayer().getName(), economy.balance()))));
         }
         catch (Exception throwables) {
             throwables.printStackTrace();

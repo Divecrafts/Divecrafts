@@ -84,7 +84,10 @@ public class EconomyProvider implements net.milkbowl.vault.economy.Economy {
     @Override
     public double getBalance(String playerName) {
         try {
-            final double amount = new Economy(playerName).balance();
+            final Economy economy = Economy.economyPlayers.get(Bukkit.getPlayer(playerName)) == null ?
+                    new Economy(playerName) :
+                    Economy.economyPlayers.get(Bukkit.getPlayer(playerName));
+            final double amount = economy.balance();
             return round(amount);
         }
         catch (SQLException throwables){
@@ -96,7 +99,11 @@ public class EconomyProvider implements net.milkbowl.vault.economy.Economy {
     @Override
     public double getBalance(OfflinePlayer offlinePlayer) {
         try {
-            final double amount = new Economy(offlinePlayer.getUniqueId()).balance();
+            final Economy economy = Economy.economyPlayers.get(Bukkit.getPlayer(offlinePlayer.getUniqueId())) == null ?
+                    new Economy(offlinePlayer.getUniqueId().toString()) :
+                    Economy.economyPlayers.get(Bukkit.getPlayer(offlinePlayer.getUniqueId()));
+
+            final double amount = economy.balance();
             return round(amount);
         }
         catch (SQLException throwables) {
@@ -138,7 +145,11 @@ public class EconomyProvider implements net.milkbowl.vault.economy.Economy {
     @Override
     public EconomyResponse withdrawPlayer(String playerName, double amount) {
         try {
-            new Economy(playerName).withdraw(amount);
+            final Economy economy = Economy.economyPlayers.get(Bukkit.getPlayer(playerName)) == null ?
+                    new Economy(playerName) :
+                    Economy.economyPlayers.get(Bukkit.getPlayer(playerName));
+
+            economy.withdraw(amount);
             return new EconomyResponse(amount, getBalance(playerName), EconomyResponse.ResponseType.SUCCESS, "");
         }
         catch (SQLException throwables) {
@@ -150,7 +161,11 @@ public class EconomyProvider implements net.milkbowl.vault.economy.Economy {
     @Override
     public EconomyResponse withdrawPlayer(OfflinePlayer offlinePlayer, double amount) {
         try {
-            new Economy(offlinePlayer.getUniqueId()).withdraw(amount);
+            final Economy economy = Economy.economyPlayers.get(Bukkit.getPlayer(offlinePlayer.getUniqueId())) == null ?
+                    new Economy(offlinePlayer.getUniqueId()) :
+                    Economy.economyPlayers.get(Bukkit.getPlayer(offlinePlayer.getUniqueId()));
+
+            economy.withdraw(amount);
             return new EconomyResponse(amount, getBalance(offlinePlayer), EconomyResponse.ResponseType.SUCCESS, "");
         }
         catch (SQLException throwables) {
@@ -172,7 +187,11 @@ public class EconomyProvider implements net.milkbowl.vault.economy.Economy {
     @Override
     public EconomyResponse depositPlayer(String playerName, double amount) {
         try {
-            new Economy(playerName).deposit(amount);
+            final Economy economy = Economy.economyPlayers.get(Bukkit.getPlayer(playerName)) == null ?
+                    new Economy(playerName) :
+                    Economy.economyPlayers.get(Bukkit.getPlayer(playerName));
+
+            economy.deposit(amount);
             return new EconomyResponse(amount, getBalance(playerName), EconomyResponse.ResponseType.SUCCESS, "");
         }
         catch (Exception ex) {
@@ -184,7 +203,11 @@ public class EconomyProvider implements net.milkbowl.vault.economy.Economy {
     @Override
     public EconomyResponse depositPlayer(OfflinePlayer offlinePlayer, double amount) {
         try {
-            new Economy(offlinePlayer.getUniqueId()).deposit(amount);
+            final Economy economy = Economy.economyPlayers.get(Bukkit.getPlayer(offlinePlayer.getUniqueId())) == null ?
+                    new Economy(offlinePlayer.getUniqueId()) :
+                    Economy.economyPlayers.get(Bukkit.getPlayer(offlinePlayer.getUniqueId()));
+
+            economy.deposit(amount);
             return new EconomyResponse(amount, getBalance(offlinePlayer), EconomyResponse.ResponseType.SUCCESS, "");
         }
         catch (SQLException throwables) {
