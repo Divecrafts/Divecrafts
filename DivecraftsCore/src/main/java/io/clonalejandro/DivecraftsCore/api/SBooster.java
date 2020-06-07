@@ -2,6 +2,7 @@ package io.clonalejandro.DivecraftsCore.api;
 
 import io.clonalejandro.DivecraftsCore.Main;
 import lombok.Getter;
+import org.bukkit.Bukkit;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -49,14 +50,16 @@ public class SBooster {
     }
 
     private void destroy(){
-        try {
-            final PreparedStatement statement = plugin.getMySQL().openConnection().prepareStatement("DELETE FROM booster where `id` = ?");
+        Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), () -> {
+            try {
+                final PreparedStatement statement = plugin.getMySQL().openConnection().prepareStatement("DELETE FROM booster where `id` = ?");
 
-            statement.setInt(1, id);
-            statement.executeUpdate();
-        }
-        catch (SQLException ex) {
-            ex.printStackTrace();
-        }
+                statement.setInt(1, id);
+                statement.executeUpdate();
+            }
+            catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        });
     }
 }

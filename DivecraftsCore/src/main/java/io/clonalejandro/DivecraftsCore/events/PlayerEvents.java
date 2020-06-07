@@ -202,11 +202,6 @@ public class PlayerEvents implements Listener {
                 mu.getPlayer().sendMessage(Languaje.getLangMsg(mu.getUserData().getLang(), "Chat.noips"));
                 e.setCancelled(true);
             }
-            /*
-            if (word.matches("^(?=.*[^.]$)((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.?){4}$")){
-                mu.getPlayer().sendMessage(Languaje.getLangMsg(mu.getUserData().getLang(), "Chat.noips"));
-                e.setCancelled(true);
-            }*/
         }
 
         SCmd.Rank r = mu.getUserData().getRank();
@@ -257,7 +252,7 @@ public class PlayerEvents implements Listener {
                 user.getUserData().getBoosters().forEach(SBooster::isExpired);
             }
         };
-        task.runTaskTimer(plugin, 0L, 60 * 20L);
+        task.runTaskTimerAsynchronously(plugin, 0L, 60 * 20L);
 
         user.getTasks().add(task);
     }
