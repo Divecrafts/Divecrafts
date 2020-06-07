@@ -148,19 +148,17 @@ public class Economy {
         final PreparedStatement statement = MysqlManager.getConnection().prepareStatement(String.format("SELECT * FROM economy order by amount desc limit %s", limit));
         final List<Economy> top = new ArrayList<>();
 
-        Bukkit.getScheduler().runTaskAsynchronously(Main.instance, () -> {
-            try {
-                final ResultSet rs = statement.executeQuery();
+        try {
+            final ResultSet rs = statement.executeQuery();
 
-                while (rs.next()){
-                    final UUID uuid = UUID.fromString(rs.getString("uuid"));
-                    top.add(new Economy(uuid));
-                }
+            while (rs.next()){
+                final UUID uuid = UUID.fromString(rs.getString("uuid"));
+                top.add(new Economy(uuid));
             }
-            catch (Exception ex){
-                ex.printStackTrace();
-            }
-        });
+        }
+        catch (Exception ex){
+            ex.printStackTrace();
+        }
 
         return top.stream()
                 .filter(eco -> eco.getPlayer() != null && eco.getPlayer().getName() != null)
