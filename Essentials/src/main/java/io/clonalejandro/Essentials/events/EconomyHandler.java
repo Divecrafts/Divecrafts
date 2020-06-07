@@ -47,11 +47,7 @@ public class EconomyHandler implements Listener {
         final Player player = event.getPlayer();
 
         if (Economy.economyPlayers.containsKey(player)){
-            try {
-                Economy.economyPlayers.get(player).save();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
+            Economy.economyPlayers.get(player).save();
         }
     }
 
@@ -60,11 +56,7 @@ public class EconomyHandler implements Listener {
         final Player player = event.getPlayer();
 
         if (Economy.economyPlayers.containsKey(player)){
-            try {
-                Economy.economyPlayers.get(player).save();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
+            Economy.economyPlayers.get(player).save();
         }
     }
 }
