@@ -101,6 +101,7 @@ public class Main extends JavaPlugin {
         pluginManager.registerEvents(new FlyHandler(), this);
         pluginManager.registerEvents(new WarpHandler(), this);
         pluginManager.registerEvents(new HomeHandler(), this);
+        pluginManager.registerEvents(new EconomyHandler(), this);
 
         Bukkit.getConsoleSender().sendMessage(translate("&9&lEssentials> &fregistrando eventos"));
     }
