@@ -61,6 +61,8 @@ public class FlyHandler implements Listener {
     }
 
     private void toggleFly(final Player player, final boolean mode){
+        if (!player.getAllowFlight()) return;
+
         Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
             SUser user = SServer.getUser(player.getUniqueId());
 
