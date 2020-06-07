@@ -40,22 +40,24 @@ public class ScoreboardHandler implements Listener {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event){
-        try {
-            final PreparedStatement statement1 = MysqlManager.getConnection().prepareStatement("SELECT * FROM economy WHERE uuid=?");
-            statement1.setString(1, event.getPlayer().getUniqueId().toString());
-            final ResultSet rs = statement1.executeQuery();
+        Bukkit.getScheduler().runTaskAsynchronously(Main.instance, () -> {
+            try {
+                final PreparedStatement statement1 = MysqlManager.getConnection().prepareStatement("SELECT * FROM economy WHERE uuid=?");
+                statement1.setString(1, event.getPlayer().getUniqueId().toString());
+                final ResultSet rs = statement1.executeQuery();
 
-            if (!rs.next()){
-                final PreparedStatement statement2 = MysqlManager.getConnection().prepareStatement("INSERT INTO economy VALUES(?, ?, ?)");
-                statement2.setString(1, event.getPlayer().getUniqueId().toString());
-                statement2.setDouble(2, 1300D);
-                statement2.setString(3, event.getPlayer().getName());
-                statement2.executeUpdate();
+                if (!rs.next()){
+                    final PreparedStatement statement2 = MysqlManager.getConnection().prepareStatement("INSERT INTO economy VALUES(?, ?, ?)");
+                    statement2.setString(1, event.getPlayer().getUniqueId().toString());
+                    statement2.setDouble(2, 1300D);
+                    statement2.setString(3, event.getPlayer().getName());
+                    statement2.executeUpdate();
+                }
             }
-        }
-        catch (Exception ex){
-            ex.printStackTrace();
-        }
+            catch (Exception ex){
+                ex.printStackTrace();
+            }
+        });
 
         setScoreBoard(SServer.getUser(event.getPlayer()));
     }
