@@ -12,8 +12,11 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.HashMap;
 
 public class Languaje {
+
+    private static final HashMap<String, String> searches = new HashMap<>();
 
     @AllArgsConstructor
     @Getter
@@ -23,6 +26,8 @@ public class Languaje {
     }
 
     public static String getLangMsg(int language, String whatToSearch) {
+        if (searches.containsKey(whatToSearch)) return Utils.colorize(searches.get(whatToSearch)).replace("%new", "\n");
+
         String file;
         switch (language) {
             case 1:
@@ -32,13 +37,14 @@ public class Languaje {
                 file = "es.json";
         }
 
-        JsonObject json = getJson("http://play.divecrafts.net:3000/api/" + file);
+        final JsonObject json = getJson("http://play.divecrafts.net:3000/api/" + file);
 
         if (json == null) return "Error!";
 
         String[] key = whatToSearch.split("\\.");
-
         String message = json.get(key[0]).getAsJsonObject().get(key[1]).getAsString();
+
+        searches.put(whatToSearch, message);
 
         return Utils.colorize(message).replace("%new", "\n");
     }

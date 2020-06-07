@@ -119,57 +119,59 @@ public class MySQL {
     public void saveUser(SUser u) {
         SUser.UserData data = u.getUserData();
 
-        try {
-            PreparedStatement statementDatos = openConnection().prepareStatement("UPDATE `data` SET `grupo`=?,`god`=?,`coins`=?,`lastConnect`=?,`ip`=?,`nick`=?,`nickcolor`=?, `boosters`=? WHERE `uuid`=?");
-            statementDatos.setInt(1, data.getRank() != null ? data.getRank().getRank() : 0);
-            statementDatos.setBoolean(2, data.getGod() == null ? false : data.getGod());
-            statementDatos.setInt(3, data.getCoins() == null ? 0 : data.getCoins());
-            statementDatos.setTimestamp(4, new Timestamp(new java.util.Date().getTime()));
-            statementDatos.setString(5, data.getIp() == null ? "" : data.getIp().getAddress().getHostAddress());
-            statementDatos.setString(6, data.getNickname() == null ? "" : data.getNickname());
-            statementDatos.setString(7, data.getNickcolor() == null ? "7" : data.getNickcolor());
-            statementDatos.setInt(8, data.getBoosters().size());
-            statementDatos.setString(9, u.getUuid().toString());
-            statementDatos.executeUpdate();
+        plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
+            try {
+                PreparedStatement statementDatos = openConnection().prepareStatement("UPDATE `data` SET `grupo`=?,`god`=?,`coins`=?,`lastConnect`=?,`ip`=?,`nick`=?,`nickcolor`=?, `boosters`=? WHERE `uuid`=?");
+                statementDatos.setInt(1, data.getRank() != null ? data.getRank().getRank() : 0);
+                statementDatos.setBoolean(2, data.getGod() == null ? false : data.getGod());
+                statementDatos.setInt(3, data.getCoins() == null ? 0 : data.getCoins());
+                statementDatos.setTimestamp(4, new Timestamp(new java.util.Date().getTime()));
+                statementDatos.setString(5, data.getIp() == null ? "" : data.getIp().getAddress().getHostAddress());
+                statementDatos.setString(6, data.getNickname() == null ? "" : data.getNickname());
+                statementDatos.setString(7, data.getNickcolor() == null ? "7" : data.getNickcolor());
+                statementDatos.setInt(8, data.getBoosters().size());
+                statementDatos.setString(9, u.getUuid().toString());
+                statementDatos.executeUpdate();
 
-            //Stats
-            PreparedStatement statementStats = openConnection().prepareStatement("UPDATE `stats` SET `kills_ffa`=?, `deaths_ffa`=?, `plays_ffa`=?, `kills_mb`=?, `deaths_mb`=?, `plays_mb`=?, `wins_mb`=?, `plays_fc`=?, `kills_fc`=?, `deaths_fc`=?, `wins_fc`=?, `plays_mum`=?, `kills_mum`=?, `deaths_mum`=?, `wins_mum`=?, `elo_mum`=?, `reroll_mum`=? WHERE `uuid`=?");
-            statementStats.setInt(1, data.getKills(SServer.GameID.FFA));
-            statementStats.setInt(2, data.getDeaths(SServer.GameID.FFA));
-            statementStats.setInt(3, data.getPlays(SServer.GameID.FFA));
-            statementStats.setInt(4, data.getKills(SServer.GameID.MICROBATTLES));
-            statementStats.setInt(5, data.getDeaths(SServer.GameID.MICROBATTLES));
-            statementStats.setInt(6, data.getPlays(SServer.GameID.MICROBATTLES));
-            statementStats.setInt(7, data.getWins(SServer.GameID.MICROBATTLES));
-            statementStats.setInt(8, data.getPlays(SServer.GameID.FIGTHCLUB));
-            statementStats.setInt(9, data.getKills(SServer.GameID.FIGTHCLUB));
-            statementStats.setInt(10, data.getDeaths(SServer.GameID.FIGTHCLUB));
-            statementStats.setInt(11, data.getWins(SServer.GameID.FIGTHCLUB));
-            statementStats.setInt(12, data.getPlays(SServer.GameID.MUM));
-            statementStats.setInt(13, data.getKills(SServer.GameID.MUM));
-            statementStats.setInt(14, data.getDeaths(SServer.GameID.MUM));
-            statementStats.setInt(15, data.getWins(SServer.GameID.MUM));
-            statementStats.setInt(16, data.getMum_elo());
-            statementStats.setInt(17, data.getMum_reroll());
-            statementStats.setString(18, u.getUuid().toString());
-            statementStats.executeUpdate();
-            
-            //Settings
-            PreparedStatement statementSett = openConnection().prepareStatement("UPDATE `settings` SET `fly`=?,`visible`=?,`chat`=?,`party`=?,`lang`=?,`disguise`=? WHERE `uuid`=?");
-            statementSett.setBoolean(1, data.getFly());
-            statementSett.setInt(2, data.getVisible());
-            statementSett.setBoolean(3, data.getChat());
-            statementSett.setBoolean(4, data.getPartys());
-            statementSett.setInt(5, data.getLang());
-            statementSett.setString(6, data.getDisguise());
-            statementSett.setString(7, u.getUuid().toString());
-            statementSett.executeUpdate();
-        } catch (Exception ex) {
-            System.out.println("Ha ocurrido un error guardando los datos de " + u.getName());
-            ex.printStackTrace();
-        }
+                //Stats
+                PreparedStatement statementStats = openConnection().prepareStatement("UPDATE `stats` SET `kills_ffa`=?, `deaths_ffa`=?, `plays_ffa`=?, `kills_mb`=?, `deaths_mb`=?, `plays_mb`=?, `wins_mb`=?, `plays_fc`=?, `kills_fc`=?, `deaths_fc`=?, `wins_fc`=?, `plays_mum`=?, `kills_mum`=?, `deaths_mum`=?, `wins_mum`=?, `elo_mum`=?, `reroll_mum`=? WHERE `uuid`=?");
+                statementStats.setInt(1, data.getKills(SServer.GameID.FFA));
+                statementStats.setInt(2, data.getDeaths(SServer.GameID.FFA));
+                statementStats.setInt(3, data.getPlays(SServer.GameID.FFA));
+                statementStats.setInt(4, data.getKills(SServer.GameID.MICROBATTLES));
+                statementStats.setInt(5, data.getDeaths(SServer.GameID.MICROBATTLES));
+                statementStats.setInt(6, data.getPlays(SServer.GameID.MICROBATTLES));
+                statementStats.setInt(7, data.getWins(SServer.GameID.MICROBATTLES));
+                statementStats.setInt(8, data.getPlays(SServer.GameID.FIGTHCLUB));
+                statementStats.setInt(9, data.getKills(SServer.GameID.FIGTHCLUB));
+                statementStats.setInt(10, data.getDeaths(SServer.GameID.FIGTHCLUB));
+                statementStats.setInt(11, data.getWins(SServer.GameID.FIGTHCLUB));
+                statementStats.setInt(12, data.getPlays(SServer.GameID.MUM));
+                statementStats.setInt(13, data.getKills(SServer.GameID.MUM));
+                statementStats.setInt(14, data.getDeaths(SServer.GameID.MUM));
+                statementStats.setInt(15, data.getWins(SServer.GameID.MUM));
+                statementStats.setInt(16, data.getMum_elo());
+                statementStats.setInt(17, data.getMum_reroll());
+                statementStats.setString(18, u.getUuid().toString());
+                statementStats.executeUpdate();
 
+                //Settings
+                PreparedStatement statementSett = openConnection().prepareStatement("UPDATE `settings` SET `fly`=?,`visible`=?,`chat`=?,`party`=?,`lang`=?,`disguise`=? WHERE `uuid`=?");
+                statementSett.setBoolean(1, data.getFly());
+                statementSett.setInt(2, data.getVisible());
+                statementSett.setBoolean(3, data.getChat());
+                statementSett.setBoolean(4, data.getPartys());
+                statementSett.setInt(5, data.getLang());
+                statementSett.setString(6, data.getDisguise());
+                statementSett.setString(7, u.getUuid().toString());
+                statementSett.executeUpdate();
+            } catch (Exception ex) {
+                System.out.println("Ha ocurrido un error guardando los datos de " + u.getName());
+                ex.printStackTrace();
+            }
+        });
     }
+
 
     /**
      * Loads all the Data for the User
@@ -203,8 +205,10 @@ public class MySQL {
                 data.setNickcolor(rsDatos.getString("nickcolor"));
             }
 
+            //Stats
             PreparedStatement statementStats = openConnection().prepareStatement("SELECT * FROM `stats` WHERE `uuid` = ?");
             statementStats.setString(1, id.toString());
+
             ResultSet rsStats = statementStats.executeQuery();
 
             if (rsStats.next()) {
@@ -233,6 +237,7 @@ public class MySQL {
             //Settings
             PreparedStatement statementSett = openConnection().prepareStatement("SELECT * FROM `settings` WHERE `uuid` = ?");
             statementSett.setString(1, id.toString());
+
             ResultSet rsSett = statementSett.executeQuery();
 
             if (rsSett.next()) {
@@ -361,22 +366,28 @@ public class MySQL {
         return false;
     }
 
-    public void addBooster(SUser user, SBooster booster) throws SQLException {
-        PreparedStatement statement = openConnection().prepareStatement("INSERT INTO `booster` (`multiplier`, `gameId`, `expires`, `uuid`) VALUES (?, ?, ?, ?)");
-        statement.setInt(1, booster.getMultiplier());
-        statement.setInt(2, booster.getGameID().getId());
-        statement.setString(3, booster.getExpires().toString());
-        statement.setString(4, booster.getUuid().toString());
+    public void addBooster(SUser user, SBooster booster){
+        Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), () -> {
+           try {
+               PreparedStatement statement = openConnection().prepareStatement("INSERT INTO `booster` (`multiplier`, `gameId`, `expires`, `uuid`) VALUES (?, ?, ?, ?)");
+               statement.setInt(1, booster.getMultiplier());
+               statement.setInt(2, booster.getGameID().getId());
+               statement.setString(3, booster.getExpires().toString());
+               statement.setString(4, booster.getUuid().toString());
 
-        statement.executeUpdate();
+               statement.executeUpdate();
 
-        user.save();//Refresh the user data
+               user.save();//Refresh the user data
+           }
+           catch (Exception ex){
+               ex.printStackTrace();
+           }
+        });
     }
 
     private List<SBooster> loadBoosters(PreparedStatement statement) throws SQLException {
-        ResultSet rs = statement.executeQuery();
-
         final List<SBooster> boosters = new ArrayList<>();
+        final ResultSet rs = statement.executeQuery();
 
         while (rs.next()) {
             boosters.add(new SBooster(
@@ -417,5 +428,9 @@ public class MySQL {
             }
         }
         return 0;
+    }
+
+    private void runTaskAsync(Runnable runnable){
+        Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), runnable);
     }
 }
