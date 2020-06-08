@@ -9,7 +9,7 @@ import java.util.Arrays;
 public class ColorCMD extends SCmd {
 
     public ColorCMD() {
-        super("color", Rank.MOD, Arrays.asList("color"));
+        super("color", Rank.KRAKEN, Arrays.asList("color"));
     }
 
     @Override
