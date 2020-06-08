@@ -117,3 +117,7 @@ commands:
     usage: /<command>
     aliases:
       - rename
+  enderchest:
+    usage: /<command>
+    aliases:
+      - ec

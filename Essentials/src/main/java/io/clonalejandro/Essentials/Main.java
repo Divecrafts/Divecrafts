@@ -154,6 +154,7 @@ public class Main extends JavaPlugin {
         getCommand("repair").setExecutor(new RepairCmd());
         getCommand("givehead").setExecutor(new HeadCmd());
         getCommand("itemrename").setExecutor(new ItemRenameCmd());
+        getCommand("enderchest").setExecutor(new EnderchestCmd());
 
         Bukkit.getConsoleSender().sendMessage(translate("&9&lEssentials> &fregistrando comandos"));
     }
