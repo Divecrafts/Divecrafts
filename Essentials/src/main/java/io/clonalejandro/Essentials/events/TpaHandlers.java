@@ -36,7 +36,10 @@ public class TpaHandlers implements Listener {
 
     @EventHandler
     public void onPlayerMoveEvent(PlayerMoveEvent event){
-        cancelTpa(event.getPlayer());
+        if (event.getFrom().getX() != event.getTo().getX() &&
+                event.getFrom().getY() != event.getTo().getY() &&
+                event.getFrom().getZ() != event.getTo().getZ())
+            cancelTpa(event.getPlayer());
     }
 
     @EventHandler
