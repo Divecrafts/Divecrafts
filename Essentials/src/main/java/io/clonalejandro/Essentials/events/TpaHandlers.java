@@ -1,5 +1,9 @@
 package io.clonalejandro.Essentials.events;
 
+import io.clonalejandro.DivecraftsCore.api.SServer;
+import io.clonalejandro.DivecraftsCore.api.SUser;
+import io.clonalejandro.DivecraftsCore.cmd.SCmd;
+import io.clonalejandro.DivecraftsCore.utils.Utils;
 import io.clonalejandro.Essentials.Main;
 import io.clonalejandro.Essentials.commands.TpaCmd;
 import io.clonalejandro.Essentials.utils.TeleportWithDelay;
@@ -48,34 +52,26 @@ public class TpaHandlers implements Listener {
     }
 
     private void cancelTpa(Player player){
-
-        /*
-        final Iterator<Player> it = TpaCmd.tpaUsers.keySet().iterator();
-
-        while (it.hasNext()){
-            Player key = it.next();
-            Player value = TpaCmd.tpaUsers.get(key);
-
-            if (value == player){
-                if (key.isOnline())
-                    key.sendMessage(Main.translate(String.format("&c&lServer> &fEl jugador &e%s &fha rechazado tu peticion", value.getName())));
-                if (value.isOnline())
-                    value.sendMessage(Main.translate("&c&lServer> &fPetición de teletransporte cancelada"));
-
-                TpaCmd.tpaUsers.remove(key);
-                TpaCmd.tpaType.remove(key);
-
-                if (Main.awaitingPlayersToTeleport.containsKey(value)) {
-                    Main.awaitingPlayersToTeleport.get(value).cancel();
-                    Main.awaitingPlayersToTeleport.remove(value);
-                }
-            }
-        }*/
+        if (checkPermissions(player, SCmd.Rank.MEGALODON)) return;
 
         if (Main.awaitingPlayersToTeleport.containsKey(player)) {
             Main.awaitingPlayersToTeleport.get(player).cancel();
             player.sendMessage(Main.translate("&c&lServer> &fTeletransporte cancelada"));
             Main.awaitingPlayersToTeleport.remove(player);
         }
+    }
+
+    public boolean checkPermissions(Player player, SCmd.Rank rank){
+        final SUser user = SServer.getUser(player.getUniqueId());
+
+        if (user.getUserData().getRank().getRank() < rank.getRank())
+            return sendErrMessage(player);
+
+        return false;
+    }
+
+    private boolean sendErrMessage(Player player){
+        player.sendMessage(Utils.colorize("&c&lServer> &fNo tienes permisos para hacer eso!"));
+        return true;
     }
 }
