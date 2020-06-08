@@ -107,3 +107,9 @@ commands:
       - gives
   repair:
     usage: /<command>
+  givehead:
+    usage: /<command>
+    aliases:
+      - giveh
+      - gh
+      - giveskull
