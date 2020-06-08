@@ -3,6 +3,7 @@ package io.clonalejandro.Essentials.commands;
 import io.clonalejandro.DivecraftsCore.api.SServer;
 import io.clonalejandro.DivecraftsCore.api.SUser;
 import io.clonalejandro.DivecraftsCore.cmd.SCmd;
+import io.clonalejandro.DivecraftsCore.utils.Utils;
 import io.clonalejandro.Essentials.Main;
 import io.clonalejandro.Essentials.objects.Home;
 import io.clonalejandro.Essentials.utils.MysqlManager;
@@ -102,6 +103,12 @@ public class HomeCmd extends Cmd implements CommandExecutor {
             );
 
             final List<Home> homes = getHomes(player);
+
+            if (homes != null && homes.contains(args[0])){
+                player.sendMessage(Utils.colorize("&c&lServer> &fYa tienes un home registrado con ese nombre"));
+                return true;
+            }
+
             final Runnable set = () -> {
                 try {
                     MysqlManager.getConnection().createStatement().executeUpdate(query);
