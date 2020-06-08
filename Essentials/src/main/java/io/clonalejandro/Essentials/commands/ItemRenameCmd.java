@@ -53,12 +53,12 @@ public class ItemRenameCmd extends Cmd implements CommandExecutor {
             else if (args.length > 1){
                 final ItemMeta meta = item.getItemMeta();
 
+                meta.setDisplayName(Utils.colorize(args[0]));
+
                 //Build list
                 args[0] = "";
                 List<String> msgs = new ArrayList<>();
                 for (String msg : args) msgs.add(Utils.colorize(msg));
-
-                meta.setDisplayName(Utils.colorize(args[0]));
 
                 meta.setLore(msgs);
                 item.setItemMeta(meta);

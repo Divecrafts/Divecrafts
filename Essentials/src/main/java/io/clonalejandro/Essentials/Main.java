@@ -193,9 +193,6 @@ public class Main extends JavaPlugin {
     }
 
     private void saveEconomy(){
-        Bukkit.getOnlinePlayers().forEach(p -> {
-            if (Economy.economyPlayers.containsKey(p))
-                Economy.economyPlayers.get(p).save();
-        });
+        Economy.economyPlayers.forEach((key, val) -> val.save());
     }
 }

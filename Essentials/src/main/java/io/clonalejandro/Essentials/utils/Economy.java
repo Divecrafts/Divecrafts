@@ -86,20 +86,18 @@ public class Economy {
     }
 
     public void save(){
-        Bukkit.getScheduler().runTaskAsynchronously(Main.instance, () -> {
-            try {
-                final String query = this.name != null ? "UPDATE economy SET amount=? WHERE name=?" : "UPDATE economy SET amount=? WHERE uuid=?";
+        try {
+            final String query = this.name != null ? "UPDATE economy SET amount=? WHERE name=?" : "UPDATE economy SET amount=? WHERE uuid=?";
 
-                final PreparedStatement statement = MysqlManager.getConnection().prepareStatement(query);
-                statement.setDouble(1, this.money);
-                statement.setString(2, this.name != null ? this.name : this.uuid.toString());
+            final PreparedStatement statement = MysqlManager.getConnection().prepareStatement(query);
+            statement.setDouble(1, this.money);
+            statement.setString(2, this.name != null ? this.name : this.uuid.toString());
 
-                statement.executeUpdate();
-            }
-            catch (Exception ex){
-                ex.printStackTrace();
-            }
-        });
+            statement.executeUpdate();
+        }
+        catch (Exception ex){
+            ex.printStackTrace();
+        }
     }
 
     public OfflinePlayer getPlayer(){
