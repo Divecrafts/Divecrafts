@@ -2,15 +2,14 @@ package io.clonalejandro.Essentials.events;
 
 import io.clonalejandro.DivecraftsCore.utils.Utils;
 import io.clonalejandro.Essentials.objects.Warp;
-import io.clonalejandro.Essentials.utils.MysqlManager;
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by Alex
@@ -35,16 +34,12 @@ public class WarpHandler implements Listener {
         if (event.getView().getTitle().equalsIgnoreCase(Utils.colorize("&a&lWarps"))) {
             ItemStack item = event.getCurrentItem();
 
-            try {
-                final PreparedStatement statement = MysqlManager.getConnection().prepareStatement("SELECT * FROM Warps WHERE name=?");
-                statement.setString(1, ChatColor.stripColor(item.getItemMeta().getDisplayName()));
-                final ResultSet rs = statement.executeQuery();
+             final List<Warp> warps = Warp.warpList.stream()
+                     .filter(warp -> warp.getName().equalsIgnoreCase(ChatColor.stripColor(item.getItemMeta().getDisplayName())))
+                     .collect(Collectors.toList());
 
-                rs.next();
-                event.getWhoClicked().teleport(new Warp(rs).getLocation());
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
+             if (warps.size() > 0)
+                 event.getWhoClicked().teleport(warps.get(0).getLocation());
 
             event.getWhoClicked().closeInventory();
         }

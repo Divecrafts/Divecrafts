@@ -6,6 +6,7 @@ import io.clonalejandro.Essentials.hooks.VaultHook;
 import io.clonalejandro.Essentials.objects.Warp;
 import io.clonalejandro.Essentials.providers.EconomyProvider;
 import io.clonalejandro.Essentials.tasks.AutoRestart;
+import io.clonalejandro.Essentials.utils.Economy;
 import io.clonalejandro.Essentials.utils.MysqlManager;
 import io.clonalejandro.Essentials.utils.SpawnYml;
 import org.bukkit.Bukkit;
@@ -78,6 +79,7 @@ public class Main extends JavaPlugin {
     @Override
     public void onDisable() {
         try {
+            saveEconomy();
             vaultHook.unhook();
             tasks.forEach(BukkitRunnable::cancel);
             Bukkit.getPluginManager().disablePlugin(instance);
@@ -150,6 +152,7 @@ public class Main extends JavaPlugin {
         getCommand("pay").setExecutor(new EconomyCmd());
         getCommand("individualpermission").setExecutor(new PermissionCmd());
         getCommand("repair").setExecutor(new RepairCmd());
+        getCommand("givehead").setExecutor(new HeadCmd());
 
         Bukkit.getConsoleSender().sendMessage(translate("&9&lEssentials> &fregistrando comandos"));
     }
@@ -186,5 +189,12 @@ public class Main extends JavaPlugin {
 
     public static String translate(String msg){
         return ChatColor.translateAlternateColorCodes('&', msg);
+    }
+
+    private void saveEconomy(){
+        Bukkit.getOnlinePlayers().forEach(p -> {
+            if (Economy.economyPlayers.containsKey(p))
+                Economy.economyPlayers.get(p).save();
+        });
     }
 }
