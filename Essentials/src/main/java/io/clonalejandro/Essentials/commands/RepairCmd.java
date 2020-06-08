@@ -1,5 +1,6 @@
 package io.clonalejandro.Essentials.commands;
 
+import io.clonalejandro.DivecraftsCore.cmd.SCmd;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -26,6 +27,8 @@ public class RepairCmd extends Cmd implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String arg, String[] args) {
+        if (checkPermissions(sender, SCmd.Rank.KRAKEN)) return true;
+
         final Player player = Bukkit.getPlayer(sender.getName());
 
         player.getItemInHand().setDurability((short) 0);
