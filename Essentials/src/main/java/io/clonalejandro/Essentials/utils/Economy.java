@@ -100,6 +100,10 @@ public class Economy {
         }
     }
 
+    public void asyncSave(){
+        Bukkit.getScheduler().runTaskAsynchronously(Main.instance, this::save);
+    }
+
     public OfflinePlayer getPlayer(){
         return Bukkit.getOfflinePlayer(this.uuid);
     }
