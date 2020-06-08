@@ -134,7 +134,7 @@ public class HomeCmd extends Cmd implements CommandExecutor {
             } else if (homes.size() > 3 && homes.size() <= 10) {
                 if (checkPermissions(player, SCmd.Rank.KRAKEN) && !player.hasPermission("essentials.homes.nemo") && !player.hasPermission("essentials.homes.kraken"))
                     return true;
-            } else if (homes.size() > 10) {
+            } else if (homes.size() > 10 && homes.size() <= 20) {
                 if (checkPermissions(player, SCmd.Rank.POSEIDON)) return true;
             }
             runTask(set);
