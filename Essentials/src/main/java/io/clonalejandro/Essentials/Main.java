@@ -153,6 +153,7 @@ public class Main extends JavaPlugin {
         getCommand("individualpermission").setExecutor(new PermissionCmd());
         getCommand("repair").setExecutor(new RepairCmd());
         getCommand("givehead").setExecutor(new HeadCmd());
+        getCommand("itemrename").setExecutor(new ItemRenameCmd());
 
         Bukkit.getConsoleSender().sendMessage(translate("&9&lEssentials> &fregistrando comandos"));
     }
