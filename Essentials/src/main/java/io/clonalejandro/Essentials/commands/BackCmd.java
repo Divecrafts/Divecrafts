@@ -43,7 +43,7 @@ public class BackCmd extends Cmd implements CommandExecutor {
 
         if (lastLocation.containsKey(player)){
             final Location location = lastLocation.get(player);
-            player.sendMessage(Main.translate(String.format("&9&lServer> &fTeletransportando a la última localización%s", user.getUserData().getRank().getRank() >= SCmd.Rank.MEGALODON.getRank() ? ", espere &e5seg" : "")));
+            player.sendMessage(Main.translate(String.format("&9&lServer> &fTeletransportando a la última localización%s", user.getUserData().getRank().getRank() >= SCmd.Rank.MEGALODON.getRank() ? "" : ", espere &e5seg")));
             new TeleportWithDelay(player, location);
         }
         else player.sendMessage(Main.translate("&c&lServer> &fNo tienes localizaciones anteriores"));
