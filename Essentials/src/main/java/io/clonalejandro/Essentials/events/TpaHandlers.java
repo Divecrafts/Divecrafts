@@ -55,9 +55,9 @@ public class TpaHandlers implements Listener {
     }
 
     private void cancelTpa(Player player){
-        if (checkPermissions(player, SCmd.Rank.MEGALODON)) return;
-
         if (Main.awaitingPlayersToTeleport.containsKey(player)) {
+            if (checkPermissions(player, SCmd.Rank.MEGALODON)) return;
+
             Main.awaitingPlayersToTeleport.get(player).cancel();
             player.sendMessage(Main.translate("&c&lServer> &fTeletransporte cancelada"));
             Main.awaitingPlayersToTeleport.remove(player);
@@ -66,15 +66,6 @@ public class TpaHandlers implements Listener {
 
     public boolean checkPermissions(Player player, SCmd.Rank rank){
         final SUser user = SServer.getUser(player.getUniqueId());
-
-        if (user.getUserData().getRank().getRank() < rank.getRank())
-            return sendErrMessage(player);
-
-        return false;
-    }
-
-    private boolean sendErrMessage(Player player){
-        player.sendMessage(Utils.colorize("&c&lServer> &fNo tienes permisos para hacer eso!"));
-        return true;
+        return user.getUserData().getRank().getRank() < rank.getRank();
     }
 }
