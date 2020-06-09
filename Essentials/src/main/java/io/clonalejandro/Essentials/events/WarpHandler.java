@@ -1,8 +1,15 @@
 package io.clonalejandro.Essentials.events;
 
+import io.clonalejandro.DivecraftsCore.api.SServer;
+import io.clonalejandro.DivecraftsCore.api.SUser;
+import io.clonalejandro.DivecraftsCore.cmd.SCmd;
 import io.clonalejandro.DivecraftsCore.utils.Utils;
+import io.clonalejandro.Essentials.Main;
 import io.clonalejandro.Essentials.objects.Warp;
+import io.clonalejandro.Essentials.utils.TeleportWithDelay;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -38,9 +45,15 @@ public class WarpHandler implements Listener {
                      .filter(warp -> warp.getName().equalsIgnoreCase(ChatColor.stripColor(item.getItemMeta().getDisplayName())))
                      .collect(Collectors.toList());
 
-             if (warps.size() > 0)
-                 event.getWhoClicked().teleport(warps.get(0).getLocation());
+             if (warps.size() > 0) {
+                 final Player player = (Player) event.getWhoClicked();
+                 final Warp warp = warps.get(0);
+                 final SUser user = SServer.getUser(player);
+                 final Location location = warp.getLocation();
 
+                 player.sendMessage(Main.translate(String.format("&9&lServer> &fTeletransportando al warp &e%s%s", warp.getName(), user.getUserData().getRank().getRank() >= SCmd.Rank.MEGALODON.getRank() ? "" : "  &fespere &e5seg")));
+                 new TeleportWithDelay(player, location);
+             }
             event.getWhoClicked().closeInventory();
         }
     }
