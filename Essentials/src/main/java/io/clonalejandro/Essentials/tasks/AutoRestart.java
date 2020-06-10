@@ -37,7 +37,7 @@ public class AutoRestart extends BukkitRunnable {
             time = 60 * 60 * 12;
             Bukkit.broadcastMessage(Utils.colorize("&c&lServer> &fReiniciando..."));
             Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
-                Bukkit.getOnlinePlayers().forEach(p -> BungeeMensager.conectarA(p, "lobby"));
+                Bukkit.getOnlinePlayers().forEach(p -> p.kickPlayer(""));
                 Bukkit.getServer().shutdown();
             }, 20L);
         }
