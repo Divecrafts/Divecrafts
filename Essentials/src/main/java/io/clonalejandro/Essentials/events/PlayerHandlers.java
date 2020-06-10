@@ -1,7 +1,10 @@
 package io.clonalejandro.Essentials.events;
 
+import com.mysql.jdbc.Util;
 import io.clonalejandro.DivecraftsCore.utils.Utils;
 import io.clonalejandro.Essentials.commands.HeadCmd;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -34,16 +37,21 @@ public class PlayerHandlers implements Listener {
     public void onPlayerDeath(PlayerDeathEvent event){
         final Player player = event.getEntity();
         final Entity entity = player.getKiller();
+        String msg;
 
-        String msg = "%player ha sido asesinado por %killer";
-
-        msg = msg.replace("%player", player.getDisplayName());
-
-        if (entity != null && entity instanceof Player)
+        if (entity != null && entity instanceof Player) {
+            msg = "%player &7ha sido asesinado por %killer";
+            msg = msg.replace("%player", player.getDisplayName());
             msg = msg.replace("%killer", ((Player) entity).getDisplayName());
-        else if (entity != null) {
-            msg = msg.replace("%killer", entity.getCustomName());
         }
+        else {
+            msg = event.getDeathMessage();
+            msg = Utils.colorize("&7" + ChatColor.stripColor(msg));
+            msg = msg.replace(ChatColor.stripColor(event.getEntity().getDisplayName()), player.getDisplayName() + "&7");
+        }
+
+        Bukkit.broadcastMessage(Utils.colorize(msg));
+        event.setDeathMessage(null);
 
         if (hasLucky(1, 1000) && entity instanceof Player){
             final ItemStack head = HeadCmd.createSkull(
@@ -54,8 +62,6 @@ public class PlayerHandlers implements Listener {
 
             player.getLocation().getWorld().dropItemNaturally(player.getLocation(), head);
         }
-
-        event.setDeathMessage(Utils.colorize("&7" + msg));
     }
 
     public boolean hasLucky(int min, int max){
