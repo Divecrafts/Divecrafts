@@ -67,6 +67,7 @@ public class Disguise {
             final Object entities = Array.newInstance(handle.getClass(), 1);
 
             final GameProfile profile = (GameProfile) ReflectionAPI.getMethod(craftPlayer.getClass(), "getProfile").invoke(craftPlayer);
+            GameProfile disguisedProfile = new GameProfile(UUID.randomUUID(), skinName);
 
             final int entityId = (int) u.getPlayer().getClass().getMethod("getEntityId").invoke(u.getPlayer());
 
@@ -86,7 +87,9 @@ public class Disguise {
                     .getConstructor(entityHuman)
                     .newInstance(handle);
 
-            setSkin(profile, resolverUuid(skinName));
+            setSkin(disguisedProfile, resolverUuid(skinName));
+            disguisedProfile.getProperties().clear();
+            disguisedProfile.getProperties().putAll(profile.getProperties());
 
             Bukkit.getOnlinePlayers().forEach(p -> {
                 ReflectionAPI.sendPacket(p, packetPlayOutEntityDestroy);

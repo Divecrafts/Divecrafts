@@ -57,7 +57,7 @@ public class HomeCmd extends Cmd implements CommandExecutor {
         List<Home> homes = getHomes(player);
 
         if (arg.equalsIgnoreCase("homes") && args.length > 0)
-            homes(sender, arg, args);
+            return homes(sender, arg, args);
 
         if (args.length == 0 || arg.equalsIgnoreCase("homes")) {
             List<String> names = new ArrayList<>();
