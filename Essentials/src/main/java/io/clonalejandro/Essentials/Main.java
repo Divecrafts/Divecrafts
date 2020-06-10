@@ -104,6 +104,7 @@ public class Main extends JavaPlugin {
         pluginManager.registerEvents(new WarpHandler(), this);
         pluginManager.registerEvents(new HomeHandler(), this);
         pluginManager.registerEvents(new EconomyHandler(), this);
+        pluginManager.registerEvents(new PlayerHandlers(), this);
 
         Bukkit.getConsoleSender().sendMessage(translate("&9&lEssentials> &fregistrando eventos"));
     }
@@ -153,6 +154,8 @@ public class Main extends JavaPlugin {
         getCommand("individualpermission").setExecutor(new PermissionCmd());
         getCommand("repair").setExecutor(new RepairCmd());
         getCommand("givehead").setExecutor(new HeadCmd());
+        getCommand("itemrename").setExecutor(new ItemRenameCmd());
+        getCommand("enderchest").setExecutor(new EnderchestCmd());
 
         Bukkit.getConsoleSender().sendMessage(translate("&9&lEssentials> &fregistrando comandos"));
     }
@@ -192,9 +195,6 @@ public class Main extends JavaPlugin {
     }
 
     private void saveEconomy(){
-        Bukkit.getOnlinePlayers().forEach(p -> {
-            if (Economy.economyPlayers.containsKey(p))
-                Economy.economyPlayers.get(p).save();
-        });
+        Economy.economyPlayers.forEach((key, val) -> val.save());
     }
 }

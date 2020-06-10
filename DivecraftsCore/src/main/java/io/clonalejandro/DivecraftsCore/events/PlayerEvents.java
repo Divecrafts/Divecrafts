@@ -31,6 +31,7 @@ public class PlayerEvents implements Listener {
 
     private final Main plugin;
     private final List<String> nulledWords = new ArrayList<>();
+    private final List<String> bannedCmds = Arrays.asList("/plugins", "/version", "/ver", "/me");
 
     public HashMap<Player, PermissionAttachment> perms = new HashMap<>();
     public PlayerEvents(Main instance) {
@@ -208,6 +209,19 @@ public class PlayerEvents implements Listener {
 
         if (r.getRank() > 0) e.setFormat(Utils.colorize(p.getDisplayName() + ": &f" + e.getMessage()));
         else e.setFormat(p.getDisplayName() + ": §7" + e.getMessage());
+    }
+
+    @EventHandler
+    public void onCommand(PlayerCommandPreprocessEvent event){
+        final Player player = event.getPlayer();
+        final SUser user = SServer.getUser(event.getPlayer());
+
+        if (user.getUserData().getRank().getRank() < SCmd.Rank.SMOD.getRank()){
+            if (bannedCmds.contains(event.getMessage().toLowerCase())){
+                player.sendMessage(Languaje.getLangMsg(user.getUserData().getLang(), "Global.cmdnopuedes"));
+                event.setCancelled(true);
+            }
+        }
     }
 
     private void loadPermissions(Player player){

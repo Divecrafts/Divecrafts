@@ -1,12 +1,17 @@
 package io.clonalejandro.Essentials.events;
 
 import io.clonalejandro.Essentials.commands.GodCmd;
+import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
+
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by Alex
@@ -26,12 +31,14 @@ import org.bukkit.event.entity.FoodLevelChangeEvent;
 
 public class GodHandler implements Listener {
 
+    private final List<World> allowedWorlds = Arrays.asList(Bukkit.getWorld("world"), Bukkit.getWorld("world_nether"));
+
     @EventHandler
     public void onPlayerBeHitted(EntityDamageEvent event){
         final Entity entity = event.getEntity();
 
         if (entity instanceof Player){
-            if (GodCmd.players.contains(entity.getName())){
+            if (GodCmd.players.contains(entity.getName()) && allowedWorlds.contains(entity.getWorld())){
                 event.setCancelled(true);
             }
         }
@@ -41,7 +48,7 @@ public class GodHandler implements Listener {
     public void onPlayerHasHunger(FoodLevelChangeEvent event){
         final Player player = (Player) event.getEntity();
 
-        if (GodCmd.players.contains(player.getName())){
+        if (GodCmd.players.contains(player.getName()) && allowedWorlds.contains(player.getWorld())){
             event.setCancelled(true);
         }
     }

@@ -30,14 +30,14 @@ public class AutoRestart extends BukkitRunnable {
     public void run(){
         if (time != 0){
             if (time == 60 * 5 || time == 60)
-                Bukkit.broadcastMessage(Utils.colorize("&9&lServer> &fEl servidor se reiniciará en &e" + time / 60));
+                Bukkit.broadcastMessage(Utils.colorize(String.format("&9&lServer> &fEl servidor se reiniciará en &e%smin", time / 60)));
             time--;
         }
         else {
             time = 60 * 60 * 12;
             Bukkit.broadcastMessage(Utils.colorize("&c&lServer> &fReiniciando..."));
             Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
-                Bukkit.getOnlinePlayers().forEach(p -> BungeeMensager.conectarA(p, "lobby"));
+                Bukkit.getOnlinePlayers().forEach(p -> p.kickPlayer(""));
                 Bukkit.getServer().shutdown();
             }, 20L);
         }

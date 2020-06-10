@@ -5,8 +5,6 @@ import io.clonalejandro.DivecraftsCore.api.SServer;
 import io.clonalejandro.DivecraftsCore.api.SUser;
 import io.clonalejandro.DivecraftsCore.cmd.SCmd;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
 /**
@@ -41,6 +39,22 @@ public class TagAPI {
                             team.addPlayer(target);
                         })
                 ), 20L);
+    }
+
+    public TagAPI(int timeout){
+        Bukkit.getScheduler().runTaskLater(Main.getInstance(), () ->
+                Bukkit.getOnlinePlayers().forEach(players ->
+                        Bukkit.getOnlinePlayers().forEach(target -> {
+                            final String str = getColor(SServer.getUser(target));
+                            final String tag = str.length() > 16 ? str.substring(0, 16) : str;
+                            final Team team = players.getScoreboard().getTeam(target.getName()) == null ?
+                                    players.getScoreboard().registerNewTeam(target.getName()) :
+                                    players.getScoreboard().getTeam(target.getName());
+
+                            team.setPrefix(tag);
+                            team.addPlayer(target);
+                        })
+                ), timeout);
     }
 
     private String getColor(SUser user){

@@ -1,16 +1,15 @@
 package io.clonalejandro.Essentials.events;
 
+import io.clonalejandro.DivecraftsCore.api.SServer;
+import io.clonalejandro.DivecraftsCore.api.SUser;
+import io.clonalejandro.DivecraftsCore.cmd.SCmd;
 import io.clonalejandro.Essentials.Main;
-import io.clonalejandro.Essentials.commands.TpaCmd;
-import io.clonalejandro.Essentials.utils.TeleportWithDelay;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
-
-import java.util.Iterator;
 
 /**
  * Created by Alex
@@ -32,7 +31,10 @@ public class TpaHandlers implements Listener {
 
     @EventHandler
     public void onPlayerMoveEvent(PlayerMoveEvent event){
-        cancelTpa(event.getPlayer());
+        if (event.getFrom().getX() != event.getTo().getX() ||
+                event.getFrom().getY() != event.getTo().getY() ||
+                event.getFrom().getZ() != event.getTo().getZ())
+            cancelTpa(event.getPlayer());
     }
 
     @EventHandler
@@ -48,34 +50,17 @@ public class TpaHandlers implements Listener {
     }
 
     private void cancelTpa(Player player){
-
-        /*
-        final Iterator<Player> it = TpaCmd.tpaUsers.keySet().iterator();
-
-        while (it.hasNext()){
-            Player key = it.next();
-            Player value = TpaCmd.tpaUsers.get(key);
-
-            if (value == player){
-                if (key.isOnline())
-                    key.sendMessage(Main.translate(String.format("&c&lServer> &fEl jugador &e%s &fha rechazado tu peticion", value.getName())));
-                if (value.isOnline())
-                    value.sendMessage(Main.translate("&c&lServer> &fPetición de teletransporte cancelada"));
-
-                TpaCmd.tpaUsers.remove(key);
-                TpaCmd.tpaType.remove(key);
-
-                if (Main.awaitingPlayersToTeleport.containsKey(value)) {
-                    Main.awaitingPlayersToTeleport.get(value).cancel();
-                    Main.awaitingPlayersToTeleport.remove(value);
-                }
-            }
-        }*/
-
         if (Main.awaitingPlayersToTeleport.containsKey(player)) {
+            if (!checkPermissions(player, SCmd.Rank.MEGALODON)) return;
+
             Main.awaitingPlayersToTeleport.get(player).cancel();
-            player.sendMessage(Main.translate("&c&lServer> &fTeletransporte cancelada"));
+            player.sendMessage(Main.translate("&c&lServer> &fTeletransporte cancelado"));
             Main.awaitingPlayersToTeleport.remove(player);
         }
+    }
+
+    public boolean checkPermissions(Player player, SCmd.Rank rank){
+        final SUser user = SServer.getUser(player.getUniqueId());
+        return user.getUserData().getRank().getRank() < rank.getRank();
     }
 }

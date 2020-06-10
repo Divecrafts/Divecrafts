@@ -47,7 +47,7 @@ public class EconomyHandler implements Listener {
         final Player player = event.getPlayer();
 
         if (Economy.economyPlayers.containsKey(player)){
-            Economy.economyPlayers.get(player).save();
+            Economy.economyPlayers.get(player).asyncSave();
         }
     }
 
@@ -56,7 +56,7 @@ public class EconomyHandler implements Listener {
         final Player player = event.getPlayer();
 
         if (Economy.economyPlayers.containsKey(player)){
-            Economy.economyPlayers.get(player).save();
+            Economy.economyPlayers.get(player).asyncSave();
         }
     }
 }
