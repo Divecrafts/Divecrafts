@@ -33,6 +33,7 @@ public class EnderchestCmd extends Cmd implements CommandExecutor {
         if (checkPermissions(sender, SCmd.Rank.MEGALODON)) return true;
 
         if (args.length > 0){
+            if (checkPermissions(sender, SCmd.Rank.MOD)) return true;
             final Player target = Bukkit.getPlayer(args[0]);
 
             if (target != null && target.isOnline())
