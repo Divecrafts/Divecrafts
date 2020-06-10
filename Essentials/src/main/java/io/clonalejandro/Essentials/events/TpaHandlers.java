@@ -3,18 +3,13 @@ package io.clonalejandro.Essentials.events;
 import io.clonalejandro.DivecraftsCore.api.SServer;
 import io.clonalejandro.DivecraftsCore.api.SUser;
 import io.clonalejandro.DivecraftsCore.cmd.SCmd;
-import io.clonalejandro.DivecraftsCore.utils.Utils;
 import io.clonalejandro.Essentials.Main;
-import io.clonalejandro.Essentials.commands.TpaCmd;
-import io.clonalejandro.Essentials.utils.TeleportWithDelay;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
-
-import java.util.Iterator;
 
 /**
  * Created by Alex
@@ -36,8 +31,8 @@ public class TpaHandlers implements Listener {
 
     @EventHandler
     public void onPlayerMoveEvent(PlayerMoveEvent event){
-        if (event.getFrom().getX() != event.getTo().getX() &&
-                event.getFrom().getY() != event.getTo().getY() &&
+        if (event.getFrom().getX() != event.getTo().getX() ||
+                event.getFrom().getY() != event.getTo().getY() ||
                 event.getFrom().getZ() != event.getTo().getZ())
             cancelTpa(event.getPlayer());
     }
@@ -56,10 +51,10 @@ public class TpaHandlers implements Listener {
 
     private void cancelTpa(Player player){
         if (Main.awaitingPlayersToTeleport.containsKey(player)) {
-            if (checkPermissions(player, SCmd.Rank.MEGALODON)) return;
+            if (!checkPermissions(player, SCmd.Rank.MEGALODON)) return;
 
             Main.awaitingPlayersToTeleport.get(player).cancel();
-            player.sendMessage(Main.translate("&c&lServer> &fTeletransporte cancelada"));
+            player.sendMessage(Main.translate("&c&lServer> &fTeletransporte cancelado"));
             Main.awaitingPlayersToTeleport.remove(player);
         }
     }
