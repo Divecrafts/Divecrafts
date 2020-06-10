@@ -57,6 +57,12 @@ public class Main extends JavaPlugin {
     @Override
     public void onDisable() {
         awd.disable();
+        try {
+            mySQL.getConnection().close();
+        }
+        catch (SQLException ex) {
+            ex.printStackTrace();
+        }
     }
 
     private void registerClasses() {
