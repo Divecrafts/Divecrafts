@@ -80,6 +80,7 @@ public class Main extends JavaPlugin {
     public void onDisable() {
         try {
             saveEconomy();
+            MysqlManager.getConnection().close();
             vaultHook.unhook();
             tasks.forEach(BukkitRunnable::cancel);
             Bukkit.getPluginManager().disablePlugin(instance);
