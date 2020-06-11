@@ -202,7 +202,7 @@ public class HomeCmd extends Cmd implements CommandExecutor {
             if (args.length > 1){
                 final Player player = Bukkit.getPlayer(sender.getName());
                 final SUser user = SServer.getUser(player);
-                final PreparedStatement statement = MysqlManager.getConnection().prepareStatement("SELECT * WHERE uuid=?");
+                final PreparedStatement statement = MysqlManager.getConnection().prepareStatement("SELECT * FROM homes WHERE uuid=?");
                 statement.setString(1, Bukkit.getOfflinePlayer(args[0]).getUniqueId().toString());
 
                 final ResultSet rs = statement.executeQuery();
@@ -228,7 +228,7 @@ public class HomeCmd extends Cmd implements CommandExecutor {
                 )));
             }
             else {
-                final PreparedStatement statement = MysqlManager.getConnection().prepareStatement("SELECT `name` WHERE uuid=?");
+                final PreparedStatement statement = MysqlManager.getConnection().prepareStatement("SELECT `name` FROM homes WHERE uuid=?");
                 statement.setString(1, Bukkit.getOfflinePlayer(args[0]).getUniqueId().toString());
 
                 final ResultSet rs = statement.executeQuery();
