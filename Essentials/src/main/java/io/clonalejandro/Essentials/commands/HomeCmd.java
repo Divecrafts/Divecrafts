@@ -199,6 +199,8 @@ public class HomeCmd extends Cmd implements CommandExecutor {
 
     private boolean homes(CommandSender sender, String arg, String[] args){
         try {
+            if (checkPermissions(sender, SCmd.Rank.TMOD)) return true;
+            
             if (args.length > 1){
                 final Player player = Bukkit.getPlayer(sender.getName());
                 final SUser user = SServer.getUser(player);
