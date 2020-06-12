@@ -141,7 +141,9 @@ public class GameEvents implements Listener {
     private void checkEndGame(){
         if (Api.ALIVE_PLAYERS.size() <= 1){
             final String name = Api.ALIVE_PLAYERS.size() == 0 ? "nobody" : Api.ALIVE_PLAYERS.get(0).getDisplayName();
+            if (Api.getState() == State.ENDING) return;
 
+            Api.setState(State.ENDING);
             Bukkit.broadcastMessage(Api.translator(
                     String.format("&9&lUHC> &fThe winner is &e%s", name)
             ));
