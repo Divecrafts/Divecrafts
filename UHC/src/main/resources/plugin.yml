@@ -1,0 +1,12 @@
+name: UHC
+main: net.divecrafts.UHC.Main
+version: 1.0
+author: clonalejandro
+description: A uhc plugin for Divecrafts
+website: https://clonalejandro.io
+commands:
+  uhc:
+    usage: /<command>
+    aliases:
+      - game
+    description: This command manage the all system of the UHC Game
