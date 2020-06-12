@@ -43,7 +43,7 @@ public class GameEvents implements Listener {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e){
-        if (Api.getState() == State.RUNNING)
+        if (Api.getState() == State.ENDING ||Api.getState() == State.RUNNING)
             whilePlayerCanJoin(e);
     }
 
@@ -87,6 +87,7 @@ public class GameEvents implements Listener {
      */
     private void whilePlayerCanLeave(PlayerKickEvent e){
         Api.DESCONECTED.add(e.getPlayer().getName());
+        Api.ALIVE_PLAYERS.remove(e.getPlayer());
     }
 
 
@@ -96,6 +97,7 @@ public class GameEvents implements Listener {
      */
     private void whilePlayerCanLeave(PlayerQuitEvent e){
         Api.DESCONECTED.add(e.getPlayer().getName());
+        Api.ALIVE_PLAYERS.remove(e.getPlayer());
     }
 
 
