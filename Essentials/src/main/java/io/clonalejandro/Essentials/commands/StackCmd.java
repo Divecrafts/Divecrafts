@@ -12,6 +12,7 @@ import org.bukkit.inventory.ItemStack;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * Created by Alex
@@ -36,7 +37,7 @@ public class StackCmd extends Cmd implements CommandExecutor {
         if (checkPermissions(sender, SCmd.Rank.MEDUSA) && !sender.hasPermission("essentials.stack")) return true;
 
         final Player player = Bukkit.getPlayer(sender.getName());
-        final ItemStack[] items = player.getInventory().getContents();
+        final List<ItemStack> items = Arrays.stream(player.getInventory().getContents()).filter(Objects::nonNull).collect(Collectors.toList());
         final List<Material> whiteList = Arrays.asList(Material.LAPIS_LAZULI, Material.DIAMOND, Material.REDSTONE,
                 Material.GOLD_INGOT, Material.IRON_INGOT, Material.COAL,
                 Material.EMERALD, Material.QUARTZ, Material.GLOWSTONE_DUST,
