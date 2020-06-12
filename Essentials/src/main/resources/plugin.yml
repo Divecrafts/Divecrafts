@@ -121,3 +121,5 @@ commands:
     usage: /<command>
     aliases:
       - ec
+  stack:
+    usage: /<command>
