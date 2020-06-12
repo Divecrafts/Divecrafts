@@ -50,15 +50,15 @@ public class GameEvents implements Listener {
 
     @EventHandler
     public void onPlayerQuitEvent(PlayerQuitEvent e){
-        if (Api.getState() == State.ENDING || Api.getState() == State.RUNNING)
-            whilePlayerCanLeave(e);
+        if (Api.getState() == State.RUNNING) checkEndGame();
+        if (Api.getState() == State.ENDING || Api.getState() == State.RUNNING) whilePlayerCanLeave(e);
     }
 
 
     @EventHandler
     public void onPlayerKickEvent(PlayerKickEvent e){
-        if (Api.getState() == State.ENDING || Api.getState() == State.RUNNING)
-            whilePlayerCanLeave(e);
+        if (Api.getState() == State.RUNNING)
+            checkEndGame();
     }
 
 
@@ -133,13 +133,20 @@ public class GameEvents implements Listener {
             Scoreboard.updateScoreboard("spectators", String.valueOf(Api.getOnline() - Api.ALIVE_PLAYERS.size()));
             Scoreboard.updateScoreboard("aliveplayers", String.valueOf(Api.ALIVE_PLAYERS.size()));
 
-            if (Api.ALIVE_PLAYERS.size() == 1){
-                Bukkit.broadcastMessage(Api.translator(
-                        String.format("&9&lUHC> &fThe winner is &e%s", Api.ALIVE_PLAYERS.get(0).getDisplayName())
-                ));
+            checkEndGame();
+        }
+    }
 
-                Bukkit.getScheduler().runTaskLater(Main.instance, () -> Api.getGame().gameStop(), 3L * 20L);
-            }
+
+    private void checkEndGame(){
+        if (Api.ALIVE_PLAYERS.size() <= 1){
+            final String name = Api.ALIVE_PLAYERS.size() == 0 ? "nobody" : Api.ALIVE_PLAYERS.get(0).getDisplayName();
+
+            Bukkit.broadcastMessage(Api.translator(
+                    String.format("&9&lUHC> &fThe winner is &e%s", name)
+            ));
+
+            Bukkit.getScheduler().runTaskLater(Main.instance, () -> Api.getGame().gameStop(), 3L * 20L);
         }
     }
 }

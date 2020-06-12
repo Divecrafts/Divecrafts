@@ -71,7 +71,7 @@ public final class Game {
         Api.setState(State.ENDING);
 
         Bukkit.broadcastMessage(Api.translator("&a&lUHC> &fThe game is ending"));
-        Bukkit.getScheduler().runTaskLater(Main.instance, Bukkit::shutdown, 10L * 20L);
+        Bukkit.getScheduler().runTaskLater(Main.instance, Bukkit::shutdown, 3L * 20L);
     }
 
 
