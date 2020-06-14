@@ -393,7 +393,7 @@ public class MySQL {
             boosters.add(new SBooster(
                     rs.getInt("id"),
                     rs.getInt("multiplier"),
-                    SServer.GameID.values()[rs.getInt("gameId")],
+                    SServer.GameID.values()[rs.getInt("gameId") -1],
                     Timestamp.valueOf(rs.getString("expires")),
                     UUID.fromString(rs.getString("uuid"))
             ));
