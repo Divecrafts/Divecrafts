@@ -19,7 +19,7 @@ import java.util.List;
 public class DecirCMD extends SCmd {
 
     public DecirCMD() {
-        super("decir", Rank.USUARIO, Arrays.asList("w", "m", "msg", "mensaje"));
+        super("decir", Rank.USUARIO, Arrays.asList("w", "m", "msg", "mensaje", "tell"));
     }
 
     @Getter private final static HashMap<Player, Player> lastPlayerMsg = new HashMap<>();
