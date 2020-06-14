@@ -10,7 +10,6 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.entity.Player;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -38,7 +37,7 @@ import java.util.UUID;
 public class GiveBoosterCMD extends SCmd {
 
     public GiveBoosterCMD() {
-        super("givebooster", Rank.SMOD, "giveboost");
+        super("givebooster", Rank.SMOD, "giveboost", "gbooster");
     }
 
     @Override
@@ -59,7 +58,7 @@ public class GiveBoosterCMD extends SCmd {
            }
            else target = SServer.getUser(plugin.getServer().getPlayer(args[0]));
 
-           plugin.getMySQL().addBooster(target, new SBooster(0, Integer.parseInt(args[1]), SServer.GameID.values()[Integer.parseInt(args[2])], Timestamp.valueOf(args[3] + " " + args[4]), target.getUuid()));
+           plugin.getMySQL().addBooster(target, new SBooster(0, Integer.parseInt(args[1]), SServer.GameID.values()[Integer.parseInt(args[2]) -1], Timestamp.valueOf(args[3] + " " + args[4]), target.getUuid()));
            user.getPlayer().sendMessage(Utils.colorize(Main.getPREFIX() + "&fBooster añadido"));
        }
        else user.getPlayer().sendMessage(Utils.colorize(Main.getPREFIX() + "&cUso incorrecto usa: &b/givebooster &e<jugador> <multiplier> <gameId> <Y-M-d> <h:m:s>"));
