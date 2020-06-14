@@ -217,7 +217,7 @@ public class PlayerEvents implements Listener {
         final SUser user = SServer.getUser(event.getPlayer());
 
         if (user.getUserData().getRank().getRank() < SCmd.Rank.SMOD.getRank()){
-            if (bannedCmds.contains(event.getMessage().toLowerCase())){
+            if (isBannedCmd(event.getMessage().toLowerCase())){
                 player.sendMessage(Languaje.getLangMsg(user.getUserData().getLang(), "Global.cmdnopuedes"));
                 event.setCancelled(true);
             }
@@ -288,5 +288,12 @@ public class PlayerEvents implements Listener {
             if (!user.getUserData().getDisguise().equals(""))
                 new Disguise(user, user.getUserData().getDisguise());
         }, 2 * 20L);
+    }
+
+    private boolean isBannedCmd(String str){
+        for (String cmd : bannedCmds)
+            if (str.contains(cmd))
+                return true;
+        return false;
     }
 }
