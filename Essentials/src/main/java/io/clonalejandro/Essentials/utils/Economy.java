@@ -52,14 +52,14 @@ public class Economy {
 
     public void withdraw(double amount){
         this.money -= amount;
-        if (getPlayer().getName() == null || getPlayer().getName().equals("")) {
+        if (getPlayer() == null || getPlayer().getName() == null || getPlayer().getName().equals("")) {
             asyncSave();
         }
     }
 
     public void deposit(double amount){
         this.money += amount;
-        if (getPlayer().getName() == null || getPlayer().getName().equals("")) {
+        if (getPlayer() == null || getPlayer().getName() == null || getPlayer().getName().equals("")) {
             asyncSave();
         }
     }
@@ -111,7 +111,7 @@ public class Economy {
     }
 
     public OfflinePlayer getPlayer(){
-        return Bukkit.getOfflinePlayer(this.uuid);
+        return this.uuid == null ? null : Bukkit.getOfflinePlayer(this.uuid);
     }
 
     public void checkIfExists(){
