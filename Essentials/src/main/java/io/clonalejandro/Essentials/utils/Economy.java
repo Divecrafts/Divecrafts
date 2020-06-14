@@ -1,5 +1,8 @@
 package io.clonalejandro.Essentials.utils;
 
+import io.clonalejandro.DivecraftsCore.api.SBooster;
+import io.clonalejandro.DivecraftsCore.api.SServer;
+import io.clonalejandro.DivecraftsCore.api.SUser;
 import io.clonalejandro.Essentials.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -58,6 +61,23 @@ public class Economy {
     }
 
     public void deposit(double amount){
+        if (getPlayer() != null && getPlayer().getName() != null){
+            final SUser user = SServer.getUser(getPlayer());
+            final List<SBooster> boosters = user.getUserData().getBoosters()
+                    .stream()
+                    .filter(booster -> booster.getGameID() == SServer.GameID.SURVIVAL)
+                    .collect(Collectors.toList());
+
+            if (boosters.size() > 0){
+                int multiplier = boosters.stream().mapToInt(SBooster::getMultiplier).sum();
+                amount *= multiplier;
+            }
+        }
+
+        depositWithOutBooster(amount);
+    }
+
+    public void depositWithOutBooster(double amount){
         this.money += amount;
         if (getPlayer() == null || getPlayer().getName() == null || getPlayer().getName().equals("")) {
             asyncSave();
