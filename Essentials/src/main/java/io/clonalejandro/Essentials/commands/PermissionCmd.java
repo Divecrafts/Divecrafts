@@ -39,7 +39,7 @@ public class PermissionCmd extends Cmd implements CommandExecutor {
                 final Permission permission = new Permission(target.getUniqueId());
 
                 if (mode.equalsIgnoreCase("add")) permission.add(node);
-                else if (mode.equalsIgnoreCase("remove")) permission.add(node);
+                else if (mode.equalsIgnoreCase("remove")) permission.remove(node);
                 else {
                     sender.sendMessage(Utils.colorize("&c&lServer> &fModo incorrecto"));
                     return true;
