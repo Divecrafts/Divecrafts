@@ -23,6 +23,7 @@ import org.bukkit.event.player.*;
 import org.bukkit.event.weather.WeatherChangeEvent;
 import org.bukkit.permissions.PermissionAttachment;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 
 import java.util.*;
 
@@ -152,7 +153,9 @@ public class PlayerEvents implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onInteract(PlayerInteractAtEntityEvent e) {
-        SUser u = SServer.getUser(e.getPlayer());
+        final SUser u = SServer.getUser(e.getPlayer());
+
+        checkAfk(e.getPlayer());
 
         if (SServer.npc.isEmpty()) {
             e.setCancelled(true);
@@ -173,42 +176,48 @@ public class PlayerEvents implements Listener {
     }
 
     @EventHandler
-    public void onPlayerChat(AsyncPlayerChatEvent e){
-        e.setMessage(e.getMessage().replace("%", "%%"));
+    public void onPlayerMoves(PlayerMoveEvent event){
+        checkAfk(event.getPlayer());
+    }
 
-        final Player p = e.getPlayer();
-        final SUser mu = SServer.getUser(p);
+    @EventHandler
+    public void onPlayerChat(AsyncPlayerChatEvent event){
+        checkAfk(event.getPlayer());
+
+        event.setMessage(event.getMessage().replace("%", "%%"));
+
+        final Player player = event.getPlayer();
+        final SUser user = SServer.getUser(player);
+        final SCmd.Rank rank = user.getUserData().getRank();
         final String[] domains = new String[]{".com", ".net", ".es", ".org", ".com.ar", ".ar", ".mx"};
-        final boolean containsDomain = String.join("", Arrays.asList(domains)).contains(e.getMessage());
+        final boolean containsDomain = String.join("", Arrays.asList(domains)).contains(event.getMessage());
 
-        if (!mu.getUserData().getChat()) {
-            mu.getPlayer().sendMessage(Languaje.getLangMsg(mu.getUserData().getLang(), "Chat.desabilitado"));
-            e.setCancelled(true);
+        if (!user.getUserData().getChat()) {
+            user.getPlayer().sendMessage(Languaje.getLangMsg(user.getUserData().getLang(), "Chat.desabilitado"));
+            event.setCancelled(true);
         }
 
-        for (Player o : Bukkit.getOnlinePlayers()) {
-            SUser mo = SServer.getUser(o.getUniqueId());
-            if (!mo.getUserData().getChat()) e.getRecipients().remove(o);
+        for (Player p : Bukkit.getOnlinePlayers()) {
+            final SUser mUser = SServer.getUser(p.getUniqueId());
+            if (!mUser.getUserData().getChat()) event.getRecipients().remove(p);
         }
 
         for (String word : nulledWords) {
-            if (e.getMessage().contains(word)) {
-                mu.getPlayer().sendMessage(Languaje.getLangMsg(mu.getUserData().getLang(), "Chat.noips"));
-                e.setCancelled(true);
+            if (event.getMessage().contains(word)) {
+                user.getPlayer().sendMessage(Languaje.getLangMsg(user.getUserData().getLang(), "Chat.noips"));
+                event.setCancelled(true);
             }
         }
 
         for (String domain : domains){
-            if (e.getMessage().contains(domain)){
-                mu.getPlayer().sendMessage(Languaje.getLangMsg(mu.getUserData().getLang(), "Chat.noips"));
-                e.setCancelled(true);
+            if (event.getMessage().contains(domain)){
+                user.getPlayer().sendMessage(Languaje.getLangMsg(user.getUserData().getLang(), "Chat.noips"));
+                event.setCancelled(true);
             }
         }
 
-        SCmd.Rank r = mu.getUserData().getRank();
-
-        if (r.getRank() > 0) e.setFormat(Utils.colorize(p.getDisplayName() + ": &f" + e.getMessage()));
-        else e.setFormat(p.getDisplayName() + ": §7" + e.getMessage());
+        if (rank.getRank() > 0) event.setFormat(Utils.colorize(player.getDisplayName() + ": &f" + event.getMessage()));
+        else event.setFormat(player.getDisplayName() + ": §7" + event.getMessage());
     }
 
     @EventHandler
@@ -241,11 +250,8 @@ public class PlayerEvents implements Listener {
         catch (Exception ex){
         }
 
-        if (rankId > 0){
-            for (int i = 0; i <= rankId; i++) {
-                permissions.addAll(Main.getInstance().getConfig().getStringList(String.format("Permissions.%s.perms", i)));
-            }
-        }
+        if (rankId > 0) for (int i = 0; i <= rankId; i++)
+            permissions.addAll(Main.getInstance().getConfig().getStringList(String.format("Permissions.%s.perms", i)));
         else permissions.addAll(Main.getInstance().getConfig().getStringList(String.format("Permissions.%s.perms", rankId)));
 
         permissions.addAll(Main.getInstance().getConfig().getStringList(String.format("Permissions.%s.noheredar", rankId)));
@@ -295,5 +301,21 @@ public class PlayerEvents implements Listener {
             if (str.contains(cmd))
                 return true;
         return false;
+    }
+
+    private void checkAfk(Player player){
+        final SUser user = SServer.getUser(player);
+
+        if (!SServer.afkMode.contains(user)){
+            if (SServer.afkTasks.get(user) != null) {
+                SServer.afkTasks.get(user).cancel();
+                SServer.afkTasks.remove(user);
+                SServer.afkMode.remove(user);
+            }
+
+            final BukkitTask task = Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> user.sendToServer("auth"), 20 * 60 * 5);
+
+            SServer.afkTasks.put(user, task);
+        }
     }
 }

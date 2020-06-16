@@ -3,6 +3,7 @@ package io.clonalejandro.DivecraftsCore.api;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.scheduler.BukkitTask;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,6 +19,7 @@ public class SServer {
 
     public static ArrayList<SUser> users = new ArrayList<>();
     public static ArrayList<SUser> afkMode = new ArrayList<>();
+    public static HashMap<SUser, BukkitTask> afkTasks = new HashMap<>();
     @Getter private static ArrayList<SUser> adminChatMode = new ArrayList<>();
 
     public static ArrayList<NPC> npc = new ArrayList<>();
