@@ -31,9 +31,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
 import java.io.File;
-import java.util.Collection;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 import net.divecrafts.UHC.exceptions.WorldException;
 import net.divecrafts.UHC.utils.Api;
@@ -61,6 +59,7 @@ final class Normal implements IWorld {
 
     private final String name;
     private final org.bukkit.World world;
+    private final List<Long> seeds = Arrays.asList(4718448332187272495L, 78189938499294L, 493243460215233480L, 125698743L, 8708477303049171819L, 2958776707072848190L, 2330894076079226706L, 3070928923073029792L, 7692505625803617061L);
 
     Normal(){
         name = "Normal_tmp";
@@ -103,12 +102,18 @@ final class Normal implements IWorld {
 
         final WorldCreator worldCreator = new WorldCreator(name);
 
-        worldCreator.environment(org.bukkit.World.Environment.NORMAL);
-        worldCreator.type(WorldType.NORMAL);
+        worldCreator.seed(getRandomSeed());
+        worldCreator.environment(World.Environment.NORMAL);
+        worldCreator.type(WorldType.LARGE_BIOMES);
 
         return worldCreator.createWorld();
     }
 
+    private Long getRandomSeed(){
+        final Random random = new Random();
+        final int number = random.nextInt(seeds.size());
+        return seeds.get(number);
+    }
 
     /**
      * This function check if world exists

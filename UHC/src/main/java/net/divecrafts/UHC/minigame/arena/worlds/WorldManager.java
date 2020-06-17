@@ -99,7 +99,7 @@ public class WorldManager {
                 x = randomBetween(r, -half + CENTERX, half + CENTERX),
                 z = randomBetween(r, -half + CENTERZ, half + CENTERZ);
 
-        return new Location(world, x, y, z);
+        return permutateLocation(new Location(world, x, y, z));
     }
 
 

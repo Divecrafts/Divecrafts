@@ -10,17 +10,20 @@ import net.divecrafts.UHC.utils.Api;
 import net.divecrafts.UHC.utils.Scoreboard;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
+import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.inventory.ItemStack;
 
 /**
  * Created by alejandrorioscalera
@@ -57,16 +60,14 @@ public class LobbyEvents implements Listener {
     public void onPlayerJoin(PlayerJoinEvent e){
         if (Api.getState() == State.LOBBY) {
             whilePlayerCanJoin(e);
-            Game.playerSpawn.put(e.getPlayer(), Arena.genRandomSpawn());
+            Game.playerSpawn.put(e.getPlayer(), Arena.genRandomSpawn(63));
         }
     }
-
 
     @EventHandler
     public void onFoodLevelChange(FoodLevelChangeEvent e){
         if (Api.getState() == State.LOBBY) e.setCancelled(true);
     }
-
 
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent e){
@@ -74,19 +75,28 @@ public class LobbyEvents implements Listener {
                 lobby.getLocation()
         );
     }
+
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent e){
         if (Api.getState() == State.LOBBY) onQuit();
         e.setQuitMessage(Api.NULL);
     }
 
+    @EventHandler
+    public void onDamage(EntityDamageEvent event) {
+        if (Api.getState() == State.LOBBY) event.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onDamageByItem(EntityDamageByEntityEvent event) {
+        if (Api.getState() == State.LOBBY) event.setCancelled(true);
+    }
 
     @EventHandler
     public void onPlayerKick(PlayerKickEvent e){
         if (Api.getState() == State.LOBBY) onQuit();
         e.setLeaveMessage(Api.NULL);
     }
-
 
     @EventHandler
     public void onBreakBlock(BlockBreakEvent e){
@@ -114,6 +124,8 @@ public class LobbyEvents implements Listener {
      */
     private void whilePlayerCanJoin(PlayerJoinEvent event){
         final Player player = event.getPlayer();
+        final ItemStack air = new ItemStack(Material.AIR);
+
         lobby = new Lobby();
 
         event.setJoinMessage(Api.translator(
@@ -129,6 +141,7 @@ public class LobbyEvents implements Listener {
 
         Bukkit.getScheduler().runTaskLater(Main.instance, () -> {
             player.getInventory().clear();
+            player.getInventory().setArmorContents(new ItemStack[]{air, air, air, air});
             player.setHealth(20);
             player.setFoodLevel(20);
             player.setGameMode(GameMode.ADVENTURE);

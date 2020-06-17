@@ -118,29 +118,36 @@ public class Border {
      * @return
      */
     public int resolveDistanceBetweenPlayer(final Player player){
-        final Location worldBorder = getCenter();
+        if (!player.getLocation().getWorld().getName().equalsIgnoreCase("normal_tmp")) return 0;
+
+        final Location worldBorder1 = getCenter();
+        final Location worldBorder2 = getCenter();
+        final Location worldBorder3 = getCenter();
+        final Location worldBorder4 = getCenter();
         final Location playerLocation = player.getLocation();
 
         final List<Integer> values = new ArrayList<>();
 
-        worldBorder.setY(0);
+        worldBorder1.setY(0);
+        worldBorder2.setY(0);
+        worldBorder3.setY(0);
+        worldBorder4.setY(0);
         playerLocation.setY(0);
 
-        worldBorder.add(playerLocation.getX(), 0, getSize() / -2.0);
-        values.add((int) Math.round(playerLocation.distance(worldBorder)));
+        worldBorder1.add(playerLocation.getX(), 0, getSize() / -2.0);
+        values.add((int) Math.round(playerLocation.distance(worldBorder1)));
 
-        worldBorder.add(playerLocation.getX(), 0, getSize() / 2.0);
-        values.add((int) Math.round(playerLocation.distance(worldBorder)));
+        worldBorder2.add(playerLocation.getX(), 0, getSize() / 2.0);
+        values.add((int) Math.round(playerLocation.distance(worldBorder2)));
 
-        worldBorder.add(getSize() / -2.0, 0, playerLocation.getZ());
-        values.add((int) Math.round(playerLocation.distance(worldBorder)));
+        worldBorder3.add(getSize() / -2.0, 0, playerLocation.getZ());
+        values.add((int) Math.round(playerLocation.distance(worldBorder3)));
 
-        worldBorder.add(getSize() / 2.0, 0, playerLocation.getZ());
-        values.add((int) Math.round(playerLocation.distance(worldBorder)));
+        worldBorder4.add(getSize() / 2.0, 0, playerLocation.getZ());
+        values.add((int) Math.round(playerLocation.distance(worldBorder4)));
 
-        return values.stream()
-                .sorted()
-                .collect(Collectors.toList())
-                .get(0);
+        Collections.sort(values);
+
+        return values.get(0);
     }
 }

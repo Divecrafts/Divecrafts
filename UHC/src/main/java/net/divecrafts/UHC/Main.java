@@ -10,6 +10,7 @@ import net.divecrafts.UHC.utils.Data;
 import net.divecrafts.UHC.utils.clonadoc.Getter;
 import net.divecrafts.UHC.utils.clonadoc.Setter;
 import org.bukkit.Bukkit;
+import org.bukkit.Difficulty;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
@@ -59,6 +60,8 @@ public class Main extends JavaPlugin {
             Config();
             Events();
             Commands();
+
+            Bukkit.getWorld("world").setDifficulty(Difficulty.PEACEFUL);
 
             Api.setState(State.LOBBY); //Set state lobby on enable
             Api.sendConsole(Api.translator("&a" + Api.PREFIX + "&fPlugin activado"));

@@ -139,7 +139,7 @@ public class Scoreboard {
         host.addEntry(Api.translator(hostS));
         time.addEntry(Api.translator(timeS));
         players.addEntry(Api.translator(playerS));
-        distance.addEntry(Api.translator(borderS));
+        distance.addEntry(Api.translator(distanceS));
         //kill.addEntry(Api.translator(killS));
         borders.addEntry(Api.translator(borderS));
         spectator.addEntry(Api.translator(spectatorS));
