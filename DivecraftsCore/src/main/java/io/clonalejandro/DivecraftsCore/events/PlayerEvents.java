@@ -6,6 +6,7 @@ import io.clonalejandro.DivecraftsCore.api.SServer;
 import io.clonalejandro.DivecraftsCore.api.SUser;
 import io.clonalejandro.DivecraftsCore.cmd.SCmd;
 import io.clonalejandro.DivecraftsCore.idiomas.Languaje;
+import io.clonalejandro.DivecraftsCore.utils.BungeeMensager;
 import io.clonalejandro.DivecraftsCore.utils.Disguise;
 import io.clonalejandro.DivecraftsCore.utils.Utils;
 import lombok.AllArgsConstructor;
@@ -313,7 +314,12 @@ public class PlayerEvents implements Listener {
                 SServer.afkMode.remove(user);
             }
 
-            final BukkitTask task = Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> user.sendToServer("auth"), 20 * 60 * 5);
+            final BukkitTask task = Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
+                if (user.getPlayer() != null && user.getPlayer().isOnline())
+                    user.sendToServer("lobby");//TODO Change to limbo
+
+                SServer.afkTasks.remove(user);
+            }, 20 * 60 * 5);
 
             SServer.afkTasks.put(user, task);
         }

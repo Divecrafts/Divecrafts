@@ -151,7 +151,7 @@ public class SUser {
 
     public void sendToServer(String server) {
         ByteArrayDataOutput out = ByteStreams.newDataOutput();
-        out.writeUTF("Exacto");
+        out.writeUTF("Conectar");
         out.writeUTF(server);
         getPlayer().sendPluginMessage(plugin, "DivecraftsBungee", out.toByteArray());
     }
