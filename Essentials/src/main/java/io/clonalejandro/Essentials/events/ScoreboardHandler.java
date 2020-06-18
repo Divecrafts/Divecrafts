@@ -72,6 +72,8 @@ public class ScoreboardHandler implements Listener {
         final String sWorld = Languaje.getLangMsg(user.getUserData().getLang(), "Scoreboardsurvival.mundoPrefix");
         final String sCoins = Languaje.getLangMsg(user.getUserData().getLang(), "Scoreboardsurvival.monedasPrefix");
 
+        final String serverName = Main.instance.getConfig().getString("server");
+
         board.setName(Utils.colorize(sbName));
         board.text(10, Utils.colorize("&1"));
         board.text(9, Utils.colorize(Languaje.getLangMsg(user.getUserData().getLang(), "Scoreboardlobby.rango") + "&" + rank));
@@ -79,7 +81,7 @@ public class ScoreboardHandler implements Listener {
         board.text(7, sWorld);
         board.text(6, sCoins);
         board.text(5, Utils.colorize("&2"));
-        board.text(4, Utils.colorize("&fServer: &aSurvival"));
+        board.text(4, Utils.colorize("&fServer: &a" + serverName));
         board.text(3, sPlayers);
         board.text(2, Utils.colorize("&3"));
         board.text(1, Utils.colorize("&ewww.divecrafts.net"));

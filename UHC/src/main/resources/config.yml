@@ -1,0 +1,83 @@
+###########################################################
+#  _    _ _    _  _____    _____          __  __ ______   #
+# | |  | | |  | |/ ____|  / ____|   /\   |  \/  |  ____|  #
+# | |  | | |__| | |      | |  __   /  \  | \  / | |__     #
+# | |  | |  __  | |      | | |_ | / /\ \ | |\/| |  __|    #
+# | |__| | |  | | |____  | |__| |/ ____ \| |  | | |____   #
+#  \____/|_|  |_|\_____|  \_____/_/    \_\_|  |_|______|  #
+#                                                         #
+###########################################################
+
+
+#############################################################################################
+# Developed by clonalejandro                                                                #
+#                                                                                           #
+# -= SOCIAL NETWORKS =-                                                                     #
+#                                                                                           #
+# Website: https://clonalejandro.me                                                         #
+# GitHub: https://github.com/clonalejandro                                                  #
+# GitLab: https://gitlab.com/clonalejandro                                                  #
+# YouTube: https://youtube.com/c/clonalejandromcbGameplays                                  #
+# Twitter: https://twitter.com/clonalejandro11                                              #
+# Google+: https://plus.google.com/u/0/+clonalejandromcbGameplays                           #
+# Spigot: https://www.spigotmc.org/members/clonalejandro.28979/                             #
+# Bukkit: https://bukkit.org/members/clonalejandro.91257534/                                #
+# GoogleScholar: https://scholar.google.es/citations?user=DiDtLgoAAAAJ&hl=es                #
+# McMarket: http://www.mc-market.org/members/34499/                                         #
+# Enjin: https://www.enjin.com/profile/13291450                                             #
+# KeyBase: https://keybase.io/clonalejandro                                                 #
+# XenForo: https://xenfacil.com/miembros/clonalejandro.1764/                                #
+# SpainPvP: https://spainpvp.com/members/clonalejandro.956/                                 #
+# DevBukkit: https://dev.bukkit.org/members/clonalejandro                                   #
+# SoundCloud: https://soundcloud.com/clonalejandro-mcb                                      #
+# Steam: https://steamcommunity.com/id/clonalejandro                                        #
+# StackOverFlow: https://stackoverflow.com/users/8099410/clonalejandro-mcb                  #
+# StackExChange: https://stackexchange.com/users/11026741/clonalejandro-mcb                 #
+# SocialBlade: https://socialblade.com/youtube/channel/UCGjUzh0rhZQeK_bdz4QcDIg             #
+# Sellfy: https://sellfy.com/clonalejandro                                                  #
+# Ask: https://ask.fm/alejandro_prc                                                         #
+#############################################################################################
+
+Debug: false
+License: "aHR0cHM6Ly9jbG9uYWxlamFuZHJvLmdpdGh1Yi5pby9jZG4vY2xvbmF3ZWIvcGVyc29uYWwuanNvbg=="
+
+Score:
+  Title: "&b&lUHC" # This set the Sidebar in the scoreboard
+  Ip: "&bwww.divecrafts.net" # This set the ip in the footer of scoreboard
+  Kills: "&aYour Kills: &f{KILLS}" # This variable set the text of the line kills
+  CurrentBorder: "&aCurrent Border: &f{BORDER}" # This variable set the current border in line border
+  OnlinePlayers: "&aPlayers: &f{ONLINE}" # This variable set the online players in line onlineplayers
+  Teams: "&aTeams: &f{MODE}" # This variable set the Teams mode in line teams
+  Host: "&6Host: &f{HOST}" # This variable set the Host in line host
+  Gamemode: "&aGamemodes: &f{GAME}" # This variable set the gamemode in line gamemode
+  AlivePlayers: "&aPlayers: &f{ALIVE}" # This variable set alive players in line players
+  Time: "&aGame Time: &f{TIME}" # This variable set the time in line game time
+  Spectators: "&aSpectators: &f{SPECTATORS}" # This variable set the spectators in line spectators
+
+Game:
+  Mode: "FFA" # This variable set the mode of this game
+  CountDownMessage: "&a&lUHC> &fThe game start in &e{TIME} seconds" # This is the message for the game countdown before start {TIME} is the variable for time in seconds
+  JoinMessage: "&e{PLAYER} has joined the game" # This is the message when player join {PLAYER} is the variable player name
+  CountDown: 45 # This is de countdown in seconds per start the game
+  MinPlayers: 2 # This is the min of the players for the game start the CountDown
+  ForceStart: "&9&lUHC> &fThe game was forced start" # This is the message when the game is forced start
+  GameStart: "&a&lUHC> &fThe game was started" # This is the message when the game start
+  UhcWorldMobLimit: 300 # This is the limit of mobs in the normal world of this game
+  UhcNetherMobLimit: 150 # This is the limit of mobs in the nether world of this game
+  MessageErrBowless: "&c&lUHC> &fYou can't create a Bow, because &eBowless &fis active" # This is the message when player try craft a Bow or Arrow
+  MessageErrRodless: "&c&lUHC> &fYou can't create a Rod, because &eRodless &fis active" # This is the message when player try craft a Rod
+  MessageErrLimitations: "&c&lUHC> &fYou can't mine more {BLOCK}, because &eLimitations &fis active" # This is the message when player try mine a a block wich stay in limitation, the {BLOCK} is a variable wich block you not mine
+  MessageErrDiamondLess: "&c&lUHC> &fYou can't mine Diamonds, because &eDiamondLess &fis active" # This is the message when player try mine a Diamond Ore
+  MessageErrGoldLess: "&c&lUHC> &fYou can't mine Gold, because &eGoldLess &fis active" # This is the message when player try mine a Gold Ore
+  MessageErrIronLess: "&c&lUHC> &fYou can't mine Iron, because &eIronLess &fis active" # This is the message when player try mine a Iron Ore
+  MessageErrCoalLess: "&c&lUHC> &fYou can't mine Coal, because &eCoalLess &fis active" # This is the message when player try mine a Coal Ore
+  AirDropAlert: "&9&lUHC> &fAirDrop falling at Location: &e{COORD} &flets go for looting" # This is the message when AirDrop fall in the Game map
+  AirDropTime: 300 # Time in seconds for throw new AirDrop to the game
+  BountyHunterAdd: "&9&lUHC> &fThe bounty for you is &e{BOUNTY}" # This message send to Players when the bounty is generated
+  BountyHunterRemove: "&a&lUHC> &fYou will be killed your bounty" # This message send to Players when the bounty is killed by you
+  BarebonesCraftLocked: "&c&lUHC> &fYou can't craft &e{TARGET} &fbecause &eBarebones &fis active" # This is the message when player try craft a recipe locked
+
+Map:
+  CenterX: 00.00 # This represent a X Coord center of the UHC map
+  CenterZ: 00.00 # This represent a Z Coord center of the UHC map
+  Width: 750 # This represent a Radius of UHC map
