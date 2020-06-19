@@ -59,7 +59,7 @@ public class DecirCMD extends SCmd {
 
         sendPrivateMessage(target, user, user.getUserData().getRank().getRank() > 0 ?
                 Utils.colorize(Utils.buildString(args)) :
-                Utils.buildString(args)
+                Utils.buildString(Arrays.copyOfRange(args, 1, args.length))
         );
     }
 
