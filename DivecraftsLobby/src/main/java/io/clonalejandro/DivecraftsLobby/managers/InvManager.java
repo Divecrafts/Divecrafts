@@ -146,7 +146,7 @@ public class InvManager {
                                 .split("\n")))
                         .build());
 
-                inv.setItem(13, new ItemMaker(Material.LONG_GRASS)
+                inv.setItem(13, new ItemMaker(Material.GRASS)
                         .setName(Languaje.getLangMsg(u.getUserData().getLang(), "Juegosname.skyblock"))
                         .setLore(Arrays.asList(Languaje.getLangMsg(u.getUserData().getLang(), "Juegoslore.skyblock")
                                 .replace("%players%", String.valueOf(BungeeMensager.getJuegos().get("skyblock")))
