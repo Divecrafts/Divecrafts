@@ -46,6 +46,10 @@ public class SetGroupCMD extends SCmd {
 
             user.getUserData().setRank(Rank.values()[i]);
             user.save();
+
+            Utils.loadPermissions(user.getPlayer());
+            Utils.updateUserColor(user);
+
             user.getPlayer().sendMessage(Utils.colorize(Main.getPREFIX() + "&fRango cambiado: &" + Rank.groupColor(Rank.values()[i]) + Rank.values()[i]));
             return;
         }
@@ -72,6 +76,10 @@ public class SetGroupCMD extends SCmd {
 
             target.getUserData().setRank(Rank.values()[i]);
             target.save();
+
+            Utils.loadPermissions(target.getPlayer());
+            Utils.updateUserColor(target);
+
             user.getPlayer().sendMessage(Main.getPREFIX() + "*§3Rango cambiado a §c" + target.getName() + " §3: §" + Rank.groupColor(Rank.values()[i]) + Rank.values()[i].toString());
         }
     }
@@ -115,8 +123,13 @@ public class SetGroupCMD extends SCmd {
                 }
             }
             else target = SServer.getUser(plugin.getServer().getPlayer(args[0]));
+
             target.getUserData().setRank(Rank.values()[i]);
             target.save();
+
+            Utils.loadPermissions(target.getPlayer());
+            Utils.updateUserColor(target);
+
             sender.sendMessage(Utils.colorize(Main.getPREFIX() + "*§3Rango cambiado a §c" + target.getName() + " §3: §" + Rank.groupColor(Rank.values()[i]) + target.getUserData().getRank().toString()));
         }
     }
