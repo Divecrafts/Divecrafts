@@ -146,6 +146,13 @@ public class InvManager {
                                 .split("\n")))
                         .build());
 
+                inv.setItem(13, new ItemMaker(Material.LONG_GRASS)
+                        .setName(Languaje.getLangMsg(u.getUserData().getLang(), "Juegosname.skyblock"))
+                        .setLore(Arrays.asList(Languaje.getLangMsg(u.getUserData().getLang(), "Juegoslore.skyblock")
+                                .replace("%players%", String.valueOf(BungeeMensager.getJuegos().get("skyblock")))
+                                .split("\n")))
+                        .build());
+
                 //inv.setItem(24, new ItemMaker(Material.BOW).setName(Languaje.getLangMsg(u.getUserData().getLang(), "Juegosname.sw")).setLore(Arrays.asList(Languaje.getLangMsg(u.getUserData().getLang(), "Juegoslore.sw").replace("%players%", String.valueOf(BungeeMensager.getLobbies().get("lsw") + BungeeMensager.getJuegos().get("sw"))).split("\n"))).build());
 
                 //inv.setItem(28, new ItemMaker(Material.GOLDEN_APPLE).setName(Languaje.getLangMsg(u.getUserData().getLang(), "Juegosname.fc")).setLore(Arrays.asList(Languaje.getLangMsg(u.getUserData().getLang(), "Juegoslore.fc").replace("%players%", String.valueOf(BungeeMensager.getLobbies().get("lfc") + BungeeMensager.getJuegos().get("fc"))).split("\n"))).build());
