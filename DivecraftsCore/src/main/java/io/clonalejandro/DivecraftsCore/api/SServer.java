@@ -52,7 +52,8 @@ public class SServer {
         FIGTHCLUB(6),
         MUM(7),
         EGGWARS(8),
-        SURVIVAL(9);
+        SURVIVAL(9),
+        SKYBLOCK(10);
 
         private final int id;
     }

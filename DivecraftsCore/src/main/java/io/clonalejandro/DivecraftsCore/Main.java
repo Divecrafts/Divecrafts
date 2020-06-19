@@ -8,17 +8,20 @@ import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.permissions.PermissionAttachment;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.sql.SQLException;
 import java.util.Arrays;
+import java.util.HashMap;
 
 public class Main extends JavaPlugin {
 
     @Getter @Setter private static String PREFIX = "&9&lServer> ";
-
+    @Getter public static final HashMap<Player, PermissionAttachment> perms = new HashMap<>();
     @Getter private static Main instance;
 
     @Getter private InventoryManager inventoryManager;

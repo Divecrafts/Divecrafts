@@ -3,22 +3,27 @@ package io.clonalejandro.DivecraftsCore.utils;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import io.clonalejandro.DivecraftsCore.api.SUser;
-import io.clonalejandro.DivecraftsCore.cmd.SCmd;
-import lombok.NonNull;
 import io.clonalejandro.DivecraftsCore.Main;
 import io.clonalejandro.DivecraftsCore.api.SServer;
+import io.clonalejandro.DivecraftsCore.api.SUser;
+import io.clonalejandro.DivecraftsCore.cmd.SCmd;
+import io.clonalejandro.DivecraftsCore.events.UpdateNameEvent;
+import lombok.NonNull;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
+import org.bukkit.permissions.PermissionAttachment;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 public class Utils {
 
@@ -37,7 +42,7 @@ public class Utils {
     public static String buildString(String[] args, int empiece) {
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = empiece; i < args.length; i++) {
-            if (i > empiece) {
+            if (i > empiece){
                 stringBuilder.append(" ");
             }
             stringBuilder.append(args[i]);
@@ -65,7 +70,33 @@ public class Utils {
         user.getPlayer().setCustomName(Utils.colorize(name));
         user.getPlayer().setCustomNameVisible(true);
 
+        Bukkit.getPluginManager().callEvent(new UpdateNameEvent(name, user));
         new TagAPI();
+    }
+
+    public static void loadPermissions(Player player){
+        final SUser user = SServer.getUser(player);
+        final int rankId = user.getUserData().getRank().getRank();
+        final PermissionAttachment attachment = player.addAttachment(Main.getInstance());
+        final List<String> permissions = new ArrayList<>();
+
+        try {
+            Class<?> clazz = Class.forName("io.clonalejandro.Essentials.objects.Permission");
+            Object permission = clazz.getConstructor(UUID.class).newInstance(user.getUuid());
+            List<String> individualPermissions = (List<String>) clazz.getMethod("get").invoke(permission);
+            permissions.addAll(individualPermissions);
+        }
+        catch (Exception ignored){
+        }
+
+        if (rankId > 0) for (int i = 0; i <= rankId; i++)
+            permissions.addAll(Main.getInstance().getConfig().getStringList(String.format("Permissions.%s.perms", i)));
+        else permissions.addAll(Main.getInstance().getConfig().getStringList(String.format("Permissions.%s.perms", rankId)));
+
+        permissions.addAll(Main.getInstance().getConfig().getStringList(String.format("Permissions.%s.noheredar", rankId)));
+        permissions.forEach(permission -> attachment.setPermission(permission, true));
+
+        Main.getPerms().put(player, attachment);
     }
 
     /**

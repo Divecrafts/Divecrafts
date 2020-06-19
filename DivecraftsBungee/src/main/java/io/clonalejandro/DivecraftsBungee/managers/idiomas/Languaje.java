@@ -16,44 +16,44 @@ import java.sql.SQLException;
 
 public class Languaje {
 
-        /* Idiomas
-         *
-         * ES => 0
-         * US => 1
-         *
-         * */
+    /* Idiomas
+     *
+     * ES => 0
+     * US => 1
+     *
+     * */
 
-        public static int getPlayerLang(ProxiedPlayer player) throws SQLException {
-            int lang = 0;
-            ResultSet rsSetting = Main.getMySQL().query("SELECT * FROM `settings` WHERE `uuid`='" + player.getUniqueId().toString() + "'");
-            while (rsSetting.next()) {
-                lang = rsSetting.getInt("lang");
-            }
-            return lang;
+    public static int getPlayerLang(ProxiedPlayer player) throws SQLException {
+        int lang = 0;
+        ResultSet rsSetting = Main.getMySQL().query("SELECT * FROM `settings` WHERE `uuid`='" + player.getUniqueId().toString() + "'");
+        while (rsSetting.next()) {
+            lang = rsSetting.getInt("lang");
+        }
+        return lang;
+    }
+
+    public static String getLangMsg(int language, String whatToSearch) {
+        String file;
+        switch (language) {
+            case 1:
+                file = "en.json";
+                break;
+            default:
+                file = "es.json";
         }
 
-        public static String getLangMsg(int language, String whatToSearch){
-            String file;
-            switch (language){
-                case 1:
-                    file = "en.json";
-                    break;
-                default:
-                    file = "es.json";
-            }
+        JsonObject json = getJson("http://play.divecrafts.net:3000/api/" + file);
 
-            JsonObject json = getJson("http://play.divecrafts.net:3000/api/" + file);
+        if (json == null) return "Error!";
 
-            if (json == null) return "Error!";
+        String[] key = whatToSearch.split("\\.");
 
-            String[] key = whatToSearch.split("\\.");
+        String message = json.get(key[0]).getAsJsonObject().get(key[1]).getAsString();
 
-            String message = json.get(key[0]).getAsJsonObject().get(key[1]).getAsString();
+        return TextUtils.formatText(message);
+    }
 
-            return TextUtils.formatText(message);
-        }
-
-    private static JsonObject getJson(String url){
+    private static JsonObject getJson(String url) {
         try {
             URL cUrl = new URL(url);
             HttpURLConnection request = (HttpURLConnection) cUrl.openConnection();
@@ -65,8 +65,7 @@ public class Languaje {
             JsonElement response = jsonParser.parse(new InputStreamReader(stream));
 
             return response.getAsJsonObject();
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
             return null;
         }

@@ -6,7 +6,6 @@ import io.clonalejandro.DivecraftsCore.api.SServer;
 import io.clonalejandro.DivecraftsCore.api.SUser;
 import io.clonalejandro.DivecraftsCore.cmd.SCmd;
 import io.clonalejandro.DivecraftsCore.idiomas.Languaje;
-import io.clonalejandro.DivecraftsCore.utils.BungeeMensager;
 import io.clonalejandro.DivecraftsCore.utils.Disguise;
 import io.clonalejandro.DivecraftsCore.utils.Utils;
 import lombok.AllArgsConstructor;
@@ -22,11 +21,12 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.event.weather.WeatherChangeEvent;
-import org.bukkit.permissions.PermissionAttachment;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @AllArgsConstructor
 public class PlayerEvents implements Listener {
@@ -34,11 +34,6 @@ public class PlayerEvents implements Listener {
     private final Main plugin;
     private final List<String> nulledWords = new ArrayList<>();
     private final List<String> bannedCmds = Arrays.asList("/plugins", "/version", "/ver", "/me");
-
-    public HashMap<Player, PermissionAttachment> perms = new HashMap<>();
-    public PlayerEvents(Main instance) {
-        plugin = instance;
-    }
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerLogin(PlayerLoginEvent e) {
@@ -57,7 +52,7 @@ public class PlayerEvents implements Listener {
         u.save();
 
         Utils.updateUserColor(u);
-        loadPermissions(e.getPlayer());
+        Utils.loadPermissions(e.getPlayer());
         checkBoosters(u);
         checkFly(u);
         //checkDisguise(u);
@@ -173,7 +168,7 @@ public class PlayerEvents implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onWeatherChange(WeatherChangeEvent e) {
-        if (e.toWeatherState()) e.setCancelled(true);
+        if (e.toWeatherState() && !Bukkit.getPluginManager().isPluginEnabled("Essentials")) e.setCancelled(true);
     }
 
     @EventHandler
@@ -232,33 +227,6 @@ public class PlayerEvents implements Listener {
                 event.setCancelled(true);
             }
         }
-    }
-
-    private void loadPermissions(Player player){
-        final SUser user = SServer.getUser(player);
-        final int rankId = user.getUserData().getRank().getRank();
-        final PermissionAttachment attachment = player.addAttachment(Main.getInstance());
-        final List<String> permissions = new ArrayList<>();
-
-        try {
-            if (Bukkit.getServer().getPluginManager().isPluginEnabled("Essentials")){
-                Class<?> clazz = Class.forName("io.clonalejandro.Essentials.objects.Permission");
-                Object permission = clazz.getConstructor(UUID.class).newInstance(user.getUuid());
-                List<String> individualPermissions = (List<String>) clazz.getMethod("get").invoke(permission);
-                permissions.addAll(individualPermissions);
-            }
-        }
-        catch (Exception ex){
-        }
-
-        if (rankId > 0) for (int i = 0; i <= rankId; i++)
-            permissions.addAll(Main.getInstance().getConfig().getStringList(String.format("Permissions.%s.perms", i)));
-        else permissions.addAll(Main.getInstance().getConfig().getStringList(String.format("Permissions.%s.perms", rankId)));
-
-        permissions.addAll(Main.getInstance().getConfig().getStringList(String.format("Permissions.%s.noheredar", rankId)));
-        permissions.forEach(permission -> attachment.setPermission(permission, true));
-
-        perms.put(player, attachment);
     }
 
     private void checkBoosters(SUser user){
