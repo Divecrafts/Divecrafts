@@ -252,9 +252,7 @@ public class PlayerEvents implements Listener {
                 user.getPlayer().setAllowFlight(user.getUserData().getFly());
                 user.getPlayer().setFlying(user.getUserData().getFly());
             }
-            catch (Exception ex){
-                //ignore
-            }
+            catch (Exception ignored){}
         }, 4);
     }
 
@@ -283,11 +281,12 @@ public class PlayerEvents implements Listener {
             }
 
             final BukkitTask task = Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
+                int minutes = 5;
                 if (user.getPlayer() != null && user.getPlayer().isOnline()) {
                     if (Bukkit.getPluginManager().isPluginEnabled("Essentials"))
-                        user.getPlayer().kickPlayer(Languaje.getLangMsg(user.getUserData().getLang(), "Global.afkKick"));
+                        user.getPlayer().kickPlayer(Languaje.getLangMsg(user.getUserData().getLang(), "Global.afkKick").replace("%tiempo%", minutes + "min"));
                     else {
-                        user.getPlayer().sendMessage(Languaje.getLangMsg(user.getUserData().getLang(), "Global.afkLimbo"));
+                        user.getPlayer().sendMessage(Languaje.getLangMsg(user.getUserData().getLang(), "Global.afkLimbo").replace("%tiempo%", minutes + "min"));
                         user.sendToServer("limbo");
                     }
                 }
