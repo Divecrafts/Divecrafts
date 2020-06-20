@@ -283,9 +283,14 @@ public class PlayerEvents implements Listener {
             }
 
             final BukkitTask task = Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
-                if (user.getPlayer() != null && user.getPlayer().isOnline())
-                    user.sendToServer("lobby");//TODO Change to limbo
-
+                if (user.getPlayer() != null && user.getPlayer().isOnline()) {
+                    if (Bukkit.getPluginManager().isPluginEnabled("Essentials"))
+                        user.getPlayer().kickPlayer(Languaje.getLangMsg(user.getUserData().getLang(), "Global.afkKick"));
+                    else {
+                        user.getPlayer().sendMessage(Languaje.getLangMsg(user.getUserData().getLang(), "Global.afkLimbo"));
+                        user.sendToServer("limbo");
+                    }
+                }
                 SServer.afkTasks.remove(user);
             }, 20 * 60 * 5);
 
