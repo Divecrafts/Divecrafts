@@ -153,7 +153,7 @@ public class Main extends JavaPlugin {
         getCommand("withdraw").setExecutor(new EconomyCmd());
         getCommand("pay").setExecutor(new EconomyCmd());
         getCommand("individualpermission").setExecutor(new PermissionCmd());
-        getCommand("repair").setExecutor(new RepairCmd());
+        getCommand("fix").setExecutor(new RepairCmd());
         getCommand("givehead").setExecutor(new HeadCmd());
         getCommand("itemrename").setExecutor(new ItemRenameCmd());
         getCommand("enderchest").setExecutor(new EnderchestCmd());
