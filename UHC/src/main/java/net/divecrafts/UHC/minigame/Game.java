@@ -1,5 +1,6 @@
 package net.divecrafts.UHC.minigame;
 
+import io.clonalejandro.DivecraftsCore.api.SServer;
 import net.divecrafts.UHC.minigame.arena.Arena;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -57,7 +58,7 @@ public final class Game {
 
         playerSpawn.forEach((player, loc) -> {
             Scoreboard.gameScoreboard(player);
-
+            SServer.getUser(player).getUserData().addPlay(SServer.GameID.UHC);
             player.setGameMode(GameMode.SURVIVAL);
             player.teleport(loc);
         });
@@ -71,6 +72,7 @@ public final class Game {
         Api.setState(State.ENDING);
 
         Bukkit.broadcastMessage(Api.translator("&a&lUHC> &fThe game is ending"));
+        Bukkit.getOnlinePlayers().forEach(p -> SServer.getUser(p).sendToServer("lobby"));
         Bukkit.getScheduler().runTaskLater(Main.instance, Bukkit::shutdown, 3L * 20L);
     }
 

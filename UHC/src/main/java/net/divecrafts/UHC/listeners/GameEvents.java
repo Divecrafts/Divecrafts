@@ -1,5 +1,6 @@
 package net.divecrafts.UHC.listeners;
 
+import io.clonalejandro.DivecraftsCore.api.SServer;
 import net.divecrafts.UHC.Main;
 import net.divecrafts.UHC.minigame.State;
 import net.divecrafts.UHC.utils.Api;
@@ -120,15 +121,19 @@ public class GameEvents implements Listener {
             Api.ALIVE_PLAYERS.remove(player);
 
             if (killer != null){
-                if (!Api.KILLS.containsKey(killer)) Api.KILLS.put(killer, 1);
+                if (!Api.KILLS.containsKey(killer))
+                    Api.KILLS.put(killer, 1);
                 else {
                     int kills = Api.KILLS.get(killer);
                     Api.KILLS.remove(killer);
                     Api.KILLS.put(killer, kills + 1);
                 }
 
+                SServer.getUser(killer).getUserData().addKill(SServer.GameID.UHC);
                 //killer.getScoreboard().getTeam("kills").setSuffix(String.valueOf(Api.KILLS.get(killer)));
             }
+
+            SServer.getUser(player).getUserData().addDeath(SServer.GameID.UHC);
 
             Scoreboard.updateScoreboard("spectators", String.valueOf(Api.getOnline() - Api.ALIVE_PLAYERS.size()));
             Scoreboard.updateScoreboard("aliveplayers", String.valueOf(Api.ALIVE_PLAYERS.size()));
@@ -147,6 +152,10 @@ public class GameEvents implements Listener {
             Bukkit.broadcastMessage(Api.translator(
                     String.format("&9&lUHC> &fThe winner is &e%s", name)
             ));
+
+            if (!name.equalsIgnoreCase("nobody")){
+                SServer.getUser(Api.ALIVE_PLAYERS.get(0)).getUserData().addWin(SServer.GameID.UHC);
+            }
 
             Bukkit.getScheduler().runTaskLater(Main.instance, () -> Api.getGame().gameStop(), 3L * 20L);
         }
