@@ -84,7 +84,7 @@ public class LobbyEvents implements Listener {
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event){
         if (Api.getState() == State.LOBBY && (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK)){
-            final SUser user = SServer.getUser(event.getPlayer());
+            final SUser user = SServer.getUser(event.getPlayer().getUniqueId());
 
             switch (event.getMaterial()){
                 case COMPASS:
