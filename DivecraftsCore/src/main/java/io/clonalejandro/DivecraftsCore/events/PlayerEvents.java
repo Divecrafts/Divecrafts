@@ -144,6 +144,7 @@ public class PlayerEvents implements Listener {
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent e) {
+        checkAfk(e.getPlayer());
         if (e.getAction() == Action.PHYSICAL && e.getClickedBlock().getType() == Material.SOIL) e.setCancelled(true);
     }
 
@@ -277,7 +278,6 @@ public class PlayerEvents implements Listener {
             if (SServer.afkTasks.get(user) != null) {
                 SServer.afkTasks.get(user).cancel();
                 SServer.afkTasks.remove(user);
-                SServer.afkMode.remove(user);
             }
 
             final BukkitTask task = Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {

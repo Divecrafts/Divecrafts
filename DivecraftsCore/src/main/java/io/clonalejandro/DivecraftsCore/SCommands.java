@@ -25,7 +25,7 @@ public class SCommands implements TabCompleter {
     private static String name = "server:";
 
     public static void load() {
-        cmds.add(new AfkCMD());
+        //cmds.add(new AfkCMD());
         cmds.add(new AyudaCMD());
         cmds.add(new DecirCMD());
         cmds.add(new ResponderCMD());
