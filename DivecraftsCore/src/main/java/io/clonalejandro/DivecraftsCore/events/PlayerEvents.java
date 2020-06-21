@@ -81,8 +81,10 @@ public class PlayerEvents implements Listener {
         u.getTasks().forEach(BukkitRunnable::cancel);
         u.getTasks().clear();
 
-        SServer.afkTasks.get(u).cancel();
-        SServer.afkTasks.remove(u);
+        if (SServer.afkTasks.get(u) != null){
+            SServer.afkTasks.get(u).cancel();
+            SServer.afkTasks.remove(u);
+        }
         SServer.users.remove(u);
 
         if (SServer.getAdminChatMode().contains(u)) SServer.getAdminChatMode().remove(u);
@@ -101,8 +103,10 @@ public class PlayerEvents implements Listener {
         u.getTasks().forEach(BukkitRunnable::cancel);
         u.getTasks().clear();
 
-        SServer.afkTasks.get(u).cancel();
-        SServer.afkTasks.remove(u);
+        if (SServer.afkTasks.get(u) != null){
+            SServer.afkTasks.get(u).cancel();
+            SServer.afkTasks.remove(u);
+        }
         SServer.users.remove(u);
 
         if (SServer.getAdminChatMode().contains(u)) SServer.getAdminChatMode().remove(u);

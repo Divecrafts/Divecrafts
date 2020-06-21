@@ -134,7 +134,7 @@ public class MySQL {
                 statementDatos.executeUpdate();
 
                 //Stats
-                PreparedStatement statementStats = openConnection().prepareStatement("UPDATE `stats` SET `kills_ffa`=?, `deaths_ffa`=?, `plays_ffa`=?, `kills_mb`=?, `deaths_mb`=?, `plays_mb`=?, `wins_mb`=?, `plays_fc`=?, `kills_fc`=?, `deaths_fc`=?, `wins_fc`=?, `plays_mum`=?, `kills_mum`=?, `deaths_mum`=?, `wins_mum`=?, `elo_mum`=?, `reroll_mum`=? WHERE `uuid`=?");
+                PreparedStatement statementStats = openConnection().prepareStatement("UPDATE `stats` SET `kills_ffa`=?, `deaths_ffa`=?, `plays_ffa`=?, `kills_mb`=?, `deaths_mb`=?, `plays_mb`=?, `wins_mb`=?, `plays_fc`=?, `kills_fc`=?, `deaths_fc`=?, `wins_fc`=?, `plays_mum`=?, `kills_mum`=?, `deaths_mum`=?, `wins_mum`=?, `elo_mum`=?, `reroll_mum`=?, `plays_uhc`=?, `wins_uhc`=?, `kills_uhc`=?, `deaths_uhc`=? WHERE `uuid`=?");
                 statementStats.setInt(1, data.getKills(SServer.GameID.FFA));
                 statementStats.setInt(2, data.getDeaths(SServer.GameID.FFA));
                 statementStats.setInt(3, data.getPlays(SServer.GameID.FFA));
@@ -152,7 +152,11 @@ public class MySQL {
                 statementStats.setInt(15, data.getWins(SServer.GameID.MUM));
                 statementStats.setInt(16, data.getMum_elo());
                 statementStats.setInt(17, data.getMum_reroll());
-                statementStats.setString(18, u.getUuid().toString());
+                statementStats.setInt(18, data.getPlays(SServer.GameID.UHC));
+                statementStats.setInt(19, data.getWins(SServer.GameID.UHC));
+                statementStats.setInt(20, data.getKills(SServer.GameID.UHC));
+                statementStats.setInt(21, data.getDeaths(SServer.GameID.UHC));
+                statementStats.setString(22, u.getUuid().toString());
                 statementStats.executeUpdate();
 
                 //Settings
@@ -230,6 +234,12 @@ public class MySQL {
                 data.getDeaths().replace(SServer.GameID.MUM.getId(), rsStats.getInt("deaths_mum"));
                 data.getWins().replace(SServer.GameID.MUM.getId(), rsStats.getInt("wins_mum"));
                 data.getPlays().replace(SServer.GameID.MUM.getId(), rsStats.getInt("plays_mum"));
+
+                data.getKills().replace(SServer.GameID.UHC.getId(), rsStats.getInt("kills_uhc"));
+                data.getDeaths().replace(SServer.GameID.UHC.getId(), rsStats.getInt("deaths_uhc"));
+                data.getWins().replace(SServer.GameID.UHC.getId(), rsStats.getInt("wins_uhc"));
+                data.getPlays().replace(SServer.GameID.UHC.getId(), rsStats.getInt("plays_uhc"));
+
                 data.setMum_elo(rsStats.getInt("elo_mum"));
                 data.setMum_reroll(rsStats.getInt("reroll_mum"));
             }
