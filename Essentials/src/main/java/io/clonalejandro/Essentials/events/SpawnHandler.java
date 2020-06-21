@@ -32,7 +32,7 @@ import org.bukkit.event.player.*;
 
 public class SpawnHandler implements Listener {
 
-    @EventHandler (priority = EventPriority.HIGHEST)
+    @EventHandler
     public void onPlayerJoinEvent(PlayerJoinEvent event){
         final SUser user = SServer.getUser(event.getPlayer());
 
