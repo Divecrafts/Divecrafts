@@ -7,6 +7,7 @@ import net.divecrafts.UHC.Main;
 import net.divecrafts.UHC.minigame.Game;
 import net.divecrafts.UHC.minigame.State;
 import net.divecrafts.UHC.minigame.arena.Arena;
+import net.divecrafts.UHC.minigame.modes.ModeType;
 import net.divecrafts.UHC.task.ScoreTask;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
@@ -53,6 +54,7 @@ public class Api {
     public static final HashMap<Player, Integer> KILLS = new HashMap<>();//Kills of players
     public static final PluginManager PLUGIN_MANAGER = Main.instance.getServer().getPluginManager(); //Plugin Manager
     public static final ArrayList<String> DESCONECTED = new ArrayList<>(); //List to players offline
+    public static final ArrayList<ModeType> SELECTED_MODES = new ArrayList<>();
 
     private static Game game;
     private static Arena arena;
