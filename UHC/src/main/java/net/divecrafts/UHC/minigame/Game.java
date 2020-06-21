@@ -12,6 +12,7 @@ import net.divecrafts.UHC.task.BorderTask;
 import net.divecrafts.UHC.task.ScoreTask;
 import net.divecrafts.UHC.utils.Api;
 import net.divecrafts.UHC.utils.Scoreboard;
+import org.bukkit.event.Listener;
 
 import java.util.HashMap;
 
@@ -62,6 +63,8 @@ public final class Game {
             player.setGameMode(GameMode.SURVIVAL);
             player.teleport(loc);
         });
+
+        Api.SELECTED_MODES.forEach(mode -> Main.instance.getServer().getPluginManager().registerEvents((Listener) mode.getClazz(), Main.instance));
 
         new ScoreTask().runTaskTimer(plugin, 1L, 20L);
         new BorderTask().runTaskTimer(Main.instance, 1L, 60L * 20L);//This be executed per 60s

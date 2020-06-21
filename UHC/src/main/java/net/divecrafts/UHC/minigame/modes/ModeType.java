@@ -24,7 +24,7 @@ public enum ModeType {
     /** ENUM **/
 
     CUTCLEAN(new CutClean(Main.instance)),
-    OLDSCHOOL(null),
+    //OLDSCHOOL(null),
     VANILLAP(new VanillaP(Main.instance)),
     TIMEBOMB(new TimeBomb(Main.instance)),
     HORSELESS(new Horseless(Main.instance)),
@@ -41,25 +41,25 @@ public enum ModeType {
     COALLESS(new CoalLess(Main.instance)),
     BLOODDIAMONDS(new BloodDiamonds(Main.instance)),
     BLOODENCHANTS(new BloodEnchants(Main.instance)),
-    BACKPACKS(null),
+    //BACKPACKS(null),
     AIRDROPS(new AirDrops(Main.instance)),
     BOUNTYHUNTER(new BountyHunter(Main.instance)),
-    MONSTERHUNTER(null),
+    //MONSTERHUNTER(null),
     BAREBONES(new Barebones(Main.instance)),
     WATERWORLD(null),
     OREFRENZY(new OreFrenzy(Main.instance)),
-    SHAREDHEALTH(null),
-    OREBANKER(null),
+    //SHAREDHEALTH(null),
+    //OREBANKER(null),
     NINESLOT(new NineSlot(Main.instance)),
-    OPUHC(new OpUHC(Main.instance)),
-    LIMITEDENCHANT(null),
+    OPUHC(new OpUHC(Main.instance));
+    /*LIMITEDENCHANT(null),
     LONGSHOOTS(null),
     LOVEATFIRSTSIGHT(null),
     MINESWEEPER(null),
     MOLES(null),
     FLOWERPOWER(null),
     ERRATICPVP(null),
-    ENDERDRAGONRUSH(null);
+    ENDERDRAGONRUSH(null);*/
 
 
     /** SMALL CONSTRUCTORS **/
@@ -73,7 +73,7 @@ public enum ModeType {
 
     /** REST **/
 
-    Object getClazz() {
+    public Object getClazz() {
         return clazz;
     }
 
