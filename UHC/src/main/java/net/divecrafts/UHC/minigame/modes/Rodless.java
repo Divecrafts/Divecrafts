@@ -28,13 +28,6 @@ import org.bukkit.event.inventory.CraftItemEvent;
 class Rodless implements Listener {
 
 
-    /** SMALL CONSTRUCTORS **/
-
-    Rodless(Main plugin){
-        Api.PLUGIN_MANAGER.registerEvents(this, plugin);
-    }
-
-
     /** REST **/
 
     @EventHandler

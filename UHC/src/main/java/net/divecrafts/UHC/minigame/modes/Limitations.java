@@ -35,10 +35,6 @@ class Limitations implements Listener {
     private final HashMap<Player, int[]> map = new HashMap<>();
     private enum WhiteList {IRON, GOLD, DIAMOND}
 
-    Limitations(Main plugin){
-        Api.PLUGIN_MANAGER.registerEvents(this, plugin);
-    }
-
 
     /** REST **/
 

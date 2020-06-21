@@ -36,8 +36,7 @@ public class BountyHunter implements Listener {
     private final HashMap<Player, Player> bountyList = new HashMap<>();
     private final ArrayList<Player> players = new ArrayList<>(Api.getOnlinePlayers());
 
-    BountyHunter(Main plugin){
-        Api.PLUGIN_MANAGER.registerEvents(this, plugin);
+    BountyHunter(){
         genBountys();
     }
 

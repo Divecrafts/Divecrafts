@@ -38,13 +38,6 @@ import java.util.Map;
 class ColdWeapons implements Listener {
 
 
-    /** SMALL CONSTRUCTORS **/
-
-    ColdWeapons(Main plugin){
-        Api.PLUGIN_MANAGER.registerEvents(this, plugin);
-    }
-
-
     /** REST **/
 
     @EventHandler

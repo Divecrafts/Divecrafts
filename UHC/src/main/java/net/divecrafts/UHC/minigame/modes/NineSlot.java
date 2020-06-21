@@ -1,8 +1,5 @@
 package net.divecrafts.UHC.minigame.modes;
 
-import net.divecrafts.UHC.Main;
-import net.divecrafts.UHC.utils.Api;
-
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -34,8 +31,7 @@ class NineSlot implements Listener {
 
     private final List<Integer> blackList;
 
-    NineSlot(Main plugin){
-        Api.PLUGIN_MANAGER.registerEvents(this, plugin);
+    NineSlot(){
         blackList = new ArrayList<>(Arrays.asList(
                 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 36, 37, 38, 39
         ));

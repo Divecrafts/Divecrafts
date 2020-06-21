@@ -33,12 +33,7 @@ class Soup implements Listener {
 
     /** SMALL CONSTRUCTORS **/
 
-    private final Main plugin;
-
-    Soup(Main instance){
-        plugin = instance;
-        Api.PLUGIN_MANAGER.registerEvents(this, plugin);
-    }
+    private final Main plugin = Main.instance;
 
 
     /** REST **/

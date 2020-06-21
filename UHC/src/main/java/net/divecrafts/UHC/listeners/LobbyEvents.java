@@ -6,7 +6,6 @@ import io.clonalejandro.DivecraftsCore.cmd.SCmd;
 import io.clonalejandro.DivecraftsCore.idiomas.Languaje;
 import io.clonalejandro.DivecraftsCore.utils.BungeeMensager;
 import io.clonalejandro.DivecraftsCore.utils.Utils;
-
 import net.divecrafts.UHC.Main;
 import net.divecrafts.UHC.minigame.Game;
 import net.divecrafts.UHC.minigame.Lobby;
@@ -16,8 +15,10 @@ import net.divecrafts.UHC.minigame.modes.ModeType;
 import net.divecrafts.UHC.task.GameCountDown;
 import net.divecrafts.UHC.utils.Api;
 import net.divecrafts.UHC.utils.Scoreboard;
-
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
+import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -28,19 +29,14 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
-import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerKickEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * Created by alejandrorioscalera
@@ -84,12 +80,15 @@ public class LobbyEvents implements Listener {
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event){
         if (Api.getState() == State.LOBBY && (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK)){
-            final SUser user = SServer.getUser(event.getPlayer().getUniqueId());
+            if (event.getMaterial() == Material.AIR) return;
+            if (event.getItem() == null) return;
+
+            final SUser user = SServer.getUser(event.getPlayer());
 
             switch (event.getMaterial()){
                 case COMPASS:
                     if (user.getUserData().getRank().getRank() >= SCmd.Rank.KRAKEN.getRank())
-                        user.getPlayer().openInventory(getVoteInventory());
+                        user.getPlayer().openInventory(getVoteInventory(user.getPlayer()));
                     else user.getPlayer().sendMessage(Languaje.getLangMsg(user.getUserData().getLang(), "Global.cmdnopuedes"));
                     break;
                 case BED:
@@ -113,36 +112,47 @@ public class LobbyEvents implements Listener {
             final SUser user = SServer.getUser((Player) event.getWhoClicked());
             final String name = String.valueOf(mode.toString().charAt(0)).toUpperCase() + mode.toString().substring(1).toLowerCase();
 
-            if (Api.SELECTED_MODES.contains(mode)) {
+            if (Api.SELECTED_MODES.contains(mode))
                 event.getWhoClicked().sendMessage(Languaje.getLangMsg(user.getUserData().getLang(), "UHC.currentselected"));
-
+            else {
+                Api.SELECTED_MODES.add(mode);
+                event.getWhoClicked().sendMessage(Languaje.getLangMsg(user.getUserData().getLang(), "UHC.modeselected").replace("%modo%", name));
                 Bukkit.getOnlinePlayers().forEach(p -> {
                     final SUser tempUser = SServer.getUser(p);
                     p.sendMessage(Languaje.getLangMsg(tempUser.getUserData().getLang(), "UHC.brmode")
                             .replace("%mode%", name)
-                            .replace("%player%", p.getDisplayName())
+                            .replace("%player%", user.getPlayer().getDisplayName())
                     );
                 });
             }
-            else {
-                Api.SELECTED_MODES.add(mode);
-                event.getWhoClicked().sendMessage(Languaje.getLangMsg(user.getUserData().getLang(), "UHC.modeselected").replace("%modo%", name));
-            }
 
-            event.getWhoClicked().closeInventory();
+            Bukkit.getScheduler().runTask(Main.instance, () -> {
+                resetPlayer(user.getPlayer());
+                user.getPlayer().closeInventory();
+            });
         }
     }
 
     @EventHandler
-    public void onFoodLevelChange(FoodLevelChangeEvent e){
-        if (Api.getState() == State.LOBBY) e.setCancelled(true);
+    public void foodLevelChange(FoodLevelChangeEvent e){
+        if (Api.getState() == State.LOBBY)
+            e.setCancelled(true);
     }
 
     @EventHandler
-    public void onPlayerDeath(PlayerDeathEvent e){
-        if (Api.getState() == State.LOBBY) e.getEntity().teleport(
-                lobby.getLocation()
-        );
+    public void onPlayerDeath(PlayerRespawnEvent e){
+        if (Api.getState() == State.LOBBY)
+            e.getPlayer().teleport(lobby.getLocation());
+    }
+
+    @EventHandler
+    public void onDropItem(PlayerDropItemEvent event) {
+        event.setCancelled(Api.getState() == State.LOBBY);
+    }
+
+    @EventHandler
+    public void onPickItem(PlayerPickupItemEvent event) {
+        event.setCancelled(Api.getState() == State.LOBBY);
     }
 
     @EventHandler
@@ -193,9 +203,6 @@ public class LobbyEvents implements Listener {
      */
     private void whilePlayerCanJoin(PlayerJoinEvent event){
         final Player player = event.getPlayer();
-        final SUser user = SServer.getUser(player);
-
-        final ItemStack air = new ItemStack(Material.AIR);
 
         lobby = new Lobby();
 
@@ -210,18 +217,7 @@ public class LobbyEvents implements Listener {
                 "&f" + (Api.getOnline())
         ));
 
-        Bukkit.getScheduler().runTaskLater(Main.instance, () -> {
-            player.getInventory().clear();
-            player.getInventory().setArmorContents(new ItemStack[]{air, air, air, air});
-            player.setHealth(20);
-            player.setFoodLevel(20);
-            player.setLevel(0);
-
-            player.getInventory().setItem(2, getVoteSelector(user));
-            player.getInventory().setItem(9, getBedLobby(user));
-
-            player.setGameMode(GameMode.ADVENTURE);
-        }, 5L);
+        resetPlayer(player);
 
         if (lobby.getLocation() != null)
             player.teleport(lobby.getLocation());
@@ -285,8 +281,6 @@ public class LobbyEvents implements Listener {
                 return Material.BOW;
             case NOCLEAN:
                 return Material.BARRIER;
-            case AIRDROPS:
-                return Material.CHEST;
             case COALLESS:
                 return Material.COAL;
             case CUTCLEAN:
@@ -303,8 +297,6 @@ public class LobbyEvents implements Listener {
                 return Material.SADDLE;
             case TIMEBOMB:
                 return Material.TNT;
-            case WATERWORLD:
-                return Material.WATER_BUCKET;
             case DIAMONDLESS:
                 return Material.DIAMOND;
             case BAREBONES:
@@ -319,8 +311,6 @@ public class LobbyEvents implements Listener {
                 return Material.BLAZE_ROD;
             case OREFRENZY:
                 return Material.DIAMOND_ORE;
-            case BOUNTYHUNTER:
-                return Material.GOLD_NUGGET;
             case LIMITATIONS:
                 return Material.REDSTONE;
             case BLOODDIAMONDS:
@@ -328,10 +318,10 @@ public class LobbyEvents implements Listener {
         }
     }
 
-    private Inventory getVoteInventory(){
-        final Inventory inventory = Bukkit.createInventory(null, 27, "Mode");
+    private Inventory getVoteInventory(Player player){
+        final Inventory inventory = Bukkit.createInventory(player, 27, "Mode");
 
-        Arrays.asList(ModeType.values()).forEach(mode -> {
+        for (ModeType mode : ModeType.values()){
             final String name = String.valueOf(mode.toString().charAt(0)).toUpperCase() + mode.toString().substring(1).toLowerCase();
             final Material material = resolverVoteMaterial(mode);
 
@@ -341,7 +331,7 @@ public class LobbyEvents implements Listener {
             String color = "&b";
 
             if (Api.SELECTED_MODES.contains(mode)){
-                item.addEnchantment(Enchantment.DURABILITY, 1);
+                meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
                 meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
                 color = "&c";
             }
@@ -351,9 +341,31 @@ public class LobbyEvents implements Listener {
 
             item.setItemMeta(meta);
 
+            if (Api.SELECTED_MODES.contains(mode)){
+                item.addUnsafeEnchantment(Enchantment.DURABILITY, 3);
+            }
+
             inventory.addItem(item);
-        });
+        }
 
         return inventory;
+    }
+
+    private void resetPlayer(Player player){
+        final ItemStack air = new ItemStack(Material.AIR);
+        final SUser user = SServer.getUser(player);
+
+        Bukkit.getScheduler().runTask(Main.instance, () -> {
+            player.getInventory().clear();
+            player.getInventory().setArmorContents(new ItemStack[]{air, air, air, air});
+            player.setHealth(20);
+            player.setFoodLevel(20);
+            player.setLevel(0);
+
+            player.getInventory().setItem(2, getVoteSelector(user));
+            player.getInventory().setItem(8, getBedLobby(user));
+
+            player.setGameMode(GameMode.ADVENTURE);
+        });
     }
 }

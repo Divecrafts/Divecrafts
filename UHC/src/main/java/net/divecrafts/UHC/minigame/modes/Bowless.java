@@ -28,13 +28,6 @@ import org.bukkit.event.inventory.CraftItemEvent;
 class Bowless implements Listener {
 
 
-    /** SMALL CONSTRUCTORS **/
-
-    Bowless(Main plugin){
-        Api.PLUGIN_MANAGER.registerEvents(this, plugin);
-    }
-
-
     /** REST **/
 
     @EventHandler

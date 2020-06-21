@@ -32,8 +32,8 @@ class GoldLess extends Mineraless {
 
     /** SMALL CONSTRUCTORS **/
 
-    GoldLess(Main plugin){
-        super(plugin, Material.GOLD_ORE, new ItemStack(Material.GOLD_INGOT, 16));
+    GoldLess(){
+        super(Material.GOLD_ORE, new ItemStack(Material.GOLD_INGOT, 16));
     }
 
 

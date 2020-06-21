@@ -1,7 +1,5 @@
 package net.divecrafts.UHC.minigame.modes;
 
-import net.divecrafts.UHC.Main;
-import net.divecrafts.UHC.utils.Api;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
@@ -37,8 +35,7 @@ class OpUHC implements Listener {
 
     private final List<Material> blackList;
 
-    OpUHC(Main plugin){
-        Api.PLUGIN_MANAGER.registerEvents(this, plugin);
+    OpUHC(){
         blackList = new ArrayList<>(Arrays.asList(
                 Material.DIAMOND_ORE, Material.GOLD_ORE, Material.IRON_ORE, Material.EMERALD_ORE, Material.COAL_ORE,
                 Material.GLOWING_REDSTONE_ORE, Material.LAPIS_ORE, Material.QUARTZ_ORE, Material.REDSTONE_ORE
@@ -62,7 +59,7 @@ class OpUHC implements Listener {
      */
     private void blockFilter(final BlockBreakEvent event){
         final Material material = event.getBlock().getType();
-        if (!blackList.contains(material)) blockMultiplier(event);
+        if (blackList.contains(material)) blockMultiplier(event);
     }
 
 
@@ -73,7 +70,9 @@ class OpUHC implements Listener {
     private void blockMultiplier(final BlockBreakEvent event){
         final Block block = event.getBlock();
         final Collection<? extends ItemStack> drops = block.getDrops();
-        for (ItemStack i : drops) i.setAmount(i.getAmount() * 3);
+        for (ItemStack i : drops)
+            for (int it = 0; it < 3; it++)
+                block.getLocation().getWorld().dropItemNaturally(block.getLocation(), i);
     }
 
 

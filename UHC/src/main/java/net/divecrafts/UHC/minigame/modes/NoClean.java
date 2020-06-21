@@ -37,12 +37,7 @@ class NoClean implements Listener {
     /** SMALL CONSTRUCTORS **/
 
     private ArrayList<Player> invincibles = new ArrayList<>();
-    private final Main plugin;
-
-    NoClean(Main instance){
-        plugin = instance;
-        Api.PLUGIN_MANAGER.registerEvents(this, plugin);
-    }
+    private final Main plugin = Main.instance;
 
 
     /** REST **/

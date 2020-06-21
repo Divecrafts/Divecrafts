@@ -4,6 +4,8 @@ version: 1.0
 author: clonalejandro
 description: A uhc plugin for Divecrafts
 website: https://clonalejandro.io
+softdepend:
+  - DivecraftsCore
 commands:
   uhc:
     usage: /<command>

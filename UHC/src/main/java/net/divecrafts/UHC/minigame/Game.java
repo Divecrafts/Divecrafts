@@ -58,13 +58,17 @@ public final class Game {
         Api.ALIVE_PLAYERS.addAll(Api.getOnlinePlayers());
 
         playerSpawn.forEach((player, loc) -> {
+            player.getInventory().clear();
             Scoreboard.gameScoreboard(player);
             SServer.getUser(player).getUserData().addPlay(SServer.GameID.UHC);
             player.setGameMode(GameMode.SURVIVAL);
             player.teleport(loc);
         });
 
-        Api.SELECTED_MODES.forEach(mode -> Main.instance.getServer().getPluginManager().registerEvents((Listener) mode.getClazz(), Main.instance));
+        Api.SELECTED_MODES.forEach(mode -> {
+            Bukkit.broadcastMessage(mode.toString());
+            Api.PLUGIN_MANAGER.registerEvents((Listener) mode.getClazz(), Main.instance);
+        });
 
         new ScoreTask().runTaskTimer(plugin, 1L, 20L);
         new BorderTask().runTaskTimer(Main.instance, 1L, 60L * 20L);//This be executed per 60s
@@ -76,7 +80,7 @@ public final class Game {
 
         Bukkit.broadcastMessage(Api.translator("&a&lUHC> &fThe game is ending"));
         Bukkit.getOnlinePlayers().forEach(p -> SServer.getUser(p).sendToServer("lobby"));
-        Bukkit.getScheduler().runTaskLater(Main.instance, Bukkit::shutdown, 3L * 20L);
+        Bukkit.getScheduler().runTaskLater(Main.instance, Bukkit::shutdown, 10L * 20L);
     }
 
 

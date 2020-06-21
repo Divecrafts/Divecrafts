@@ -30,13 +30,6 @@ import org.bukkit.inventory.ItemStack;
 class CutClean implements Listener {
 
 
-    /** SMALL CONSTRUCTORS **/
-
-    CutClean(Main plugin){
-        Api.PLUGIN_MANAGER.registerEvents(this, plugin);
-    }
-
-
     /** REST **/
 
     @EventHandler

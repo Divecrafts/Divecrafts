@@ -29,13 +29,6 @@ import org.bukkit.inventory.ItemStack;
 class OreFrenzy implements Listener {
 
 
-    /** SMALL CONSTRUCTORS **/
-
-    OreFrenzy(Main plugin){
-        Api.PLUGIN_MANAGER.registerEvents(this, plugin);
-    }
-
-
     /** REST **/
 
     @EventHandler

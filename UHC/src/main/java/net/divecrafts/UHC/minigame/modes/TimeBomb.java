@@ -37,12 +37,7 @@ class TimeBomb implements Listener {
 
     /** SMALL CONSTRUCTORS **/
 
-    private final Main plugin;
-
-    TimeBomb(Main instance){
-        plugin = instance;
-        Api.PLUGIN_MANAGER.registerEvents(this, plugin);
-    }
+    private final Main plugin = Main.instance;
 
 
     /** REST **/

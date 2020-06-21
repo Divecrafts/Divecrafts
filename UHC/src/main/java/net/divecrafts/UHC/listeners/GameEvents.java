@@ -35,11 +35,6 @@ import org.bukkit.event.player.PlayerQuitEvent;
 public class GameEvents implements Listener {
 
 
-    /** SMALL CONSTRUCTORS **/
-
-    //none...
-
-
     /** REST **/
 
     @EventHandler
@@ -157,7 +152,7 @@ public class GameEvents implements Listener {
                 SServer.getUser(Api.ALIVE_PLAYERS.get(0)).getUserData().addWin(SServer.GameID.UHC);
             }
 
-            Bukkit.getScheduler().runTaskLater(Main.instance, () -> Api.getGame().gameStop(), 3L * 20L);
+            Bukkit.getScheduler().runTaskLater(Main.instance, () -> Api.getGame().gameStop(), 10L * 20L);
         }
     }
 }
