@@ -30,8 +30,8 @@ class IronLess extends Mineraless {
 
     /** SMALL CONSTRUCTORS **/
 
-    IronLess(Main plugin){
-        super(plugin, Material.IRON_ORE, new ItemStack(Material.IRON_INGOT, 8));
+    IronLess(){
+        super(Material.IRON_ORE, new ItemStack(Material.IRON_INGOT, 8));
     }
 
 

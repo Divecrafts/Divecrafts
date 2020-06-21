@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import io.clonalejandro.DivecraftsCore.utils.Utils;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -12,11 +13,14 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class Languaje {
 
-    private static final HashMap<String, String> searches = new HashMap<>();
+    private static final List<LangFile> searches = new ArrayList<>();
 
     @AllArgsConstructor
     @Getter
@@ -26,7 +30,11 @@ public class Languaje {
     }
 
     public static String getLangMsg(int language, String whatToSearch) {
-        if (searches.containsKey(whatToSearch)) return Utils.colorize(searches.get(whatToSearch)).replace("%new", "\n");
+        final List<LangFile> customSearch = searches.stream()
+                .filter(langFile -> langFile.getKey().equalsIgnoreCase(whatToSearch))
+                .collect(Collectors.toList());
+
+        if (customSearch.size() > 0) return Utils.colorize(customSearch.get(0).getValue()).replace("%new%", "\n");
 
         String file;
         switch (language) {
@@ -44,7 +52,7 @@ public class Languaje {
         String[] key = whatToSearch.split("\\.");
         String message = json.get(key[0]).getAsJsonObject().get(key[1]).getAsString();
 
-        searches.put(whatToSearch, message);
+        searches.add(language, new LangFile(language, whatToSearch, message));
 
         return Utils.colorize(message).replace("%new", "\n");
     }
@@ -80,5 +88,11 @@ public class Languaje {
             ex.printStackTrace();
             return null;
         }
+    }
+
+    @AllArgsConstructor @Data
+    static class LangFile {
+        private final int language;
+        private final String key, value;
     }
 }

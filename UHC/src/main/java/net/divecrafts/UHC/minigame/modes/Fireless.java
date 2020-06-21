@@ -29,13 +29,6 @@ import org.bukkit.event.entity.EntityDamageEvent;
 class Fireless implements Listener {
 
 
-    /** SMALL CONSTRUCTORS **/
-
-    Fireless(Main plugin){
-        Api.PLUGIN_MANAGER.registerEvents(this, plugin);
-    }
-
-
     /** REST **/
 
     @EventHandler

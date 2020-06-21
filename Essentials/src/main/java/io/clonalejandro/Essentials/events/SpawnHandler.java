@@ -32,20 +32,14 @@ import org.bukkit.event.player.*;
 
 public class SpawnHandler implements Listener {
 
-    @EventHandler (priority = EventPriority.HIGHEST)
-    public void onPlayerLoginEvent(PlayerLoginEvent event){
-        if (!event.getPlayer().hasPlayedBefore())
-            event.getPlayer().teleport(new Spawn().getLocation());
-    }
-
-    @EventHandler (priority = EventPriority.HIGHEST)
+    @EventHandler
     public void onPlayerJoinEvent(PlayerJoinEvent event){
         final SUser user = SServer.getUser(event.getPlayer());
 
         if (user.getUserData().getRank().getRank() < SCmd.Rank.NEMO.getRank())
             event.setJoinMessage(null);
         if (!event.getPlayer().hasPlayedBefore())
-            event.getPlayer().teleport(new Spawn().getLocation());
+            Bukkit.getScheduler().runTaskLater(Main.instance, () -> event.getPlayer().teleport(new Spawn().getLocation()), 5L);
     }
 
     @EventHandler

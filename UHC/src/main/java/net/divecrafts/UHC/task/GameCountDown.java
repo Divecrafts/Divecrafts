@@ -61,8 +61,6 @@ public class GameCountDown extends BukkitRunnable implements ITask {
         }
 
         if (Api.getOnlinePlayers() == null || Api.getOnline() == 0 || (!isForced && Api.getOnline() == 1)){
-            Main.instance.getServer().getConsoleSender().sendMessage("isForced: " + isForced + " " + "OnlinePlayers: " + Api.getOnline());
-
             kill();
             time = Api.getConfigManager().getTimeCountDown(); //Reset task
         }

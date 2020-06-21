@@ -30,8 +30,8 @@ class DiamondLess extends Mineraless {
 
     /** SMALL CONSTRUCTORS **/
 
-    DiamondLess(Main plugin){
-        super(plugin, Material.DIAMOND_ORE, new ItemStack(Material.DIAMOND, 1));
+    DiamondLess(){
+        super(Material.DIAMOND_ORE, new ItemStack(Material.DIAMOND, 1));
     }
 
 

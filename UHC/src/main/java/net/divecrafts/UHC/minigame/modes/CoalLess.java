@@ -30,8 +30,8 @@ class CoalLess extends Mineraless {
 
     /** SMALL CONSTRUCTORS **/
 
-    CoalLess(Main plugin){
-        super(plugin, Material.COAL_ORE, new ItemStack(Material.COAL, 2));
+    CoalLess(){
+        super(Material.COAL_ORE, new ItemStack(Material.COAL, 2));
     }
 
 

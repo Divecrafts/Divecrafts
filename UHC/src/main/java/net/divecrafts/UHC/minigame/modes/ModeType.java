@@ -23,43 +23,43 @@ public enum ModeType {
 
     /** ENUM **/
 
-    CUTCLEAN(new CutClean(Main.instance)),
-    OLDSCHOOL(null),
-    VANILLAP(new VanillaP(Main.instance)),
-    TIMEBOMB(new TimeBomb(Main.instance)),
-    HORSELESS(new Horseless(Main.instance)),
-    NOCLEAN(new NoClean(Main.instance)),
-    COLDWEAPONS(new ColdWeapons(Main.instance)),
-    FIRELESS(new Fireless(Main.instance)),
-    BOWLESS(new Bowless(Main.instance)),
-    RODLESS(new Rodless(Main.instance)),
-    SOUP(new Soup(Main.instance)),
-    LIMITATIONS(new Limitations(Main.instance)),
-    DIAMONDLESS(new DiamondLess(Main.instance)),
-    GOLDLESS(new GoldLess(Main.instance)),
-    IRONLESS(new IronLess(Main.instance)),
-    COALLESS(new CoalLess(Main.instance)),
-    BLOODDIAMONDS(new BloodDiamonds(Main.instance)),
-    BLOODENCHANTS(new BloodEnchants(Main.instance)),
-    BACKPACKS(null),
-    AIRDROPS(new AirDrops(Main.instance)),
-    BOUNTYHUNTER(new BountyHunter(Main.instance)),
-    MONSTERHUNTER(null),
-    BAREBONES(new Barebones(Main.instance)),
-    WATERWORLD(null),
-    OREFRENZY(new OreFrenzy(Main.instance)),
-    SHAREDHEALTH(null),
-    OREBANKER(null),
-    NINESLOT(new NineSlot(Main.instance)),
-    OPUHC(new OpUHC(Main.instance)),
-    LIMITEDENCHANT(null),
+    CUTCLEAN(new CutClean()),
+    //OLDSCHOOL(null),
+    VANILLAP(new VanillaP()),
+    TIMEBOMB(new TimeBomb()),
+    HORSELESS(new Horseless()),
+    NOCLEAN(new NoClean()),
+    COLDWEAPONS(new ColdWeapons()),
+    FIRELESS(new Fireless()),
+    BOWLESS(new Bowless()),
+    RODLESS(new Rodless()),
+    SOUP(new Soup()),
+    LIMITATIONS(new Limitations()),
+    DIAMONDLESS(new DiamondLess()),
+    GOLDLESS(new GoldLess()),
+    IRONLESS(new IronLess()),
+    COALLESS(new CoalLess()),
+    BLOODDIAMONDS(new BloodDiamonds()),
+    BLOODENCHANTS(new BloodEnchants()),
+    //BACKPACKS(null),
+    //AIRDROPS(new AirDrops(Main.instance)),
+    //BOUNTYHUNTER(new BountyHunter()),
+    //MONSTERHUNTER(null),
+    BAREBONES(new Barebones()),
+    //WATERWORLD(null),
+    OREFRENZY(new OreFrenzy()),
+    //SHAREDHEALTH(null),
+    //OREBANKER(null),
+    NINESLOT(new NineSlot()),
+    OPUHC(new OpUHC());
+    /*LIMITEDENCHANT(null),
     LONGSHOOTS(null),
     LOVEATFIRSTSIGHT(null),
     MINESWEEPER(null),
     MOLES(null),
     FLOWERPOWER(null),
     ERRATICPVP(null),
-    ENDERDRAGONRUSH(null);
+    ENDERDRAGONRUSH(null);*/
 
 
     /** SMALL CONSTRUCTORS **/
@@ -73,7 +73,7 @@ public enum ModeType {
 
     /** REST **/
 
-    Object getClazz() {
+    public Object getClazz() {
         return clazz;
     }
 

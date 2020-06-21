@@ -216,6 +216,21 @@ public class EconomyProvider implements net.milkbowl.vault.economy.Economy {
         }
     }
 
+    public void depositPlayerWithoutBooster(OfflinePlayer offlinePlayer, double amount) {
+        try {
+            final Economy economy = Economy.economyPlayers.get(Bukkit.getPlayer(offlinePlayer.getUniqueId())) == null ?
+                    new Economy(offlinePlayer.getUniqueId()) :
+                    Economy.economyPlayers.get(Bukkit.getPlayer(offlinePlayer.getUniqueId()));
+
+            economy.depositWithOutBooster(amount);
+            new EconomyResponse(amount, getBalance(offlinePlayer), EconomyResponse.ResponseType.SUCCESS, "");
+        }
+        catch (SQLException throwables) {
+            throwables.printStackTrace();
+            new EconomyResponse(amount, getBalance(offlinePlayer), EconomyResponse.ResponseType.FAILURE, throwables.getMessage());
+        }
+    }
+
     @Override
     public EconomyResponse depositPlayer(String playerName, String worldName, double amount) {
         return depositPlayer(playerName, amount);

@@ -35,8 +35,7 @@ class Horseless implements Listener {
 
     /** SMALL CONSTRUCTORS **/
 
-    Horseless(Main plugin){
-        Api.PLUGIN_MANAGER.registerEvents(this, plugin);
+    Horseless(){
         clearHorses();
     }
 

@@ -27,13 +27,6 @@ import org.bukkit.event.enchantment.EnchantItemEvent;
 class BloodEnchants implements Listener {
 
 
-    /** SMALL CONSTRUCTORS **/
-
-    BloodEnchants(Main plugin){
-        Api.PLUGIN_MANAGER.registerEvents(this, plugin);
-    }
-
-
     /** REST **/
 
     @EventHandler

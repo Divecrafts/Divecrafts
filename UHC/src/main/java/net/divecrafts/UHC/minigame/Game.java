@@ -1,5 +1,7 @@
 package net.divecrafts.UHC.minigame;
 
+import io.clonalejandro.DivecraftsCore.api.SServer;
+import io.clonalejandro.DivecraftsCore.api.SUser;
 import net.divecrafts.UHC.minigame.arena.Arena;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -11,6 +13,7 @@ import net.divecrafts.UHC.task.BorderTask;
 import net.divecrafts.UHC.task.ScoreTask;
 import net.divecrafts.UHC.utils.Api;
 import net.divecrafts.UHC.utils.Scoreboard;
+import org.bukkit.event.Listener;
 
 import java.util.HashMap;
 
@@ -56,10 +59,20 @@ public final class Game {
         Api.ALIVE_PLAYERS.addAll(Api.getOnlinePlayers());
 
         playerSpawn.forEach((player, loc) -> {
-            Scoreboard.gameScoreboard(player);
-
+            player.getInventory().clear();
             player.setGameMode(GameMode.SURVIVAL);
             player.teleport(loc);
+
+            Scoreboard.gameScoreboard(player);
+
+            final SUser user = SServer.getUser(player);
+            user.getUserData().addPlay(SServer.GameID.UHC);
+            user.save();
+        });
+
+        Api.SELECTED_MODES.forEach(mode -> {
+            Bukkit.broadcastMessage(mode.toString());
+            Api.PLUGIN_MANAGER.registerEvents((Listener) mode.getClazz(), Main.instance);
         });
 
         new ScoreTask().runTaskTimer(plugin, 1L, 20L);
@@ -70,8 +83,9 @@ public final class Game {
     public synchronized void gameStop(){
         Api.setState(State.ENDING);
 
-        Bukkit.broadcastMessage(Api.translator("&a&lUHC> &fThe game is ending"));
-        Bukkit.getScheduler().runTaskLater(Main.instance, Bukkit::shutdown, 3L * 20L);
+        Bukkit.broadcastMessage(Api.translator("&a&lUHC> &fThe game is end"));
+        Bukkit.getOnlinePlayers().forEach(p -> SServer.getUser(p).sendToServer("lobby"));
+        Bukkit.getScheduler().runTaskLater(Main.instance, Bukkit::shutdown, 10L * 20L);
     }
 
 

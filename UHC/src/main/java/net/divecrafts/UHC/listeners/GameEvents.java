@@ -1,5 +1,7 @@
 package net.divecrafts.UHC.listeners;
 
+import io.clonalejandro.DivecraftsCore.api.SServer;
+import io.clonalejandro.DivecraftsCore.api.SUser;
 import net.divecrafts.UHC.Main;
 import net.divecrafts.UHC.minigame.State;
 import net.divecrafts.UHC.utils.Api;
@@ -32,11 +34,6 @@ import org.bukkit.event.player.PlayerQuitEvent;
  */
 
 public class GameEvents implements Listener {
-
-
-    /** SMALL CONSTRUCTORS **/
-
-    //none...
 
 
     /** REST **/
@@ -120,16 +117,25 @@ public class GameEvents implements Listener {
             Api.ALIVE_PLAYERS.remove(player);
 
             if (killer != null){
-                if (!Api.KILLS.containsKey(killer)) Api.KILLS.put(killer, 1);
+                if (!Api.KILLS.containsKey(killer))
+                    Api.KILLS.put(killer, 1);
                 else {
                     int kills = Api.KILLS.get(killer);
                     Api.KILLS.remove(killer);
                     Api.KILLS.put(killer, kills + 1);
                 }
 
+                final SUser user = SServer.getUser(killer);
+                user.getUserData().addKill(SServer.GameID.UHC);
+                user.save();
                 //killer.getScoreboard().getTeam("kills").setSuffix(String.valueOf(Api.KILLS.get(killer)));
             }
 
+            final SUser user = SServer.getUser(player);
+            user.getUserData().addDeath(SServer.GameID.UHC);
+            user.save();
+
+            Bukkit.broadcastMessage(String.valueOf(SServer.getUser(player).getUserData().getDeaths(SServer.GameID.UHC)));
             Scoreboard.updateScoreboard("spectators", String.valueOf(Api.getOnline() - Api.ALIVE_PLAYERS.size()));
             Scoreboard.updateScoreboard("aliveplayers", String.valueOf(Api.ALIVE_PLAYERS.size()));
 
@@ -148,7 +154,13 @@ public class GameEvents implements Listener {
                     String.format("&9&lUHC> &fThe winner is &e%s", name)
             ));
 
-            Bukkit.getScheduler().runTaskLater(Main.instance, () -> Api.getGame().gameStop(), 3L * 20L);
+            if (!name.equalsIgnoreCase("nobody")){
+                final SUser user = SServer.getUser(Api.ALIVE_PLAYERS.get(0));
+                user.getUserData().addWin(SServer.GameID.UHC);
+                user.save();
+            }
+
+            Bukkit.getScheduler().runTaskLater(Main.instance, () -> Api.getGame().gameStop(), 10L * 20L);
         }
     }
 }

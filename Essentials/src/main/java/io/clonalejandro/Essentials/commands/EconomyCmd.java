@@ -54,7 +54,7 @@ public class EconomyCmd extends Cmd implements CommandExecutor {
 
                     if (provider.has(me, amount)){
                         provider.withdrawPlayer(me, amount);
-                        provider.depositPlayer(player, amount);
+                        provider.depositPlayerWithoutBooster(player, amount);
 
                         player.sendMessage(Utils.colorize(String.format("&a&lServer> &fAñadidos &b%s$ &fa tu cuenta del jugador &e%s", amount, me.getName())));
                         me.sendMessage(Utils.colorize(String.format("&a&lServer> &fEliminados &b%s$ &fde tu cuenta", amount)));

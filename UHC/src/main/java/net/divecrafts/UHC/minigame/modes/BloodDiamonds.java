@@ -28,13 +28,6 @@ import org.bukkit.event.block.BlockBreakEvent;
 class BloodDiamonds implements Listener {
 
 
-    /** SMALL CONSTRUCTORS **/
-
-    BloodDiamonds(Main plugin){
-        Api.PLUGIN_MANAGER.registerEvents(this, plugin);
-    }
-
-
     /** REST **/
 
     @EventHandler

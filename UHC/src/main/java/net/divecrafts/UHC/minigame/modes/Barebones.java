@@ -45,9 +45,7 @@ class Barebones implements Listener {
     private final ItemStack[] newDrop;
     private final List<Material> blackListCraft;
 
-    Barebones(Main plugin){
-        Api.PLUGIN_MANAGER.registerEvents(this, plugin);
-
+    Barebones(){
         blackListDrops = new ArrayList<>(Arrays.asList(
                 Material.DIAMOND_ORE, Material.EMERALD_ORE, Material.GLOWING_REDSTONE_ORE,
                 Material.GOLD_ORE, Material.LAPIS_ORE, Material.QUARTZ_ORE, Material.REDSTONE_ORE

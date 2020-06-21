@@ -35,10 +35,6 @@ public class VanillaP implements Listener {
     private int counterApple = 0,
                 counterGravel = 0;
 
-    VanillaP(Main plugin){
-        Api.PLUGIN_MANAGER.registerEvents(this, plugin);
-    }
-
 
     /** REST **/
 

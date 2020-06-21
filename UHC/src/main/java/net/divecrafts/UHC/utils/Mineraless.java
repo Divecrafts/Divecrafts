@@ -37,8 +37,7 @@ public abstract class Mineraless implements Listener {
     private final Material target;
     private final ItemStack mineral;
 
-    public Mineraless(Main plugin, Material target, ItemStack mineral){
-        Api.PLUGIN_MANAGER.registerEvents(this, plugin);
+    public Mineraless(Material target, ItemStack mineral){
         this.target = target;
         this.mineral = mineral;
     }
