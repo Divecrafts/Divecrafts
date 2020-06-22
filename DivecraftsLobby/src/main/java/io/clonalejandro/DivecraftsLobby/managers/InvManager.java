@@ -125,7 +125,7 @@ public class InvManager {
 
                 inv.setItem(4, new ItemMaker(Material.BOOKSHELF).setName(Languaje.getLangMsg(u.getUserData().getLang(), "Juegosname.lobby")).setLore(loreLobby).build());
 
-                inv.setItem(10, new ItemMaker(Material.DIAMOND_PICKAXE)
+                inv.setItem(10, new ItemMaker(Material.BRICK)
                         .setName(Languaje.getLangMsg(u.getUserData().getLang(), "Juegosname.survival"))
                         .setLore(Languaje.getLangMsg(u.getUserData().getLang(), "Juegoslore.survival")
                                 .replace("%players%", String.valueOf(BungeeMensager.getJuegos().get("survival")))
