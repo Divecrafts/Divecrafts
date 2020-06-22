@@ -14,12 +14,11 @@ import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityPortalEnterEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerKickEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.event.server.ServerListPingEvent;
+import org.bukkit.event.world.PortalCreateEvent;
 import org.bukkit.inventory.meta.FireworkMeta;
 
 import java.util.Random;
@@ -58,6 +57,18 @@ public class GameEvents implements Listener {
         if (Api.getState() == State.ENDING || Api.getState() == State.RUNNING) whilePlayerCanLeave(e);
     }
 
+
+    @EventHandler
+    public void onPortalEvent(PlayerPortalEvent event){
+        if (event.getCause() == PlayerTeleportEvent.TeleportCause.NETHER_PORTAL){
+            if (event.isCancelled()) return;
+
+            final Location loc = new Location(Api.getArena().getNetherManager().getWorld(), event.getTo().getX(), event.getTo().getY(), event.getTo().getZ());
+
+            event.getPlayer().teleport(loc);
+            event.setCancelled(true);
+        }
+    }
 
     @EventHandler
     public void onPlayerKickEvent(PlayerKickEvent e){
