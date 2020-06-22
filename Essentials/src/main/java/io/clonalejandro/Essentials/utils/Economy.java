@@ -173,7 +173,7 @@ public class Economy {
 
 
     public static List<Economy> balanceTop(int limit) throws SQLException {
-        final PreparedStatement statement = MysqlManager.getConnection().prepareStatement(String.format("SELECT * FROM economy WHERE name != '' order by amount desc limit %s", limit));
+        final PreparedStatement statement = MysqlManager.getConnection().prepareStatement("SELECT * FROM economy WHERE name != '' AND name not like 'town%' order by amount desc limit " + limit);
         final List<Economy> top = new ArrayList<>();
 
         try {
