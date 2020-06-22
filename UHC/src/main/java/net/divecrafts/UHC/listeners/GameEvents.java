@@ -140,7 +140,6 @@ public class GameEvents implements Listener {
             user.getUserData().addDeath(SServer.GameID.UHC);
             user.save();
 
-            Bukkit.broadcastMessage(String.valueOf(SServer.getUser(player).getUserData().getDeaths(SServer.GameID.UHC)));
             Scoreboard.updateScoreboard("spectators", String.valueOf(Api.getOnline() - Api.ALIVE_PLAYERS.size()));
             Scoreboard.updateScoreboard("aliveplayers", String.valueOf(Api.ALIVE_PLAYERS.size()));
 
@@ -156,7 +155,7 @@ public class GameEvents implements Listener {
             Api.setState(State.ENDING);
             Api.playSound(Bukkit.getWorld("Normal_tmp"), Sound.LEVEL_UP, 1F, 1F);
 
-            Bukkit.getScheduler().runTaskTimer(Main.instance, () -> Bukkit.getOnlinePlayers().forEach(p -> spawnFireworks(p.getLocation(), 5)), 1L, 15L);
+            Bukkit.getScheduler().runTaskTimer(Main.instance, () -> Bukkit.getOnlinePlayers().forEach(p -> spawnFireworks(p.getLocation(), 10)), 1L, 15L);
             Bukkit.getOnlinePlayers().forEach(p -> {
                 final SUser user = SServer.getUser(p);
                 p.sendMessage(Languaje.getLangMsg(user.getUserData().getLang(), "UHC.winner").replace("%player%", name));

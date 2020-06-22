@@ -3,6 +3,7 @@ package net.divecrafts.UHC.minigame;
 import io.clonalejandro.DivecraftsCore.api.SServer;
 import io.clonalejandro.DivecraftsCore.api.SUser;
 
+import io.clonalejandro.DivecraftsCore.idiomas.Languaje;
 import net.divecrafts.UHC.listeners.GameStartEvent;
 import net.divecrafts.UHC.minigame.arena.Arena;
 import net.divecrafts.UHC.Main;
@@ -72,8 +73,12 @@ public final class Game {
     public synchronized void gameStop(){
         Api.setState(State.ENDING);
 
-        Bukkit.broadcastMessage(Api.translator("&a&lUHC> &fThe game is end"));
-        Bukkit.getOnlinePlayers().forEach(p -> SServer.getUser(p).sendToServer("lobby"));
+        Bukkit.getOnlinePlayers().forEach(p -> {
+            final SUser user = SServer.getUser(p);
+            p.sendMessage(Languaje.getLangMsg(user.getUserData().getLang(), "UHC.end"));
+            user.sendToServer("lobby");
+        });
+
         Bukkit.getScheduler().runTaskLater(Main.instance, Bukkit::shutdown, 10L * 20L);
     }
 
