@@ -95,6 +95,9 @@ public class WarpGui {
                 case "pvp2":
                     items.add(itemMaker(warp, Material.DIAMOND_SWORD));
                     break;
+                case "encantamientos":
+                    items.add(itemMaker(warp, Material.ENCHANTING_TABLE));
+                    break;
             }
         });
     }
