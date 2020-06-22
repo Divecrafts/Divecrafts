@@ -70,7 +70,7 @@ public class ResponderCMD extends SCmd {
             DecirCMD.getLastPlayerMsg().remove(target.getPlayer());
         DecirCMD.getLastPlayerMsg().put(target.getPlayer(), user.getPlayer());
 
-        sendPrivateMessage(target, user, Utils.buildString(args));
+        sendPrivateMessage(target, user, user.getUserData().getRank().getRank() > 0 ? Utils.colorize(Utils.buildString(args)) : Utils.buildString(args));
     }
 
     @Override

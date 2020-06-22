@@ -16,6 +16,11 @@ public class HelpOPCMD extends SCmd {
 
     @Override
     public void run(SUser user, String label, String[] args) {
+        if (args.length == 0){
+            user.getPlayer().sendMessage(Languaje.getLangMsg(user.getUserData().getLang(), "HelpOP.noespecificado"));
+            return;
+        }
+
         String message = Utils.buildString(args);
         hp(user, message);
         user.getPlayer().sendMessage(Languaje.getLangMsg(user.getUserData().getLang(), "HelpOP.astaff"));
