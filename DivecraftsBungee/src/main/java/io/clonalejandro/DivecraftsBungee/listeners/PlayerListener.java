@@ -35,7 +35,9 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void onPlayerKick(ServerKickEvent event){
-        event.getPlayer().sendMessage(TextUtils.formatText(event.getKickReason()));
+        if (event.getKickedFrom().getName().equalsIgnoreCase("auth") && event.getKickReason() == null)
+            event.getPlayer().sendMessage(TextUtils.formatText("&c&lServer> &fPuede que estes usando un nick premium en un launcher no premium prueba a cambiar de nombre"));
+        else event.getPlayer().sendMessage(TextUtils.formatText("&c&lServer> " + event.getKickReason()));
     }
 
 	@EventHandler

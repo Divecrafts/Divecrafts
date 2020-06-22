@@ -88,7 +88,9 @@ public class LobbyEvents implements Listener {
             switch (event.getMaterial()){
                 case WATCH:
                     if (user.getUserData().getRank().getRank() >= SCmd.Rank.KRAKEN.getRank())
-                        user.getPlayer().openInventory(getVoteInventory(user.getPlayer()));
+                        if (!Api.PLAYERS_VOTED.contains(user.getPlayer()))
+                            user.getPlayer().openInventory(getVoteInventory(user.getPlayer()));
+                        else user.getPlayer().sendMessage(Languaje.getLangMsg(user.getUserData().getLang(), "UHC.yavotaste"));
                     else user.getPlayer().sendMessage(Languaje.getLangMsg(user.getUserData().getLang(), "Global.cmdnopuedes"));
                     break;
                 case BED:
@@ -98,7 +100,7 @@ public class LobbyEvents implements Listener {
                                     user.getUserData().getLang(), "Global.bedlobbymsg").replace("%tiempo%", String.valueOf(time)
                             )
                     );
-                    Bukkit.getScheduler().runTaskLater(Main.instance, () -> BungeeMensager.conectarA(event.getPlayer(), "lobby"), 20L * time);//TODO: Expect null in bungeemessager
+                    Api.PLAYERS_WAITING_TELEPORT.put(user.getPlayer(), Bukkit.getScheduler().runTaskLater(Main.instance, () -> BungeeMensager.conectarA(event.getPlayer(), "lobby"), 20L * time));
                     break;
             }
 
@@ -121,7 +123,12 @@ public class LobbyEvents implements Listener {
                 event.getWhoClicked().sendMessage(Languaje.getLangMsg(user.getUserData().getLang(), "UHC.currentselected"));
             else {
                 Api.SELECTED_MODES.add(mode);
+                Api.PLAYERS_VOTED.add(user.getPlayer());
+
+                addModeToScoreboard(mode);
+
                 event.getWhoClicked().sendMessage(Languaje.getLangMsg(user.getUserData().getLang(), "UHC.modeselected").replace("%modo%", name));
+
                 Bukkit.getOnlinePlayers().forEach(p -> {
                     final SUser tempUser = SServer.getUser(p);
                     p.sendMessage(Languaje.getLangMsg(tempUser.getUserData().getLang(), "UHC.brmode")
@@ -138,6 +145,12 @@ public class LobbyEvents implements Listener {
         }
 
         event.setCancelled(Api.getState() == State.LOBBY);
+    }
+
+    @EventHandler
+    public void onPlayerMoves(PlayerMoveEvent event){
+        if (Api.getState() == State.LOBBY && Api.PLAYERS_WAITING_TELEPORT.get(event.getPlayer()) != null)
+            Api.PLAYERS_WAITING_TELEPORT.get(event.getPlayer()).cancel();
     }
 
     @EventHandler
@@ -221,9 +234,7 @@ public class LobbyEvents implements Listener {
         );
 
         Scoreboard.lobbyScoreboard(player); // Set scoreboard to a player join
-        Scoreboard.updateScoreboard("onlineplayers", Api.translator(
-                "&f" + (Api.getOnline())
-        ));
+        Scoreboard.updateScoreboard("onlineplayers", Api.translator("&f" + (Api.getOnline())));
 
         resetPlayer(player);
 
@@ -239,9 +250,7 @@ public class LobbyEvents implements Listener {
      * This function execute the onPlayerKickEvent order while state is "Lobby"
      */
     private void onQuit(){
-        Scoreboard.updateScoreboard("onlineplayers", Api.translator(
-                "&f" + (Api.getOnline() -1)
-        ));
+        Scoreboard.updateScoreboard("onlineplayers", Api.translator("&f" + (Api.getOnline() -1)));
     }
 
 
@@ -305,6 +314,10 @@ public class LobbyEvents implements Listener {
                 return Material.SADDLE;
             case TIMEBOMB:
                 return Material.TNT;
+            case BOUNTYHUNTER:
+                return Material.MOB_SPAWNER;
+            case AIRDROPS:
+                return Material.CHEST;
             case DIAMONDLESS:
                 return Material.DIAMOND;
             case BAREBONES:
@@ -360,20 +373,39 @@ public class LobbyEvents implements Listener {
     }
 
     private void resetPlayer(Player player){
-        final ItemStack air = new ItemStack(Material.AIR);
         final SUser user = SServer.getUser(player);
 
         Bukkit.getScheduler().runTask(Main.instance, () -> {
             player.getInventory().clear();
-            player.getInventory().setArmorContents(new ItemStack[]{air, air, air, air});
+            player.getInventory().setArmorContents(new ItemStack[]{null, null, null, null});
             player.setHealth(20);
             player.setFoodLevel(20);
             player.setLevel(0);
+            player.setExp(0.0F);
 
             player.getInventory().setItem(2, getVoteSelector(user));
             player.getInventory().setItem(8, getBedLobby(user));
 
             player.setGameMode(GameMode.ADVENTURE);
         });
+    }
+
+    private void addModeToScoreboard(ModeType mode){
+        final String name = String.valueOf(mode.toString().charAt(0)).toUpperCase() + mode.toString().substring(1).toLowerCase();
+
+        switch (Api.SELECTED_MODES.size()){
+            case 1:
+                Scoreboard.updateScoreboard("mode1", name);
+                break;
+            case 2:
+                Scoreboard.updateScoreboard("mode2", name);
+                break;
+            case 3:
+                Scoreboard.updateScoreboard("mode3", name);
+                break;
+            case 4:
+                Scoreboard.updateScoreboard("mode4", name);
+                break;
+        }
     }
 }

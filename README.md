@@ -1,4 +1,5 @@
-# Spigot
+# Spigot [![Codacy Badge](https://app.codacy.com/project/badge/Grade/53ef44e4234c49b2a660ca48a1898fe0)](https://www.codacy.com?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=clonalejandro/Divecrafts&amp;utm_campaign=Badge_Grade)
+
 ## Guía de uso
 
 **·No quitar derechos de autor**

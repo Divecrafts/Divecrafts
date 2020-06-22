@@ -63,7 +63,7 @@ public class Main extends JavaPlugin {
 
             Bukkit.getWorld("world").setDifficulty(Difficulty.PEACEFUL);
 
-            Api.setState(State.LOBBY); //Set state lobby on enable
+            Api.setState(State.LOBBY);
             Api.sendConsole(Api.translator("&a" + Api.PREFIX + "&fPlugin activado"));
 
             startMemo();
@@ -81,6 +81,7 @@ public class Main extends JavaPlugin {
         endMemo();
 
         try {
+            getTaskList().forEach(ITask::kill);
             Api.PLUGIN_MANAGER.disablePlugin(instance);
             Api.sendConsole(Api.translator("&8" + Api.PREFIX + "&eKilling process plugin..."));
         }
@@ -141,14 +142,6 @@ public class Main extends JavaPlugin {
     private void endMemo(){
         if (Api.getArena() != null)
             Api.getArena().remove();
-    }
-
-
-    /**
-     * This function sets the mode of the game
-     */
-    private void loadMode(){
-        //Api.getConfigManager().getMode
     }
 
 
