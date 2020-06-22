@@ -2,13 +2,15 @@ package net.divecrafts.UHC.listeners;
 
 import io.clonalejandro.DivecraftsCore.api.SServer;
 import io.clonalejandro.DivecraftsCore.api.SUser;
+import io.clonalejandro.DivecraftsCore.idiomas.Languaje;
 import net.divecrafts.UHC.Main;
 import net.divecrafts.UHC.minigame.Lobby;
 import net.divecrafts.UHC.minigame.State;
 import net.divecrafts.UHC.utils.Api;
 import net.divecrafts.UHC.utils.Scoreboard;
-import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
+import org.bukkit.*;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -18,6 +20,7 @@ import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.server.ServerListPingEvent;
+import org.bukkit.inventory.meta.FireworkMeta;
 
 /**
  * Created by alejandrorioscalera
@@ -129,7 +132,6 @@ public class GameEvents implements Listener {
                 final SUser user = SServer.getUser(killer);
                 user.getUserData().addKill(SServer.GameID.UHC);
                 user.save();
-                //killer.getScoreboard().getTeam("kills").setSuffix(String.valueOf(Api.KILLS.get(killer)));
             }
 
             final SUser user = SServer.getUser(player);
@@ -144,16 +146,18 @@ public class GameEvents implements Listener {
         }
     }
 
-
     private void checkEndGame(){
         if (Api.ALIVE_PLAYERS.size() <= 1){
             final String name = Api.ALIVE_PLAYERS.size() == 0 ? "nobody" : Api.ALIVE_PLAYERS.get(0).getDisplayName();
             if (Api.getState() == State.ENDING) return;
 
             Api.setState(State.ENDING);
-            Bukkit.broadcastMessage(Api.translator(
-                    String.format("&9&lUHC> &fThe winner is &e%s", name)
-            ));
+
+            Bukkit.getScheduler().runTaskTimer(Main.instance, () -> Bukkit.getOnlinePlayers().forEach(p -> spawnFireworks(p.getLocation(), 3)), 1L, 20L);
+            Bukkit.getOnlinePlayers().forEach(p -> {
+                final SUser user = SServer.getUser(p);
+                p.sendMessage(Languaje.getLangMsg(user.getUserData().getLang(), "UHC.winner").replace("%player%", name));
+            });
 
             if (!name.equalsIgnoreCase("nobody")){
                 final SUser user = SServer.getUser(Api.ALIVE_PLAYERS.get(0));
@@ -162,6 +166,23 @@ public class GameEvents implements Listener {
             }
 
             Bukkit.getScheduler().runTaskLater(Main.instance, () -> Api.getGame().gameStop(), 10L * 20L);
+        }
+    }
+
+
+    private void spawnFireworks(Location location, int amount){
+        final Firework firework = (Firework) location.getWorld().spawnEntity(location, EntityType.FIREWORK);
+        final FireworkMeta meta = firework.getFireworkMeta();
+
+        meta.setPower(2);
+        meta.addEffect(FireworkEffect.builder().withColor(Color.LIME).flicker(true).build());
+
+        firework.setFireworkMeta(meta);
+        firework.detonate();
+
+        for(int i = 0; i < amount; i++){
+            final Firework firework1 = (Firework) location.getWorld().spawnEntity(location, EntityType.FIREWORK);
+            firework1.setFireworkMeta(meta);
         }
     }
 }

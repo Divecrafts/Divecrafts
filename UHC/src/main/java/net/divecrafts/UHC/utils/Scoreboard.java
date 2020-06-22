@@ -63,10 +63,10 @@ public class Scoreboard {
         scores.put(10, teamS);
         scores.put(9, "&1");
         scores.put(8, gameS);
-        scores.put(7, "&8&f-");
-        scores.put(6, "&7&f-");
-        scores.put(5, "&6&f-");
-        scores.put(4, "&4&f-");
+        scores.put(7, "&8&f- ");
+        scores.put(6, "&7&f- ");
+        scores.put(5, "&6&f- ");
+        scores.put(4, "&4&f- ");
         scores.put(3, "&2");
         scores.put(2, onlineS);
         scores.put(1, "&3");
@@ -80,10 +80,10 @@ public class Scoreboard {
         //Register teams
         players.addEntry(Api.translator(onlineS));
         host.addEntry(Api.translator(hostS));
-        modes[0].addEntry("&8&f-");
-        modes[1].addEntry("&7&f-");
-        modes[2].addEntry("&6&f-");
-        modes[3].addEntry("&4&f-");
+        modes[0].addEntry(Api.translator("&8&f- "));
+        modes[1].addEntry(Api.translator("&7&f- "));
+        modes[2].addEntry(Api.translator("&6&f- "));
+        modes[3].addEntry(Api.translator("&4&f- "));
 
         //Set values of the teams
         host.setSuffix(Api.getHost() != null ? Api.getHost() : "Divecrafts");

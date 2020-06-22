@@ -3,12 +3,14 @@ package net.divecrafts.UHC.utils;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+
 import net.divecrafts.UHC.Main;
 import net.divecrafts.UHC.minigame.Game;
 import net.divecrafts.UHC.minigame.State;
 import net.divecrafts.UHC.minigame.arena.Arena;
 import net.divecrafts.UHC.minigame.modes.ModeType;
 import net.divecrafts.UHC.task.ScoreTask;
+
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -24,7 +26,6 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
@@ -50,11 +51,12 @@ public class Api {
     /** SMALL CONSTRUCTORS **/
 
     public static final String PREFIX = "UHC> ", SPACE = " ", NULL = ""; //Strings for personal help
-    public static final ArrayList<Player> ALIVE_PLAYERS = new ArrayList<>(); //List to players alive
     public static final HashMap<Player, Integer> KILLS = new HashMap<>();//Kills of players
+    public static final HashMap<Player, BukkitTask>PLAYERS_WAITING_TELEPORT = new HashMap<>();
     public static final PluginManager PLUGIN_MANAGER = Main.instance.getServer().getPluginManager(); //Plugin Manager
-    public static final ArrayList<String> DESCONECTED = new ArrayList<>(); //List to players offline
+    public static final ArrayList<Player> ALIVE_PLAYERS = new ArrayList<>(); //List to players alive
     public static final ArrayList<ModeType> SELECTED_MODES = new ArrayList<>();
+    public static final ArrayList<Player> PLAYERS_VOTED = new ArrayList<>();
 
     private static Game game;
     private static Arena arena;
