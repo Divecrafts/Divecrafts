@@ -1,5 +1,8 @@
 package net.divecrafts.UHC.task;
 
+import io.clonalejandro.DivecraftsCore.api.SServer;
+import io.clonalejandro.DivecraftsCore.api.SUser;
+import io.clonalejandro.DivecraftsCore.idiomas.Languaje;
 import net.divecrafts.UHC.minigame.Game;
 import net.divecrafts.UHC.minigame.State;
 import net.divecrafts.UHC.utils.Api;
@@ -86,12 +89,11 @@ public class GameCountDown extends BukkitRunnable implements ITask {
      * This function decrement the time and then print this
      */
     private void decrementTime(){
-        final String message = Api.getConfigManager().getCountDownMessage().replace(
-                "{TIME}", String.valueOf(time)
-        );
-
         if (time == Api.getConfigManager().getTimeCountDown() || time <= 5)
-            Bukkit.broadcastMessage(Api.translator(message));
+            Bukkit.getOnlinePlayers().forEach(p -> {
+                final SUser user = SServer.getUser(p);
+                p.sendMessage(Languaje.getLangMsg(user.getUserData().getLang(), "UHC.countdown").replace("%tiempo%", String.valueOf(time)));
+            });
 
         time--;
     }
@@ -101,9 +103,10 @@ public class GameCountDown extends BukkitRunnable implements ITask {
      * This function manage the order start game
      */
     private void startGame(){
-        Bukkit.broadcastMessage(Api.translator(
-                Api.getConfigManager().getGameStart()
-        ));
+        Bukkit.getOnlinePlayers().forEach(p -> {
+            final SUser user = SServer.getUser(p);
+            p.sendMessage(Languaje.getLangMsg(user.getUserData().getLang(), "UHC.started"));
+        });
         Api.getGame().gameStart();
     }
 

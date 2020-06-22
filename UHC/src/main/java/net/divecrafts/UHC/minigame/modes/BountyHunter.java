@@ -1,7 +1,12 @@
 package net.divecrafts.UHC.minigame.modes;
 
-import net.divecrafts.UHC.Main;
+import io.clonalejandro.DivecraftsCore.api.SServer;
+import io.clonalejandro.DivecraftsCore.api.SUser;
+import io.clonalejandro.DivecraftsCore.idiomas.Languaje;
+
+import net.divecrafts.UHC.listeners.GameStartEvent;
 import net.divecrafts.UHC.utils.Api;
+
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -11,6 +16,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by alejandrorioscalera
@@ -34,11 +40,7 @@ public class BountyHunter implements Listener {
     /** SMALL CONSTRUCTORS **/
 
     private final HashMap<Player, Player> bountyList = new HashMap<>();
-    private final ArrayList<Player> players = new ArrayList<>(Api.getOnlinePlayers());
-
-    BountyHunter(){
-        genBountys();
-    }
+    private final List<Player> players = Api.getOnlinePlayers();
 
 
     /** REST **/
@@ -46,6 +48,11 @@ public class BountyHunter implements Listener {
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent event){
         if (playerIsBounty(event)) removeBounty(event);
+    }
+
+    @EventHandler
+    public void onGameStart(GameStartEvent event){
+        genBountys();
     }
 
 
@@ -82,7 +89,7 @@ public class BountyHunter implements Listener {
     private Player genTargetForBounty(final Player key){
         Player player = genRandomPlayer();
 
-        while (key != player)
+        while (key == player)
             player = genRandomPlayer();
 
         return player;
@@ -94,9 +101,7 @@ public class BountyHunter implements Listener {
      * @return
      */
     private Player genRandomPlayer(){
-        return players.get(
-                Api.getRandom(players.size(), 0)
-        );
+        return players.get(Api.getRandom(players.size() -1, 0));
     }
 
 
@@ -106,10 +111,8 @@ public class BountyHunter implements Listener {
      * @param value
      */
     private void addBounty(final Player key, final Player value){
-        bountyList.put(key, value);
-        key.sendMessage(Api.translator(Api.getConfigManager().getBountyMessageOnAdd().replace(
-                "{BOUNTY}", value.getName()
-        )));
+        final SUser keyUser = SServer.getUser(key);
+        key.sendMessage(Languaje.getLangMsg(keyUser.getUserData().getLang(), "UHC.bountyasigned").replace("%bounty%", value.getName()));
     }
 
 
@@ -120,12 +123,14 @@ public class BountyHunter implements Listener {
     private void removeBounty(final PlayerDeathEvent event){
         final Player player = event.getEntity();
         final Player killer = player.getKiller();
+        final SUser killerUser = SServer.getUser(killer);
 
-        event.getDrops().add(new ItemStack(Material.GOLDEN_APPLE, 3));
+        event.getDrops();
+
+        player.getLocation().getWorld().dropItemNaturally(player.getLocation(), new ItemStack(Material.GOLDEN_APPLE, 3));
         bountyListRemover(player, killer);
-        killer.sendMessage(Api.translator(Api.getConfigManager().getBountyMessageOnRemove().replace(
-                "{BOUNTY}", player.getName()
-        )));
+
+        killer.sendMessage(Languaje.getLangMsg(killerUser.getUserData().getLang(), "UHC.bountywin"));
     }
 
 
@@ -136,7 +141,7 @@ public class BountyHunter implements Listener {
      */
     private void bountyListRemover(final Player player, final Player killer){
         bountyList.remove(killer);
-        if (bountyList.containsKey(player))
+        if (bountyList.get(player) != null)
             bountyList.remove(player);
     }
 

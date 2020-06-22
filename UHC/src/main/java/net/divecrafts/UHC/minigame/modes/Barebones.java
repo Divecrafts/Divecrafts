@@ -1,11 +1,13 @@
 package net.divecrafts.UHC.minigame.modes;
 
-import net.divecrafts.UHC.Main;
-import net.divecrafts.UHC.utils.Api;
+import io.clonalejandro.DivecraftsCore.api.SServer;
+import io.clonalejandro.DivecraftsCore.api.SUser;
+import io.clonalejandro.DivecraftsCore.idiomas.Languaje;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -15,7 +17,6 @@ import org.bukkit.event.player.PlayerPortalEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -41,29 +42,9 @@ class Barebones implements Listener {
     /** SMALL CONSTRUCTORS **/
 
     private final PlayerTeleportEvent.TeleportCause NETHER = PlayerTeleportEvent.TeleportCause.NETHER_PORTAL;
-    private final List<Material> blackListDrops;
-    private final ItemStack[] newDrop;
-    private final List<Material> blackListCraft;
-
-    Barebones(){
-        blackListDrops = new ArrayList<>(Arrays.asList(
-                Material.DIAMOND_ORE, Material.EMERALD_ORE, Material.GLOWING_REDSTONE_ORE,
-                Material.GOLD_ORE, Material.LAPIS_ORE, Material.QUARTZ_ORE, Material.REDSTONE_ORE
-        ));
-        newDrop = new ItemStack[]{
-                new ItemStack(Material.DIAMOND, 1),
-                new ItemStack(Material.GOLDEN_APPLE, 1),
-                new ItemStack(Material.ARROW, 32),
-                new ItemStack(Material.STRING, 2)
-        };
-        blackListCraft = new ArrayList<>(Arrays.asList(
-                Material.ENCHANTMENT_TABLE,
-                Material.ANVIL,
-                Material.GOLDEN_APPLE,
-                Material.SKULL,
-                Material.SKULL_ITEM
-        ));
-    }
+    private final List<Material> blackListDrops = Arrays.asList(Material.DIAMOND_ORE, Material.EMERALD_ORE, Material.GLOWING_REDSTONE_ORE, Material.GOLD_ORE, Material.LAPIS_ORE, Material.QUARTZ_ORE, Material.REDSTONE_ORE);
+    private final ItemStack[] drops =  new ItemStack[]{new ItemStack(Material.DIAMOND, 1), new ItemStack(Material.GOLDEN_APPLE, 1), new ItemStack(Material.ARROW, 32), new ItemStack(Material.STRING, 2)};
+    private final List<Material> blackListCraft = Arrays.asList(Material.ENCHANTMENT_TABLE, Material.ANVIL, Material.GOLDEN_APPLE, Material.SKULL, Material.SKULL_ITEM);
 
 
     /** REST **/
@@ -99,9 +80,8 @@ class Barebones implements Listener {
      * @param event
      */
     private void craftsLocker(final CraftItemEvent event){
-        if (blackListCraft.contains(
-                event.getRecipe().getResult().getType()
-        )) lockEventCraft(event);
+        if (blackListCraft.contains(event.getRecipe().getResult().getType()))
+            lockEventCraft(event);
     }
 
 
@@ -110,11 +90,9 @@ class Barebones implements Listener {
      * @param event
      */
     private void lockEventCraft(final CraftItemEvent event){
+        final SUser user = SServer.getUser((Player) event.getWhoClicked());
+        user.getPlayer().sendMessage(Languaje.getLangMsg(user.getUserData().getLang(), "UHC.barebones").replace("%target%", event.getRecipe().getResult().getItemMeta().getDisplayName()));
         event.setCancelled(true);
-        event.getWhoClicked().sendMessage(Api.translator(
-                Api.getConfigManager().getBarebonesOnCraft().replace("{TARGET}",
-                        event.getRecipe().getResult().getItemMeta().getDisplayName()
-        )));
     }
 
 
@@ -123,9 +101,9 @@ class Barebones implements Listener {
      * @param event
      */
     private void playerDropsAdd(final PlayerDeathEvent event){
-        event.getDrops().addAll(
-                Arrays.asList(newDrop)
-        );
+        final Location location = event.getEntity().getLocation();
+        for (ItemStack drop : drops)
+            location.getWorld().dropItemNaturally(location, drop);
     }
 
 
@@ -135,7 +113,8 @@ class Barebones implements Listener {
      * @param event
      */
     private void portalLocker(final PlayerPortalEvent event){
-        if (event.getCause() == NETHER) event.setCancelled(true);
+        if (event.getCause() == NETHER)
+            event.setCancelled(true);
     }
 
 
@@ -144,9 +123,8 @@ class Barebones implements Listener {
      * @param event
      */
     private void ironDrop(final BlockBreakEvent event){
-        if (blackListDrops.contains(
-                event.getBlock().getType()
-        )) addDropToBlock(event);
+        if (blackListDrops.contains(event.getBlock().getType()))
+            addDropToBlock(event);
     }
 
 
@@ -158,9 +136,7 @@ class Barebones implements Listener {
         final Location location = event.getBlock().getLocation();
         final World world = location.getWorld();
 
-        world.dropItemNaturally(
-                location, new ItemStack(Material.IRON_INGOT, 1)
-        );
+        world.dropItemNaturally(location, new ItemStack(Material.IRON_INGOT, 1));
     }
 
 

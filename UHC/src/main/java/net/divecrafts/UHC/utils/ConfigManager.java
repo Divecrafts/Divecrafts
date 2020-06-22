@@ -45,92 +45,11 @@ public final class ConfigManager {
 
 
     /**
-     * This function return a license for this plugin
-     * @return
-     */
-    public String getLicense(){
-        return (String) configuration.get("License");
-    }
-
-
-    /**
      * This function return a time count down of this game in seconds
      * @return
      */
     public Integer getTimeCountDown(){
         return (Integer) configuration.get("Game.CountDown");
-    }
-
-
-    /**
-     * This function return a message alert for count down
-     * @return
-     */
-    public String getCountDownMessage(){
-        return (String) configuration.get("Game.CountDownMessage");
-    }
-
-
-    /**
-     * This function return a ip for Scoreboard
-     * @return
-     */
-    public String getIp(){
-        return (String) configuration.get("Score.Ip");
-    }
-
-
-    /**
-     * This function return a Tittle for a Scoreboard
-     * @return
-     */
-    public String getTitleScore(){
-        return (String) configuration.get("Score.Title");
-    }
-
-
-    /**
-     * This function return a Kills for a Scoreboard
-     * @return
-     */
-    public String getKillScore(){
-        return (String) configuration.get("Score.Kills");
-    }
-
-
-    /**
-     * This function return a Current Border for a Scoreboard
-     * @return
-     */
-    public String getBorderScore(){
-        return (String) configuration.get("Score.CurrentBorder");
-    }
-
-
-    /**
-     * This function return a Online Players for a Scoreboard
-     * @return
-     */
-    public String getOnlineScore(){
-        return (String) configuration.get("Score.OnlinePlayers");
-    }
-
-
-    /**
-     * This function return a Team Mode for a Scoreboard
-     * @return
-     */
-    public String getTeamScore(){
-        return (String) configuration.get("Score.Teams");
-    }
-
-
-    /**
-     * This function return Host for a Scoreboard
-     * @return
-     */
-    public String getHostScore(){
-        return (String) configuration.get("Score.Host");
     }
 
 
@@ -144,65 +63,11 @@ public final class ConfigManager {
 
 
     /**
-     * This function return a Alive Players for a Scoreboard
-     * @return
-     */
-    public String getAliveScore(){
-        return (String) configuration.get("Score.AlivePlayers");
-    }
-
-
-    /**
-     * This function return a Time for a Scoreboard
-     * @return
-     */
-    public String getTimeScore(){
-        return (String) configuration.get("Score.Time");
-    }
-
-
-    /**
-     * This function return a Spectators for a Scoreboard
-     * @return
-     */
-    public String getSpectatorScore(){
-        return (String) configuration.get("Score.Spectators");
-    }
-
-
-    /**
-     * This function return a JoinMessage
-     * @return
-     */
-    public String getJoinMessage(){
-        return (String) configuration.get("Game.JoinMessage");
-    }
-
-
-    /**
      * This function return a min players for game start
      * @return
      */
     public Integer getPlayersForStart(){
         return (Integer) configuration.get("Game.MinPlayers");
-    }
-
-
-    /**
-     * This function return a message when the game is forced to start
-     * @return
-     */
-    public String getForceStart(){
-        return (String) configuration.get("Game.ForceStart");
-    }
-
-
-    /**
-     * This function return a message when the game start
-     * @return
-     */
-    public String getGameStart(){
-        return (String) configuration.get("Game.GameStart");
     }
 
 
@@ -288,110 +153,11 @@ public final class ConfigManager {
 
 
     /**
-     * This function return a error message for bowless is active
-     * @return
-     */
-    public String getErrBowless(){
-        return (String) configuration.get("Game.MessageErrBowless");
-    }
-
-
-    /**
-     * This function return a error message for rodless is active
-     * @return
-     */
-    public String getErrRodless(){
-        return (String) configuration.get("Game.MessageErrRodless");
-    }
-
-
-    /**
-     * This function return a error message for limitations is active
-     * @return
-     */
-    public String getErrLimitations(){
-        return (String) configuration.get("Game.MessageErrLimitations");
-    }
-
-
-    /**
-     * This function return a error message for diamondless is active
-     * @return
-     */
-    public String getErrDiamondLess(){
-        return (String) configuration.get("Game.MessageErrDiamondLess");
-    }
-
-
-    /**
-     * This function return a error message for goldless is active
-     * @return
-     */
-    public String getErrGoldLess(){
-        return (String) configuration.get("Game.MessageErrGoldLess");
-    }
-
-
-    /**
-     * This function return a error message for ironless is active
-     * @return
-     */
-    public String getErrIronLess(){
-        return (String) configuration.get("Game.MessageErrIronLess");
-    }
-
-
-    /**
-     * This function return a error message for coalless is active
-     * @return
-     */
-    public String getErrCoalLess(){
-        return (String) configuration.get("Game.MessageErrCoalLess");
-    }
-
-
-    /**
-     * This function return a message for AirDrop is falling
-     * @return
-     */
-    public String getAirDropAlert(){
-        return (String) configuration.get("Game.AirDropAlert");
-    }
-
-
-    /**
      * This function return a time for throw new AirDrop
      * @return
      */
     public Integer getAirDropTime(){
         return (Integer) configuration.get("Game.AirDropTime");
-    }
-
-
-    /**
-     * This function return a Message on Bounty Hunter is generated
-     * @return
-     */
-    public String getBountyMessageOnAdd(){
-        return (String) configuration.get("Game.BountyHunterAdd");
-    }
-
-
-    /**
-     * This function return a Message on Bounty Hunter is killed by You
-     * @return
-     */
-    public String getBountyMessageOnRemove(){
-        return (String) configuration.get("Game.BountyHunterRemove");
-    }
-
-
-    /**
-     * This function return a Message error will player try craft item locked
-     * @return
-     */
-    public String getBarebonesOnCraft(){
-        return (String) configuration.get("Game.BarebonesCraftLocked");
     }
 
 

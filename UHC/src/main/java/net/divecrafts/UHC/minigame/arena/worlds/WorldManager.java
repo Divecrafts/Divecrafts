@@ -103,6 +103,24 @@ public class WorldManager {
     }
 
 
+    /**
+     * This function return a randomLocation in range of coords
+     * @param y
+     * @return
+     */
+    public static Location genRandomSpawn(int y, int width) {
+        final Random r = new Random();
+
+        final World world = Bukkit.getWorld("Normal_tmp");
+
+        final int half = width / 2,
+                x = randomBetween(r, -half + CENTERX, half + CENTERX),
+                z = randomBetween(r, -half + CENTERZ, half + CENTERZ);
+
+        return permutateLocation(new Location(world, x, y, z));
+    }
+
+
     /** OTHERS **/
 
     /**

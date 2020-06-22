@@ -104,7 +104,7 @@ final class Normal implements IWorld {
 
         worldCreator.seed(getRandomSeed());
         worldCreator.environment(World.Environment.NORMAL);
-        worldCreator.type(WorldType.LARGE_BIOMES);
+        worldCreator.type(WorldType.NORMAL);
 
         return worldCreator.createWorld();
     }

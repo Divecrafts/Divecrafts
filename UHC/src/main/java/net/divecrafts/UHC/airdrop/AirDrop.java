@@ -1,5 +1,6 @@
 package net.divecrafts.UHC.airdrop;
 
+import net.divecrafts.UHC.Main;
 import net.divecrafts.UHC.utils.clonadoc.Getter;
 import net.divecrafts.UHC.utils.clonadoc.Setter;
 
@@ -8,7 +9,10 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
+import org.bukkit.entity.FallingBlock;
+import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.metadata.FixedMetadataValue;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,13 +33,13 @@ import java.util.Arrays;
  * All rights reserved for clonalejandro ©StylusUHC 2017 / 2018
  */
 
-public abstract class AirDrop {
+public abstract class AirDrop implements Listener {
 
 
     /** SMALL CONSTRUCTORS **/
 
     private final Location location;
-
+    private Chest chest;
     private ArrayList<ItemStack> drop = new ArrayList<>();
 
     public AirDrop(Location location){
@@ -45,14 +49,6 @@ public abstract class AirDrop {
 
 
     /** REST **/
-
-    /**
-     * This function represent a abstract action on itemPut in the Chest
-     * @param chest
-     * @return
-     */
-    public abstract Chest itemPutter(Chest chest);
-
 
     /**
      * This function represent a abstract action on AirDrop create
@@ -78,6 +74,11 @@ public abstract class AirDrop {
     }
 
 
+    public Chest getChest() {
+        return chest;
+    }
+
+
     /** OTHERS **/
 
     /**
@@ -90,8 +91,10 @@ public abstract class AirDrop {
         final Block block = chest.getBlock();
         final World world = location.getWorld();
 
-        itemPutter(chest);
-        world.spawnFallingBlock(location, block.getType(), block.getData());
+        FallingBlock fallingBlock = world.spawnFallingBlock(location, block.getType(), block.getData());
+        fallingBlock.setMetadata("supplyDrop", new FixedMetadataValue(Main.instance, true));
+
+        this.chest = chest;
         onCreate();
     }
 
@@ -102,7 +105,7 @@ public abstract class AirDrop {
      */
     private Chest chestCreator(){
         location.getBlock().setType(Material.CHEST);
-        return (Chest) location.getBlock();
+        return (Chest) location.getBlock().getState();
     }
 
 

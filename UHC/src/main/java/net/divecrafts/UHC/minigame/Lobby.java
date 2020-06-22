@@ -28,7 +28,7 @@ public final class Lobby {
 
     /** SMALL CONSTRUCTORS **/
 
-    private Location location;
+    private final Location location;
 
     public Lobby(){
         if (!isDataNull()) {

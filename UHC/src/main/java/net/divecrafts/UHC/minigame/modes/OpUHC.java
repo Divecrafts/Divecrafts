@@ -7,7 +7,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -33,14 +32,7 @@ class OpUHC implements Listener {
 
     /** SMALL CONSTRUCTORS **/
 
-    private final List<Material> blackList;
-
-    OpUHC(){
-        blackList = new ArrayList<>(Arrays.asList(
-                Material.DIAMOND_ORE, Material.GOLD_ORE, Material.IRON_ORE, Material.EMERALD_ORE, Material.COAL_ORE,
-                Material.GLOWING_REDSTONE_ORE, Material.LAPIS_ORE, Material.QUARTZ_ORE, Material.REDSTONE_ORE
-        ));
-    }
+    private final List<Material> blackList = Arrays.asList(Material.DIAMOND_ORE, Material.GOLD_ORE, Material.IRON_ORE, Material.EMERALD_ORE, Material.COAL_ORE, Material.GLOWING_REDSTONE_ORE, Material.LAPIS_ORE, Material.QUARTZ_ORE, Material.REDSTONE_ORE);;
 
 
     /** REST **/
@@ -59,7 +51,8 @@ class OpUHC implements Listener {
      */
     private void blockFilter(final BlockBreakEvent event){
         final Material material = event.getBlock().getType();
-        if (blackList.contains(material)) blockMultiplier(event);
+        if (blackList.contains(material))
+            blockMultiplier(event);
     }
 
 
@@ -70,9 +63,11 @@ class OpUHC implements Listener {
     private void blockMultiplier(final BlockBreakEvent event){
         final Block block = event.getBlock();
         final Collection<? extends ItemStack> drops = block.getDrops();
-        for (ItemStack i : drops)
-            for (int it = 0; it < 3; it++)
-                block.getLocation().getWorld().dropItemNaturally(block.getLocation(), i);
+
+        block.getDrops().clear();
+
+        for (ItemStack i : drops) for (int it = 0; it < 3; it++)
+            block.getLocation().getWorld().dropItemNaturally(block.getLocation(), i);
     }
 
 

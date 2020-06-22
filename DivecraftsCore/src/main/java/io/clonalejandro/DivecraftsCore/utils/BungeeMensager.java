@@ -21,6 +21,8 @@ public class BungeeMensager implements PluginMessageListener {
     public static Map<String, HashMap<String, Integer>> lobbiesPlayers = new HashMap<>();
 
     public static void conectarA(Player p, String server){
+        if (p == null || !p.isOnline()) return;
+
         ByteArrayDataOutput f = ByteStreams.newDataOutput();
         f.writeUTF("Conectar");
         f.writeUTF(server);
@@ -30,6 +32,8 @@ public class BungeeMensager implements PluginMessageListener {
 
 
     public static void conectarExacto(Player p, String server){
+        if (p == null || !p.isOnline()) return;
+
         ByteArrayDataOutput f = ByteStreams.newDataOutput();
         f.writeUTF("Exacto");
         f.writeUTF(server);

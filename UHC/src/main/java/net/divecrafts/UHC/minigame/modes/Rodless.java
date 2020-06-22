@@ -1,7 +1,8 @@
 package net.divecrafts.UHC.minigame.modes;
 
-import net.divecrafts.UHC.Main;
-import net.divecrafts.UHC.utils.Api;
+import io.clonalejandro.DivecraftsCore.api.SServer;
+import io.clonalejandro.DivecraftsCore.api.SUser;
+import io.clonalejandro.DivecraftsCore.idiomas.Languaje;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -45,25 +46,11 @@ class Rodless implements Listener {
     private void itemPreventer(final CraftItemEvent event){
         final Material target = event.getRecipe().getResult().getType();
         final Player player = (Player) event.getWhoClicked();
+        final SUser user = SServer.getUser(player);
 
-        switch (target){
-            case FISHING_ROD:
-                sendMessage(player);
-                event.setCancelled(true);
-                break;
+        if (target == Material.FISHING_ROD){
+            player.sendMessage(Languaje.getLangMsg(user.getUserData().getLang(), "UHC.rodless"));
+            event.setCancelled(true);
         }
     }
-
-
-    /**
-     * This function send error to specific Player
-     * @param player
-     */
-    private void sendMessage(final Player player){
-        player.sendMessage(Api.translator(
-                Api.getConfigManager().getErrRodless()
-        ));
-    }
-
-
 }

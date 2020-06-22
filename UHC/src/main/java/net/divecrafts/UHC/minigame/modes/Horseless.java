@@ -1,7 +1,6 @@
 package net.divecrafts.UHC.minigame.modes;
 
-import net.divecrafts.UHC.Main;
-import net.divecrafts.UHC.utils.Api;
+import net.divecrafts.UHC.listeners.GameStartEvent;
 
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -11,8 +10,6 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
-
-import java.util.List;
 
 /**
  * Created by alejandrorioscalera
@@ -43,7 +40,7 @@ class Horseless implements Listener {
     /** REST **/
 
     @EventHandler
-    public void onMobSpawn(CreatureSpawnEvent event){
+    public void onHorseSpawn(CreatureSpawnEvent event){
         horseCanceller(event);
     }
 
@@ -67,9 +64,8 @@ class Horseless implements Listener {
      */
     private void clearHorses(){
         final World world = Bukkit.getWorld("Normal_tmp");
-        final List<LivingEntity> entities = world.getLivingEntities();
 
-        for (LivingEntity entity : entities)
+        for (LivingEntity entity : world.getLivingEntities())
             if (entity.getType() == EntityType.HORSE)
                 entity.remove();
     }

@@ -24,7 +24,9 @@ public class SvListener implements Listener {
              String s = in.readUTF();
              ProxiedPlayer p = (ProxiedPlayer)e.getReceiver();
              ServerInfo server = Main.getSvManager().elegirServer(s);
-             if(server != null) p.connect(server);
+
+             if (inGame(server, p)) return;
+             if (server != null) p.connect(server);
              else {
                  try {
                      p.sendMessage(Languaje.getLangMsg(Languaje.getPlayerLang(p), "Global.portalnodispo"));
@@ -34,11 +36,13 @@ public class SvListener implements Listener {
                  }
              }
          }
+
          if (subchannel.equalsIgnoreCase("Exacto")) {
              String s = in.readUTF();
              ProxiedPlayer p = (ProxiedPlayer) e.getReceiver();
              ServerInfo server = Main.getSvManager().connectExact(s);
 
+             if (inGame(server, p)) return;
              if (server != null) p.connect(server);
              else {
                  try {
@@ -50,5 +54,18 @@ public class SvListener implements Listener {
              }
          }
       }
+   }
+
+   private boolean inGame(ServerInfo server, ProxiedPlayer p){
+       if (server  != null && server.getMotd().contains("Running")){
+           try {
+               p.sendMessage(Languaje.getLangMsg(Languaje.getPlayerLang(p), "Global.enjuego"));
+           }
+           catch (SQLException ex) {
+               ex.printStackTrace();
+           }
+           return true;
+       }
+       return false;
    }
 }

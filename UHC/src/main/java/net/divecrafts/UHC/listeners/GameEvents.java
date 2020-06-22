@@ -3,6 +3,7 @@ package net.divecrafts.UHC.listeners;
 import io.clonalejandro.DivecraftsCore.api.SServer;
 import io.clonalejandro.DivecraftsCore.api.SUser;
 import net.divecrafts.UHC.Main;
+import net.divecrafts.UHC.minigame.Lobby;
 import net.divecrafts.UHC.minigame.State;
 import net.divecrafts.UHC.utils.Api;
 import net.divecrafts.UHC.utils.Scoreboard;
@@ -16,6 +17,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.server.ServerListPingEvent;
 
 /**
  * Created by alejandrorioscalera
@@ -58,6 +60,12 @@ public class GameEvents implements Listener {
             checkEndGame();
     }
 
+    @EventHandler
+    public void serverListPing(ServerListPingEvent event){
+        if (Api.getState() == State.RUNNING)
+            event.setMotd("Running");
+    }
+
 
     /** OTHERS **/
 
@@ -67,14 +75,8 @@ public class GameEvents implements Listener {
      */
     private void whilePlayerCanJoin(PlayerJoinEvent e){
         final Player player = e.getPlayer();
-
-        if (!Api.DESCONECTED.contains(player.getName()))
-            player.kickPlayer(Api.translator("&c&lUHC> &fThe game is started :("));
-        else {
-            Api.ALIVE_PLAYERS.remove(player);
-            player.setGameMode(GameMode.SPECTATOR);
-            Scoreboard.gameScoreboard(player);
-        }
+        e.setJoinMessage(null);
+        player.kickPlayer(Api.translator("&c&lUHC> &fThe game is started :("));
     }
 
 
@@ -83,7 +85,6 @@ public class GameEvents implements Listener {
      * @param e
      */
     private void whilePlayerCanLeave(PlayerKickEvent e){
-        Api.DESCONECTED.add(e.getPlayer().getName());
         Api.ALIVE_PLAYERS.remove(e.getPlayer());
     }
 
@@ -93,7 +94,6 @@ public class GameEvents implements Listener {
      * @param e
      */
     private void whilePlayerCanLeave(PlayerQuitEvent e){
-        Api.DESCONECTED.add(e.getPlayer().getName());
         Api.ALIVE_PLAYERS.remove(e.getPlayer());
     }
 
@@ -115,6 +115,7 @@ public class GameEvents implements Listener {
 
             player.setGameMode(GameMode.SPECTATOR);
             Api.ALIVE_PLAYERS.remove(player);
+            player.teleport(new Lobby().getLocation());
 
             if (killer != null){
                 if (!Api.KILLS.containsKey(killer))

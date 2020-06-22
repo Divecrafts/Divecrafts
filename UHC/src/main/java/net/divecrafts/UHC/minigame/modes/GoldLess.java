@@ -1,9 +1,13 @@
 package net.divecrafts.UHC.minigame.modes;
 
-import net.divecrafts.UHC.Main;
+import io.clonalejandro.DivecraftsCore.api.SServer;
+import io.clonalejandro.DivecraftsCore.api.SUser;
+import io.clonalejandro.DivecraftsCore.idiomas.Languaje;
+
 import net.divecrafts.UHC.utils.Api;
 import net.divecrafts.UHC.utils.Mineraless;
 
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -42,17 +46,17 @@ class GoldLess extends Mineraless {
     @Override
     public void onBlockBreakCancel(final BlockBreakEvent event) {
         final Player player = event.getPlayer();
+        final SUser user = SServer.getUser(player);
 
-        player.sendMessage(Api.translator(
-                Api.getConfigManager().getErrGoldLess()
-        ));
-
+        player.sendMessage(Languaje.getLangMsg(user.getUserData().getLang(), "UHC.goldless"));
         event.setCancelled(true);
     }
 
 
     @EventHandler
-    public void onPlayerDeaz(PlayerDeathEvent event){
+    @Override
+    public void onPlayerDeath(PlayerDeathEvent event){
+        super.onPlayerDeath(event);
         playerDropper(event);
     }
 
@@ -65,11 +69,10 @@ class GoldLess extends Mineraless {
      */
     private void playerDropper(final PlayerDeathEvent event){
         final Player player = event.getEntity();
-        final ItemStack skull = Api.getPlayerSkull(
-                player.getName(), player.getDisplayName()
-        );
+        final ItemStack skull = Api.getPlayerSkull(player.getName(), player.getDisplayName());
+        final Location location = event.getEntity().getLocation();
 
-        event.getDrops().add(skull);
+        location.getWorld().dropItemNaturally(location, skull);
     }
 
 
