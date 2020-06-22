@@ -21,10 +21,11 @@ import java.util.List;
 public class PlayerListener implements Listener {
 
     @EventHandler
-    public void onPlayerJoin(PostLoginEvent e) throws SQLException, IOException {
+    public void onPlayerJoin(PostLoginEvent e) throws SQLException {
         ProxiedPlayer player = e.getPlayer();
         ResultSet s = Main.getMySQL().query("SELECT * FROM data WHERE name='" + player.getName() + "'");
-        while(s.next()) {
+
+        while (s.next()) {
             loadPermissions(player, s);
             Clan clan = Main.getMB().getClanManager().getClanByName(s.getString("clan"));
             if (clan != null) {
@@ -44,17 +45,12 @@ public class PlayerListener implements Listener {
     public void onPlayerQuit(PlayerDisconnectEvent e){
         ProxiedPlayer player = e.getPlayer();
         Party party = Main.getMB().getPartyManager().getParty(player);
-        if(party != null){
-            if(party.getLeader().equals(player)){
-                party.removeLeader();
-            }else{
-                party.removePlayer(player);
-            }
+        if (party != null){
+            if (party.getLeader().equals(player)) party.removeLeader();
+            else party.removePlayer(player);
         }
         Clan clan = Main.getMB().getClanManager().getClan(player);
-        if (clan != null) {
-            clan.removePlayer(player);
-        }
+        if (clan != null) clan.removePlayer(player);
     }
 
     @EventHandler
