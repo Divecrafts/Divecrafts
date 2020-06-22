@@ -11,7 +11,7 @@ import java.util.List;
 public class AyudaCMD extends SCmd {
 
     public AyudaCMD() {
-        super("ayuda", Rank.USUARIO, Arrays.asList("help"));
+        super("ayuda", Rank.USUARIO, Arrays.asList("help", "?"));
     }
 
     @Override

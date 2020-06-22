@@ -6,8 +6,11 @@ import io.clonalejandro.DivecraftsCore.utils.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.Configuration;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionAttachment;
 import org.bukkit.plugin.PluginManager;
@@ -57,6 +60,7 @@ public class Main extends JavaPlugin {
         SCommands.load();
         registerClasses();
         registerEvents();
+        parseHolograms();
     }
 
     @Override
@@ -111,5 +115,16 @@ public class Main extends JavaPlugin {
                 ex.printStackTrace();
             }
         }
+    }
+
+    private void parseHolograms(){
+        getConfig().getStringList("Holograms").forEach(hol -> {
+            final Configuration con = getConfig();
+            final String prompt = "Holograms." + hol + ".", msg = Utils.colorize(con.getString(prompt + "msg"));
+            final World world = Bukkit.getWorld(prompt + "world");
+            final double x = con.getDouble(prompt + "x"), y = con.getDouble(prompt + "y"), z = con.getDouble("z");
+
+            Hologramas.crearHolo(msg, new Location(world, x, y, z), world.getName());
+        });
     }
 }
