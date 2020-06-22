@@ -22,6 +22,8 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.server.ServerListPingEvent;
 import org.bukkit.inventory.meta.FireworkMeta;
 
+import java.util.Random;
+
 /**
  * Created by alejandrorioscalera
  * On 17/1/18
@@ -152,8 +154,9 @@ public class GameEvents implements Listener {
             if (Api.getState() == State.ENDING) return;
 
             Api.setState(State.ENDING);
+            Api.playSound(Bukkit.getWorld("Normal_tmp"), Sound.LEVEL_UP, 1F, 1F);
 
-            Bukkit.getScheduler().runTaskTimer(Main.instance, () -> Bukkit.getOnlinePlayers().forEach(p -> spawnFireworks(p.getLocation(), 3)), 1L, 20L);
+            Bukkit.getScheduler().runTaskTimer(Main.instance, () -> Bukkit.getOnlinePlayers().forEach(p -> spawnFireworks(p.getLocation(), 5)), 1L, 15L);
             Bukkit.getOnlinePlayers().forEach(p -> {
                 final SUser user = SServer.getUser(p);
                 p.sendMessage(Languaje.getLangMsg(user.getUserData().getLang(), "UHC.winner").replace("%player%", name));
@@ -174,14 +177,17 @@ public class GameEvents implements Listener {
         final Firework firework = (Firework) location.getWorld().spawnEntity(location, EntityType.FIREWORK);
         final FireworkMeta meta = firework.getFireworkMeta();
 
-        meta.setPower(2);
+        meta.setPower(1);
         meta.addEffect(FireworkEffect.builder().withColor(Color.LIME).flicker(true).build());
 
         firework.setFireworkMeta(meta);
         firework.detonate();
 
         for(int i = 0; i < amount; i++){
-            final Firework firework1 = (Firework) location.getWorld().spawnEntity(location, EntityType.FIREWORK);
+            final int randX = Api.getRandom(0, -5), randZ = Api.getRandom(0, -5);
+            final Location customLoc = new Location(location.getWorld(), location.getX() - randX, location.getY(), location.getZ() - randZ);
+            final Firework firework1 = (Firework) customLoc.getWorld().spawnEntity(customLoc, EntityType.FIREWORK);
+
             firework1.setFireworkMeta(meta);
         }
     }

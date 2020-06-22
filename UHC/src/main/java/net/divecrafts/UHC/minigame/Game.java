@@ -2,18 +2,19 @@ package net.divecrafts.UHC.minigame;
 
 import io.clonalejandro.DivecraftsCore.api.SServer;
 import io.clonalejandro.DivecraftsCore.api.SUser;
+
 import net.divecrafts.UHC.listeners.GameStartEvent;
 import net.divecrafts.UHC.minigame.arena.Arena;
-import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.entity.Player;
-
 import net.divecrafts.UHC.Main;
 import net.divecrafts.UHC.task.BorderTask;
 import net.divecrafts.UHC.task.ScoreTask;
 import net.divecrafts.UHC.utils.Api;
 import net.divecrafts.UHC.utils.Scoreboard;
+
+import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 
 import java.util.HashMap;
@@ -78,13 +79,13 @@ public final class Game {
 
 
     private void loadModes(){
-        Api.SELECTED_MODES.forEach(mode -> {
-            Api.PLUGIN_MANAGER.registerEvents((Listener) mode.getClazz(), Main.instance);
-        });
+        Api.SELECTED_MODES.forEach(mode -> Api.PLUGIN_MANAGER.registerEvents((Listener) mode.getClazz(), Main.instance));
     }
 
     private void loadPlayerSpawns(){
         playerSpawn.forEach((player, loc) -> {
+            if (player == null || !player.isOnline()) return;
+
             player.getInventory().clear();
             player.setGameMode(GameMode.SURVIVAL);
             player.teleport(loc);

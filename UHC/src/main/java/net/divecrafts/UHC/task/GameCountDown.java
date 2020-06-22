@@ -3,10 +3,13 @@ package net.divecrafts.UHC.task;
 import io.clonalejandro.DivecraftsCore.api.SServer;
 import io.clonalejandro.DivecraftsCore.api.SUser;
 import io.clonalejandro.DivecraftsCore.idiomas.Languaje;
+
 import net.divecrafts.UHC.minigame.Game;
 import net.divecrafts.UHC.minigame.State;
 import net.divecrafts.UHC.utils.Api;
+
 import org.bukkit.Bukkit;
+import org.bukkit.Sound;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import net.divecrafts.UHC.Main;
@@ -92,6 +95,7 @@ public class GameCountDown extends BukkitRunnable implements ITask {
         if (time == Api.getConfigManager().getTimeCountDown() || time <= 5)
             Bukkit.getOnlinePlayers().forEach(p -> {
                 final SUser user = SServer.getUser(p);
+                Api.playSound(p.getWorld(),  Sound.ORB_PICKUP, 1F, 1F);
                 p.sendMessage(Languaje.getLangMsg(user.getUserData().getLang(), "UHC.countdown").replace("%tiempo%", String.valueOf(time)));
             });
 
