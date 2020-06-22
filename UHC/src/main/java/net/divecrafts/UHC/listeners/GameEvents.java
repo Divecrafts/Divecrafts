@@ -155,7 +155,7 @@ public class GameEvents implements Listener {
             Api.setState(State.ENDING);
             Api.playSound(Bukkit.getWorld("Normal_tmp"), Sound.LEVEL_UP, 1F, 1F);
 
-            Bukkit.getScheduler().runTaskTimer(Main.instance, () -> Bukkit.getOnlinePlayers().forEach(p -> spawnFireworks(p.getLocation(), 10)), 1L, 15L);
+            Bukkit.getScheduler().runTaskTimer(Main.instance, () -> Bukkit.getOnlinePlayers().forEach(p -> spawnFireworks(p.getLocation(), 8)), 1L, 15L);
             Bukkit.getOnlinePlayers().forEach(p -> {
                 final SUser user = SServer.getUser(p);
                 p.sendMessage(Languaje.getLangMsg(user.getUserData().getLang(), "UHC.winner").replace("%player%", name));
@@ -183,7 +183,7 @@ public class GameEvents implements Listener {
         firework.detonate();
 
         for(int i = 0; i < amount; i++){
-            final int randX = Api.getRandom(0, -5), randZ = Api.getRandom(0, -5);
+            final int randX = Api.getRandom(0, -10), randZ = Api.getRandom(0, -10);
             final Location customLoc = new Location(location.getWorld(), location.getX() - randX, location.getY(), location.getZ() - randZ);
             final Firework firework1 = (Firework) customLoc.getWorld().spawnEntity(customLoc, EntityType.FIREWORK);
 
