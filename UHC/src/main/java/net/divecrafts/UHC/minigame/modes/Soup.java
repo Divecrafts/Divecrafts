@@ -2,7 +2,6 @@ package net.divecrafts.UHC.minigame.modes;
 
 import net.divecrafts.UHC.Main;
 import net.divecrafts.UHC.task.SoupTask;
-import net.divecrafts.UHC.utils.Api;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -79,19 +78,8 @@ class Soup implements Listener {
      * @return
      */
     private boolean isFood(final Player player){
-        boolean result = false;
         final ItemStack stack = player.getItemInHand();
-
-        if (stack != null){
-            final Material item = stack.getType();
-            switch (item){
-                case MUSHROOM_SOUP:
-                    result = true;
-                    break;
-            }
-        }
-
-        return result;
+        return stack != null && stack.getType() == Material.MUSHROOM_SOUP;
     }
 
 

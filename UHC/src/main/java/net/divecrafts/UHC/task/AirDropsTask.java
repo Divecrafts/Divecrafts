@@ -27,7 +27,6 @@ public abstract class AirDropsTask extends BukkitRunnable implements ITask {
 
     /** SMALL CONSTRUCTORS **/
 
-    public final int PID = getTaskId();
     private int time = Api.getConfigManager().getAirDropTime();
 
 

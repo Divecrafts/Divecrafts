@@ -53,7 +53,7 @@ public class NoCleanTask extends BukkitRunnable implements ITask {
 
     @Override
     public void kill(){
-        if (invincibles.contains(killer)) invincibles.remove(killer);
+        invincibles.remove(killer);
         cancel();
     }
 

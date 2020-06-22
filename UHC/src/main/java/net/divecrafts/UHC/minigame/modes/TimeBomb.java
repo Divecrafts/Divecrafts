@@ -2,7 +2,6 @@ package net.divecrafts.UHC.minigame.modes;
 
 import net.divecrafts.UHC.Main;
 import net.divecrafts.UHC.task.TimeBombTask;
-import net.divecrafts.UHC.utils.Api;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -84,11 +83,8 @@ class TimeBomb implements Listener {
      */
     private Location permutateLocation(Location location){
         while (location.getBlock() == null || location.getBlock().getType() == Material.AIR){
-            final double x = location.getX(),
-                    y = location.getY(),
-                    z = location.getZ();
-            final float yaw = location.getYaw(),
-                    pitch = location.getPitch();
+            final double x = location.getX(), y = location.getY(), z = location.getZ();
+            final float yaw = location.getYaw(), pitch = location.getPitch();
             final World world = location.getWorld();
 
             location = new Location(world, x, y - 1, z, yaw, pitch);

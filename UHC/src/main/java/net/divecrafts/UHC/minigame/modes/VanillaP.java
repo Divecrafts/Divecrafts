@@ -1,6 +1,5 @@
 package net.divecrafts.UHC.minigame.modes;
 
-import net.divecrafts.UHC.Main;
 import net.divecrafts.UHC.utils.Api;
 
 import org.bukkit.Material;
@@ -32,8 +31,7 @@ public class VanillaP implements Listener {
 
     /** SMALL CONSTRUCTORS **/
 
-    private int counterApple = 0,
-                counterGravel = 0;
+    private int counterApple = 0, counterGravel = 0;
 
 
     /** REST **/
@@ -101,9 +99,7 @@ public class VanillaP implements Listener {
         counterGravel = 0;
 
         world.dropItemNaturally(block.getLocation(), new ItemStack(Material.FLINT, 1));
-        world.dropItemNaturally(block.getLocation(), new ItemStack(Material.GRAVEL,
-                Api.getRandom(1, 0)
-        ));
+        world.dropItemNaturally(block.getLocation(), new ItemStack(Material.GRAVEL, Api.getRandom(1, 0)));
     }
 
 

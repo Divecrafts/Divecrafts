@@ -1,7 +1,5 @@
 package net.divecrafts.UHC.minigame.modes;
 
-import net.divecrafts.UHC.Main;
-
 /**
  * Created by alejandrorioscalera
  * On 13/2/18
@@ -42,8 +40,8 @@ public enum ModeType {
     BLOODDIAMONDS(new BloodDiamonds()),
     BLOODENCHANTS(new BloodEnchants()),
     //BACKPACKS(null),
-    //AIRDROPS(new AirDrops(Main.instance)),
-    //BOUNTYHUNTER(new BountyHunter()),
+    AIRDROPS(new AirDrops()),
+    BOUNTYHUNTER(new BountyHunter()),
     //MONSTERHUNTER(null),
     BAREBONES(new Barebones()),
     //WATERWORLD(null),

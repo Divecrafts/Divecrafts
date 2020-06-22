@@ -1,7 +1,8 @@
 package net.divecrafts.UHC.minigame.modes;
 
-import net.divecrafts.UHC.Main;
-import net.divecrafts.UHC.utils.Api;
+import io.clonalejandro.DivecraftsCore.api.SServer;
+import io.clonalejandro.DivecraftsCore.api.SUser;
+import io.clonalejandro.DivecraftsCore.idiomas.Languaje;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -113,11 +114,9 @@ class Limitations implements Listener {
      */
     private void cancelEvent(final BlockBreakEvent event, final WhiteList material){
         final Player player = event.getPlayer();
-        final String message = Api.getConfigManager().getErrLimitations().replace(
-                "{BLOCK}", material.toString()
-        );
+        final SUser user = SServer.getUser(player);
 
-        player.sendMessage(Api.translator(message));
+        player.sendMessage(Languaje.getLangMsg(user.getUserData().getLang(), "UHC.limitations").replace("%bloque%", material.toString().toLowerCase()));
         event.setCancelled(true);
     }
 

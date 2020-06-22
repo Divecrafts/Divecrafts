@@ -2,6 +2,7 @@ package net.divecrafts.UHC.minigame;
 
 import io.clonalejandro.DivecraftsCore.api.SServer;
 import io.clonalejandro.DivecraftsCore.api.SUser;
+import net.divecrafts.UHC.listeners.GameStartEvent;
 import net.divecrafts.UHC.minigame.arena.Arena;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -58,6 +59,31 @@ public final class Game {
         Api.setState(State.RUNNING);
         Api.ALIVE_PLAYERS.addAll(Api.getOnlinePlayers());
 
+        loadPlayerSpawns();
+        loadModes();
+
+        Bukkit.getServer().getPluginManager().callEvent(new GameStartEvent(this));
+
+        new ScoreTask().runTaskTimer(plugin, 1L, 20L);
+        new BorderTask().runTaskTimer(Main.instance, 1L, 60L * 20L);
+    }
+
+    public synchronized void gameStop(){
+        Api.setState(State.ENDING);
+
+        Bukkit.broadcastMessage(Api.translator("&a&lUHC> &fThe game is end"));
+        Bukkit.getOnlinePlayers().forEach(p -> SServer.getUser(p).sendToServer("lobby"));
+        Bukkit.getScheduler().runTaskLater(Main.instance, Bukkit::shutdown, 10L * 20L);
+    }
+
+
+    private void loadModes(){
+        Api.SELECTED_MODES.forEach(mode -> {
+            Api.PLUGIN_MANAGER.registerEvents((Listener) mode.getClazz(), Main.instance);
+        });
+    }
+
+    private void loadPlayerSpawns(){
         playerSpawn.forEach((player, loc) -> {
             player.getInventory().clear();
             player.setGameMode(GameMode.SURVIVAL);
@@ -69,24 +95,5 @@ public final class Game {
             user.getUserData().addPlay(SServer.GameID.UHC);
             user.save();
         });
-
-        Api.SELECTED_MODES.forEach(mode -> {
-            Bukkit.broadcastMessage(mode.toString());
-            Api.PLUGIN_MANAGER.registerEvents((Listener) mode.getClazz(), Main.instance);
-        });
-
-        new ScoreTask().runTaskTimer(plugin, 1L, 20L);
-        new BorderTask().runTaskTimer(Main.instance, 1L, 60L * 20L);//This be executed per 60s
     }
-
-
-    public synchronized void gameStop(){
-        Api.setState(State.ENDING);
-
-        Bukkit.broadcastMessage(Api.translator("&a&lUHC> &fThe game is end"));
-        Bukkit.getOnlinePlayers().forEach(p -> SServer.getUser(p).sendToServer("lobby"));
-        Bukkit.getScheduler().runTaskLater(Main.instance, Bukkit::shutdown, 10L * 20L);
-    }
-
-
 }

@@ -86,7 +86,7 @@ public class LobbyEvents implements Listener {
             final SUser user = SServer.getUser(event.getPlayer());
 
             switch (event.getMaterial()){
-                case COMPASS:
+                case WATCH:
                     if (user.getUserData().getRank().getRank() >= SCmd.Rank.KRAKEN.getRank())
                         user.getPlayer().openInventory(getVoteInventory(user.getPlayer()));
                     else user.getPlayer().sendMessage(Languaje.getLangMsg(user.getUserData().getLang(), "Global.cmdnopuedes"));
@@ -101,12 +101,17 @@ public class LobbyEvents implements Listener {
                     Bukkit.getScheduler().runTaskLater(Main.instance, () -> BungeeMensager.conectarA(event.getPlayer(), "lobby"), 20L * time);//TODO: Expect null in bungeemessager
                     break;
             }
+
+            event.setCancelled(true);
         }
     }
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event){
-        if (Api.getState() == State.LOBBY && event.getClickedInventory().getTitle().equalsIgnoreCase("Mode")){
+        if (Api.getState() == State.LOBBY && event.getClickedInventory() != null && event.getClickedInventory().getTitle().equalsIgnoreCase("Mode")){
+            if (event.getCurrentItem() == null) return;
+            if (event.getCurrentItem().getItemMeta() == null) return;
+
             final String modeStr = ChatColor.stripColor(event.getCurrentItem().getItemMeta().getDisplayName());
             final ModeType mode = ModeType.valueOf(modeStr.toUpperCase());
             final SUser user = SServer.getUser((Player) event.getWhoClicked());
@@ -131,6 +136,8 @@ public class LobbyEvents implements Listener {
                 user.getPlayer().closeInventory();
             });
         }
+
+        event.setCancelled(Api.getState() == State.LOBBY);
     }
 
     @EventHandler
@@ -203,14 +210,15 @@ public class LobbyEvents implements Listener {
      */
     private void whilePlayerCanJoin(PlayerJoinEvent event){
         final Player player = event.getPlayer();
+        final SUser user = SServer.getUser(player);
 
         lobby = new Lobby();
 
-        event.setJoinMessage(Api.translator(
-                Api.getConfigManager().getJoinMessage().replace(
-                "{PLAYER}", player.getName()
-                )
-        ));
+        event.setJoinMessage(null);
+
+        Bukkit.getOnlinePlayers().forEach(p ->
+                p.sendMessage(Languaje.getLangMsg(user.getUserData().getLang(), "UHC.join").replace("%player%", player.getDisplayName()))
+        );
 
         Scoreboard.lobbyScoreboard(player); // Set scoreboard to a player join
         Scoreboard.updateScoreboard("onlineplayers", Api.translator(
@@ -220,7 +228,7 @@ public class LobbyEvents implements Listener {
         resetPlayer(player);
 
         if (lobby.getLocation() != null)
-            player.teleport(lobby.getLocation());
+            Bukkit.getScheduler().runTask(Main.instance, () -> player.teleport(lobby.getLocation()));
 
         if (Api.getOnline() == Api.getConfigManager().getPlayersForStart())
             startCountDown();
@@ -246,7 +254,7 @@ public class LobbyEvents implements Listener {
 
 
     private ItemStack getVoteSelector(SUser user){
-        final ItemStack item = new ItemStack(Material.COMPASS);
+        final ItemStack item = new ItemStack(Material.WATCH);
         final ItemMeta meta = item.getItemMeta();
 
         meta.setDisplayName(Languaje.getLangMsg(user.getUserData().getLang(), "UHC.voteselector"));

@@ -1,5 +1,8 @@
 package net.divecrafts.UHC.commands;
 
+import io.clonalejandro.DivecraftsCore.api.SServer;
+import io.clonalejandro.DivecraftsCore.api.SUser;
+import io.clonalejandro.DivecraftsCore.idiomas.Languaje;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -74,9 +77,10 @@ public class GameCMD implements CommandExecutor {
             return;
         }
 
-        Bukkit.broadcastMessage(Api.translator(
-                Api.getConfigManager().getForceStart()
-        ));
+        Bukkit.getOnlinePlayers().forEach(p -> {
+            final SUser user = SServer.getUser(p);
+            p.sendMessage(Languaje.getLangMsg(user.getUserData().getLang(), "UHC.force"));
+        });
 
         new GameCountDown(Main.instance, true).runTaskTimer(Main.instance, 1L, 20L);
     }

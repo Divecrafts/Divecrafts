@@ -1,8 +1,5 @@
 package net.divecrafts.UHC.minigame.modes;
 
-import net.divecrafts.UHC.Main;
-import net.divecrafts.UHC.utils.Api;
-
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
@@ -67,10 +64,7 @@ class OreFrenzy implements Listener {
                 materialDropper(event, new ItemStack(Material.BOOK, 1));
                 break;
             case DIAMOND_ORE:
-                materialDropper(event,
-                        new ItemStack(Material.DIAMOND, 1),
-                        new ItemStack(Material.EXP_BOTTLE, 4)
-                );
+                materialDropper(event, new ItemStack(Material.DIAMOND, 1), new ItemStack(Material.EXP_BOTTLE, 4));
                 break;
             case QUARTZ_ORE:
                 materialDropper(event, new ItemStack(Material.TNT, 1));
@@ -86,7 +80,8 @@ class OreFrenzy implements Listener {
      */
     private void materialDropper(final BlockBreakEvent event, final ItemStack... item){
         final Location location = event.getBlock().getLocation();
-        for (ItemStack i : item) location.getWorld().dropItemNaturally(location, i);
+        for (ItemStack i : item)
+            location.getWorld().dropItemNaturally(location, i);
     }
 
 

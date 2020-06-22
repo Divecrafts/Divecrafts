@@ -1,7 +1,9 @@
 package net.divecrafts.UHC.minigame.modes;
 
-import net.divecrafts.UHC.Main;
-import net.divecrafts.UHC.utils.Api;
+import io.clonalejandro.DivecraftsCore.api.SServer;
+import io.clonalejandro.DivecraftsCore.api.SUser;
+import io.clonalejandro.DivecraftsCore.idiomas.Languaje;
+
 import net.divecrafts.UHC.utils.Mineraless;
 
 import org.bukkit.Material;
@@ -38,13 +40,11 @@ class DiamondLess extends Mineraless {
     /** REST **/
 
     @Override
-    public void onBlockBreakCancel(final BlockBreakEvent event) {
+    public void onBlockBreakCancel(final BlockBreakEvent event){
         final Player player = event.getPlayer();
+        final SUser user = SServer.getUser(player);
 
-        player.sendMessage(Api.translator(
-                Api.getConfigManager().getErrDiamondLess()
-        ));
-
+        player.sendMessage(Languaje.getLangMsg(user.getUserData().getLang(), "UHC.diamondless"));
         event.setCancelled(true);
     }
 

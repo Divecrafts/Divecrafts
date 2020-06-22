@@ -2,6 +2,7 @@ package net.divecrafts.UHC.utils;
 
 import net.divecrafts.UHC.Main;
 
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
@@ -74,7 +75,8 @@ public abstract class Mineraless implements Listener {
     private void mineralPreventer(final BlockBreakEvent event){
         final Material material = event.getBlock().getType();
 
-        if (material == target) cancelEvent(event);
+        if (material == target)
+            cancelEvent(event);
     }
 
 
@@ -93,7 +95,8 @@ public abstract class Mineraless implements Listener {
      * @param event
      */
     private void mineralPutter(final PlayerDeathEvent event){
-        event.getDrops().add(mineral);
+        final Location location = event.getEntity().getLocation();
+        location.getWorld().dropItemNaturally(location, mineral);
     }
 
 

@@ -4,8 +4,8 @@ import org.bukkit.inventory.ItemStack;
 
 public class Drop {
 
-    private ItemStack item;
-    private float prob;
+    private final ItemStack item;
+    private final float prob;
 
     private boolean disabled = false;
 

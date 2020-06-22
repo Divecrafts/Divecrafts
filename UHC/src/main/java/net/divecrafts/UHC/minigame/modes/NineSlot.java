@@ -4,7 +4,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -29,13 +28,7 @@ class NineSlot implements Listener {
 
     /** SMALL CONSTRUCTORS **/
 
-    private final List<Integer> blackList;
-
-    NineSlot(){
-        blackList = new ArrayList<>(Arrays.asList(
-                0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 36, 37, 38, 39
-        ));
-    }
+    private final List<Integer> blackList = Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 36, 37, 38, 39);
 
 
     /** REST **/
@@ -53,9 +46,8 @@ class NineSlot implements Listener {
      * @param event
      */
     private void inventoryLimiter(final InventoryClickEvent event){
-        if (blackList.contains(
-                event.getSlot()
-        )) event.setCancelled(true);
+        if (blackList.contains(event.getSlot()))
+            event.setCancelled(true);
     }
 
 

@@ -343,8 +343,8 @@ public class Api {
      * This function return a collection of players online
      * @return
      */
-    public static Collection<? extends Player> getOnlinePlayers(){
-        return Bukkit.getOnlinePlayers();
+    public static List<Player> getOnlinePlayers(){
+        return (List<Player>) Bukkit.getOnlinePlayers();
     }
 
 

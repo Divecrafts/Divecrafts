@@ -1,5 +1,6 @@
 package net.divecrafts.UHC.minigame.arena;
 
+import net.divecrafts.UHC.utils.Api;
 import org.bukkit.Location;
 
 import net.divecrafts.UHC.minigame.arena.worlds.Border;
@@ -57,7 +58,7 @@ public class Arena extends WorldManager {
     private void initBorder(){
         final Location center = new Location(getWorld(), CENTERX, 0, CENTERZ);
 
-        border.setSize(750.0D);
+        border.setSize(Api.getConfigManager().getWidth());
         border.setCenter(center);
     }
 

@@ -1,8 +1,8 @@
 package net.divecrafts.UHC.minigame.modes;
 
-import net.divecrafts.UHC.Main;
 import net.divecrafts.UHC.utils.Api;
 
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -112,8 +112,10 @@ class CutClean implements Listener {
         clearBlockDrop(event);
 
         if (Api.isInventoryFull(inventory))
-            for (ItemStack i : item) event.getBlock().getDrops().add(i);
-
+            for (ItemStack i : item){
+                final Location location = event.getBlock().getLocation();
+                location.getWorld().dropItemNaturally(location, i);
+            }
         else inventory.addItem(item);
     }
 
@@ -129,7 +131,10 @@ class CutClean implements Listener {
         clearEntityDrop(event);
 
         if (Api.isInventoryFull(inventory))
-            for (ItemStack i : item) event.getDrops().add(i);
+            for (ItemStack i : item){
+                final Location location = event.getEntity().getLocation();
+                location.getWorld().dropItemNaturally(location, i);
+            }
         else inventory.addItem(item);
     }
 
