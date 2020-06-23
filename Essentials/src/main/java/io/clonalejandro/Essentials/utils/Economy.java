@@ -63,9 +63,12 @@ public class Economy {
     public void deposit(double amount){
         if (getPlayer() != null && getPlayer().getName() != null){
             final SUser user = SServer.getUser(getPlayer());
+
+            final SServer.GameID gameID = SServer.GameID.valueOf(Main.instance.getConfig().getString("server").toUpperCase());
+
             final List<SBooster> boosters = user.getUserData().getBoosters()
                     .stream()
-                    .filter(booster -> booster.getGameID() == SServer.GameID.SURVIVAL)
+                    .filter(booster -> booster.getGameID() == gameID)
                     .collect(Collectors.toList());
 
             if (boosters.size() > 0){
