@@ -11,6 +11,7 @@ import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.Configuration;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionAttachment;
 import org.bukkit.plugin.PluginManager;
@@ -60,7 +61,8 @@ public class Main extends JavaPlugin {
         SCommands.load();
         registerClasses();
         registerEvents();
-        parseHolograms();
+
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, this::parseHolograms, 0, 400L);
     }
 
     @Override
@@ -118,13 +120,27 @@ public class Main extends JavaPlugin {
     }
 
     private void parseHolograms(){
-        getConfig().getStringList("Holograms").forEach(hol -> {
+        for (Entity e : Hologramas.hologramas) {
+            e.remove();
+        }
+        Hologramas.hologramas.clear();
+
+        String pprompt = "Holograms.hol1.msg";
+        String res = getConfig().getString(pprompt);
+
+        while (res != null){
+            pprompt = pprompt.replace(".msg", "");
+
             final Configuration con = getConfig();
-            final String prompt = "Holograms." + hol + ".", msg = Utils.colorize(con.getString(prompt + "msg"));
-            final World world = Bukkit.getWorld(prompt + "world");
+            final String prompt = pprompt + ".", msg = Utils.colorize(con.getString(prompt + "msg"));
+            final World world = Bukkit.getWorld(con.getString(prompt + "world"));
             final double x = con.getDouble(prompt + "x"), y = con.getDouble(prompt + "y"), z = con.getDouble("z");
 
             Hologramas.crearHolo(msg, new Location(world, x, y, z), world.getName());
-        });
+
+            int val = Integer.parseInt(pprompt.replace("Holograms.hol", "").replace(".msg", "")) + 1;
+            pprompt = "Holograms." + "hol" + val  + ".msg";
+            res = getConfig().getString(pprompt);
+        }
     }
 }
