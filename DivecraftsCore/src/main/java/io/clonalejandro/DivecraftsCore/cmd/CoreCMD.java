@@ -12,7 +12,7 @@ public class CoreCMD extends SCmd {
     @Override
     public void run(SUser user, String label, String[] args) {
         if (args.length == 1) {
-            if (!user.isOnRank(Rank.DEV)) {
+            if (user.getUserData().getRank().getRank() < Rank.DEV.getRank()) {
                 def(user);
                 return;
             }
