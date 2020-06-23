@@ -239,8 +239,9 @@ public class ServerManager {
 			if(server.equalsIgnoreCase(categorie)) {
 				sF = lobbiesListCat.get(categorie).get(new Random().nextInt(lobbiesListCat.get(categorie).size()));
 
-				while (sF.getMotd().equalsIgnoreCase("Running"))
-					sF = lobbiesListCat.get(categorie).get(new Random().nextInt(lobbiesListCat.get(categorie).size()));
+				if (lobbiesListCat.get(categorie).stream().anyMatch(sv -> !sv.getMotd().equalsIgnoreCase("Running")))
+					while (sF.getMotd().equalsIgnoreCase("Running"))
+						sF = lobbiesListCat.get(categorie).get(new Random().nextInt(lobbiesListCat.get(categorie).size()));
 			}
 		}
 		return sF;
