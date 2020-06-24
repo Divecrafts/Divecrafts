@@ -53,6 +53,11 @@ public final class ConfigManager {
     }
 
 
+    public Integer getDeathMatchTime(){
+        return (Integer) configuration.get("deathmatchTime");
+    }
+
+
     /**
      * This function return a Gamemode for a Scoreboard
      * @return

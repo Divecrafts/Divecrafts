@@ -130,6 +130,7 @@ public class WorldManager {
         switch (gameWorld){
             case NORMAL:
                 world.setPVP(true);
+                world.setKeepSpawnInMemory(false);
                 world.setAutoSave(false);
                 world.setStorm(false);
                 world.setThundering(false);
@@ -141,6 +142,7 @@ public class WorldManager {
             case NETHER:
                 world.setPVP(true);
                 world.setAutoSave(false);
+                world.setKeepSpawnInMemory(false);
                 world.setStorm(false);
                 world.setThundering(false);
                 world.setMonsterSpawnLimit((int) (mobLimit * 0.45));

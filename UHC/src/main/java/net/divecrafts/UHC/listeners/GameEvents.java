@@ -84,7 +84,6 @@ public class GameEvents implements Listener {
     private void whilePlayerCanJoin(PlayerJoinEvent e){
         final Player player = e.getPlayer();
         e.setJoinMessage(null);
-        //player.kickPlayer(Api.translator("&c&lUHC> &fThe game is started :("));
     }
 
 
