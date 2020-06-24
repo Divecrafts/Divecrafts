@@ -76,7 +76,7 @@ public class EconomyCmd extends Cmd implements CommandExecutor {
         if (args.length > 1){
             final OfflinePlayer player = Bukkit.getOfflinePlayer(args[0]);
 
-            Main.instance.economyProvider.depositPlayer(args[0], Double.parseDouble(args[1]));
+            Main.instance.economyProvider.depositPlayerWithoutBooster(args[0], Double.parseDouble(args[1]));
             sender.sendMessage(Utils.colorize(String.format("&a&lServer> &fAñadidos &b%s$ &fa la cuenta de &e%s", args[1], args[0])));
 
             if (player.getName() != null && player.isOnline()){

@@ -3,6 +3,7 @@ package io.clonalejandro.Essentials.utils;
 import io.clonalejandro.DivecraftsCore.api.SBooster;
 import io.clonalejandro.DivecraftsCore.api.SServer;
 import io.clonalejandro.DivecraftsCore.api.SUser;
+import io.clonalejandro.DivecraftsCore.cmd.SCmd;
 import io.clonalejandro.Essentials.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -176,7 +177,7 @@ public class Economy {
 
 
     public static List<Economy> balanceTop(int limit) throws SQLException {
-        final PreparedStatement statement = MysqlManager.getConnection().prepareStatement("SELECT * FROM economy WHERE name != '' AND name not like 'town%' order by amount desc limit " + limit);
+        final PreparedStatement statement = MysqlManager.getConnection().prepareStatement("SELECT d.grupo, d.name, e.* FROM divecrafts.data d INNER JOIN economy e ON e.name = d.name WHERE d.grupo <" + SCmd.Rank.TMOD.getRank() + " AND e.name != '' AND e.name not like 'town%' order by e.amount desc limit " + limit);
         final List<Economy> top = new ArrayList<>();
 
         try {
