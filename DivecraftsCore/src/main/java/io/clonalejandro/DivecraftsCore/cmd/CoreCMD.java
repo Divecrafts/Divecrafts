@@ -17,10 +17,8 @@ public class CoreCMD extends SCmd {
                 return;
             }
 
-            switch (args[0].toLowerCase()) {
-                case "reload":
-                    reloadConfig(user);
-                    break;
+            if ("reload".equals(args[0].toLowerCase())) {
+                reloadConfig(user);
             }
             return;
         }

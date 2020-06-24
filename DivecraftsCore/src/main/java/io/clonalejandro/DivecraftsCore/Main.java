@@ -3,6 +3,7 @@ package io.clonalejandro.DivecraftsCore;
 import io.clonalejandro.DivecraftsCore.events.PlayerEvents;
 import io.clonalejandro.DivecraftsCore.inv.InventoryManager;
 import io.clonalejandro.DivecraftsCore.utils.*;
+import io.clonalejandro.SQLAlive.SQLAlive;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
@@ -61,6 +62,8 @@ public class Main extends JavaPlugin {
         SCommands.load();
         registerClasses();
         registerEvents();
+
+        new SQLAlive(this, this.getMySQL().getConnection());
 
         Bukkit.getScheduler().scheduleSyncRepeatingTask(this, this::parseHolograms, 0, 400L);
     }
