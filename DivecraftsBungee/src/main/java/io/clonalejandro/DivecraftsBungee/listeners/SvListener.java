@@ -4,6 +4,9 @@ import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteStreams;
 import io.clonalejandro.DivecraftsBungee.Main;
 import io.clonalejandro.DivecraftsBungee.managers.idiomas.Languaje;
+import net.md_5.bungee.api.Callback;
+import net.md_5.bungee.api.ServerPing;
+import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.PluginMessageEvent;
@@ -25,8 +28,11 @@ public class SvListener implements Listener {
              ProxiedPlayer p = (ProxiedPlayer)e.getReceiver();
              ServerInfo server = Main.getSvManager().elegirServer(s);
 
-             if (inGame(server, p)) return;
-             if (server != null) p.connect(server);
+             if (server != null)
+                 getMotd(server, (res, err) -> {
+                     if (!isInGame(p, TextComponent.toLegacyText(res.getDescriptionComponent())))
+                         p.connect(server);
+                 });
              else {
                  try {
                      p.sendMessage(Languaje.getLangMsg(Languaje.getPlayerLang(p), "Global.portalnodispo"));
@@ -42,8 +48,11 @@ public class SvListener implements Listener {
              ProxiedPlayer p = (ProxiedPlayer) e.getReceiver();
              ServerInfo server = Main.getSvManager().connectExact(s);
 
-             if (inGame(server, p)) return;
-             if (server != null) p.connect(server);
+             if (server != null)
+                 getMotd(server, (res, err) -> {
+                     if (!isInGame(p, TextComponent.toLegacyText(res.getDescriptionComponent())))
+                         p.connect(server);
+                 });
              else {
                  try {
                      p.sendMessage(Languaje.getLangMsg(Languaje.getPlayerLang(p), "Global.portalnodispo"));
@@ -56,8 +65,8 @@ public class SvListener implements Listener {
       }
    }
 
-   private boolean inGame(ServerInfo server, ProxiedPlayer p){
-       if (server  != null && server.getMotd().contains("Running")){
+   private boolean isInGame(ProxiedPlayer p, String motd){
+       if (motd.contains("Running")){
            try {
                p.sendMessage(Languaje.getLangMsg(Languaje.getPlayerLang(p), "Global.enjuego"));
            }
@@ -67,5 +76,9 @@ public class SvListener implements Listener {
            return true;
        }
        return false;
+   }
+
+   public static void getMotd(ServerInfo server, Callback<ServerPing> callback){
+       server.ping(callback);
    }
 }
