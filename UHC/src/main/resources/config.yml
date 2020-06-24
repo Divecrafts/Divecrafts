@@ -43,6 +43,7 @@ Debug: false
 host: "clonalejandro"
 
 Game:
+  deathmatchTime: 70
   Mode: "FFA" # This variable set the mode of this game
   CountDown: 45 # This is de countdown in seconds per start the game
   MinPlayers: 2 # This is the min of the players for the game start the CountDown

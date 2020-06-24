@@ -1,9 +1,11 @@
 package io.clonalejandro.DivecraftsBungee.systems;
 
 import io.clonalejandro.DivecraftsBungee.Main;
+import io.clonalejandro.DivecraftsBungee.listeners.SvListener;
 import io.clonalejandro.DivecraftsBungee.managers.MessageType;
 import io.clonalejandro.DivecraftsBungee.utils.TextUtils;
 import lombok.Getter;
+import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.scheduler.ScheduledTask;
 
@@ -239,8 +241,10 @@ public class ServerManager {
 			if(server.equalsIgnoreCase(categorie)) {
 				sF = lobbiesListCat.get(categorie).get(new Random().nextInt(lobbiesListCat.get(categorie).size()));
 
-				if (lobbiesListCat.get(categorie).stream().anyMatch(sv -> !sv.getMotd().equalsIgnoreCase("Running")))
-					while (sF.getMotd().equalsIgnoreCase("Running"))
+				final HashMap<ServerInfo, String> motds = buildMotds(categorie);
+
+				if (motds.values().stream().anyMatch(motd -> motd.contains("Running")))
+					while (motds.get(sF).contains("Running"))
 						sF = lobbiesListCat.get(categorie).get(new Random().nextInt(lobbiesListCat.get(categorie).size()));
 			}
 		}
@@ -256,5 +260,16 @@ public class ServerManager {
 		}
 		return sF;
 	}
-	
+
+	private HashMap<ServerInfo, String> buildMotds(String categorie){
+		final HashMap<ServerInfo, String> data = new HashMap<>();
+
+		lobbiesListCat.get(categorie).forEach(sv ->
+				SvListener.getMotd(sv, (res, err) ->
+						data.put(sv, TextComponent.toLegacyText(res.getDescriptionComponent()))
+				)
+		);
+
+		return data;
+	}
 }

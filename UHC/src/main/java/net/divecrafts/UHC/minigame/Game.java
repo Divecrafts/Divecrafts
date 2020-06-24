@@ -2,11 +2,12 @@ package net.divecrafts.UHC.minigame;
 
 import io.clonalejandro.DivecraftsCore.api.SServer;
 import io.clonalejandro.DivecraftsCore.api.SUser;
-
 import io.clonalejandro.DivecraftsCore.idiomas.Languaje;
+import io.clonalejandro.DivecraftsCore.utils.ReflectionAPI;
+
+import net.divecrafts.UHC.Main;
 import net.divecrafts.UHC.listeners.GameStartEvent;
 import net.divecrafts.UHC.minigame.arena.Arena;
-import net.divecrafts.UHC.Main;
 import net.divecrafts.UHC.task.BorderTask;
 import net.divecrafts.UHC.task.ScoreTask;
 import net.divecrafts.UHC.utils.Api;
@@ -15,6 +16,7 @@ import net.divecrafts.UHC.utils.Scoreboard;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.craftbukkit.v1_8_R3.CraftServer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 
@@ -36,7 +38,7 @@ import java.util.HashMap;
  * All rights reserved for clonalejandro ©StylusUHC 2017 / 2018
  */
 
-public final class Game {
+public final class Game extends ReflectionAPI {
 
 
     /** SMALL CONSTRUCTORS **/
@@ -64,7 +66,8 @@ public final class Game {
         loadPlayerSpawns();
         loadModes();
 
-        Bukkit.getServer().getPluginManager().callEvent(new GameStartEvent(this));
+        setMotd("Running");
+        Api.PLUGIN_MANAGER.callEvent(new GameStartEvent(this));
 
         new ScoreTask().runTaskTimer(plugin, 1L, 20L);
         new BorderTask().runTaskTimer(Main.instance, 1L, 60L * 20L);
@@ -101,5 +104,9 @@ public final class Game {
             user.getUserData().addPlay(SServer.GameID.UHC);
             user.save();
         });
+    }
+
+    private void setMotd(String motd){
+        ((CraftServer) Bukkit.getServer()).getServer().setMotd(motd);
     }
 }

@@ -216,6 +216,10 @@ public class EconomyProvider implements net.milkbowl.vault.economy.Economy {
         }
     }
 
+    public void depositPlayerWithoutBooster(String player, double amount) {
+        depositPlayerWithoutBooster(Bukkit.getOfflinePlayer(player), amount);
+    }
+
     public void depositPlayerWithoutBooster(OfflinePlayer offlinePlayer, double amount) {
         try {
             final Economy economy = Economy.economyPlayers.get(Bukkit.getPlayer(offlinePlayer.getUniqueId())) == null ?
