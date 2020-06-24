@@ -70,10 +70,8 @@ public class GameEvents implements Listener {
 
     @EventHandler
     public void onPlayerKickEvent(PlayerKickEvent e){
-        if (Api.getState() == State.RUNNING) {
-            whilePlayerCanLeave(e.getPlayer());
-            checkEndGame();
-        }
+        if (Api.getState() == State.RUNNING) checkEndGame();
+        if (Api.getState() == State.ENDING || Api.getState() == State.RUNNING) whilePlayerCanLeave(e.getPlayer());
     }
 
 
@@ -96,8 +94,10 @@ public class GameEvents implements Listener {
      */
     private void whilePlayerCanLeave(Player player){
         Api.ALIVE_PLAYERS.remove(player);
-        if (Bukkit.getOnlinePlayers().size() > 0)
+        if (Bukkit.getOnlinePlayers().size() > 0) {
+            Scoreboard.updateScoreboard("spectators", String.valueOf(Bukkit.getOnlinePlayers().size() - Api.ALIVE_PLAYERS.size()));
             Scoreboard.updateScoreboard("aliveplayers", String.valueOf(Api.ALIVE_PLAYERS.size()));
+        }
     }
 
 
