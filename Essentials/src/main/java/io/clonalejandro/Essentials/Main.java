@@ -9,6 +9,7 @@ import io.clonalejandro.Essentials.tasks.AutoRestart;
 import io.clonalejandro.Essentials.utils.Economy;
 import io.clonalejandro.Essentials.utils.MysqlManager;
 import io.clonalejandro.Essentials.utils.SpawnYml;
+import io.clonalejandro.SQLAlive.SQLAlive;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -41,7 +42,6 @@ import java.util.List;
 
 public class Main extends JavaPlugin {
 
-
     public static Main instance;
     public static SpawnYml spawnYml;
     public EconomyProvider economyProvider;
@@ -67,6 +67,8 @@ public class Main extends JavaPlugin {
             initAutoRestart();
             vaultHook.hook();
             loadWarps();
+
+            new SQLAlive(this, MysqlManager.getConnection());
         }
         catch (Exception ex){
             ex.printStackTrace();

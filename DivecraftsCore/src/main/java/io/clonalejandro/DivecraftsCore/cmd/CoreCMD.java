@@ -12,15 +12,13 @@ public class CoreCMD extends SCmd {
     @Override
     public void run(SUser user, String label, String[] args) {
         if (args.length == 1) {
-            if (!user.isOnRank(Rank.DEV)) {
+            if (user.getUserData().getRank().getRank() < Rank.DEV.getRank()) {
                 def(user);
                 return;
             }
 
-            switch (args[0].toLowerCase()) {
-                case "reload":
-                    reloadConfig(user);
-                    break;
+            if ("reload".equals(args[0].toLowerCase())) {
+                reloadConfig(user);
             }
             return;
         }

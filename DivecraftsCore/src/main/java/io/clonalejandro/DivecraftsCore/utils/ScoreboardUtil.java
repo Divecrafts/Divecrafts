@@ -21,7 +21,6 @@ public class ScoreboardUtil {
 
     /**
      * Creates new Scoreboard
-     *
      * @param displayName The display name
      * @param score The data name
      */
@@ -35,7 +34,6 @@ public class ScoreboardUtil {
 
     /**
      * Sets new name
-     *
      * @param name
      */
     public void setName(String name) {
@@ -44,7 +42,6 @@ public class ScoreboardUtil {
 
     /**
      * Adds text in a location (score)
-     *
      * @param score The location
      * @param text
      */
@@ -64,7 +61,6 @@ public class ScoreboardUtil {
 
     /**
      * Registers a new Team
-     *
      * @param name The team name
      * @param prefix The prefix for the team
      */
@@ -89,7 +85,6 @@ public class ScoreboardUtil {
 
     /**
      * Builds a Scoreboard for the player
-     *
      * @param player
      */
     public void build(Player player) {
@@ -98,7 +93,6 @@ public class ScoreboardUtil {
 
     /**
      * Gets A team
-     *
      * @param name
      * @return A team or null
      */

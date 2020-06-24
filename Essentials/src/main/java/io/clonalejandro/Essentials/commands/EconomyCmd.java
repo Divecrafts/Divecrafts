@@ -6,6 +6,7 @@ import io.clonalejandro.Essentials.Main;
 import io.clonalejandro.Essentials.providers.EconomyProvider;
 import io.clonalejandro.Essentials.utils.Economy;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -73,13 +74,13 @@ public class EconomyCmd extends Cmd implements CommandExecutor {
     private void deposit(CommandSender sender, String[] args) {
         if (checkPermissions(sender, SCmd.Rank.SMOD)) return;
         if (args.length > 1){
-            final Player player = Bukkit.getPlayer(args[0]);
+            final OfflinePlayer player = Bukkit.getOfflinePlayer(args[0]);
 
             Main.instance.economyProvider.depositPlayer(args[0], Double.parseDouble(args[1]));
             sender.sendMessage(Utils.colorize(String.format("&a&lServer> &fAñadidos &b%s$ &fa la cuenta de &e%s", args[1], args[0])));
 
-            if (player != null){
-                player.sendMessage(Utils.colorize(String.format("&a&lServer> &fAñadidos &b%s$ &fa tu cuenta", args[1])));
+            if (player.getName() != null && player.isOnline()){
+                ((Player) player).sendMessage(Utils.colorize(String.format("&a&lServer> &fAñadidos &b%s$ &fa tu cuenta", args[1])));
             }
         }
         else sender.sendMessage(Utils.colorize("&c&lServer> &fformato incorrecto usa &b/deposit &e<jugador> <cantidad>"));
@@ -88,14 +89,15 @@ public class EconomyCmd extends Cmd implements CommandExecutor {
     private void withdraw(CommandSender sender, String[] args) {
         if (checkPermissions(sender, SCmd.Rank.SMOD)) return;
         if (args.length > 1){
-            final Player player = Bukkit.getPlayer(args[0]);
+            final OfflinePlayer player = Bukkit.getOfflinePlayer(args[0]);
             final double amount = Double.parseDouble(args[1]);
             final EconomyProvider provider = Main.instance.economyProvider;
 
-            if (player != null){
+            if (player.getName() != null){
                 provider.withdrawPlayer(player.getName(), amount);
                 sender.sendMessage(Utils.colorize(String.format("&a&lServer> &fEliminados &b%s$ &fde la cuenta de &e%s", amount, player.getName())));
-                player.sendMessage(Utils.colorize(String.format("&a&lServer> &fEliminados &b%s$ &fde tu cuenta", amount)));
+                if (player.isOnline())
+                    ((Player) player).sendMessage(Utils.colorize(String.format("&a&lServer> &fEliminados &b%s$ &fde tu cuenta", amount)));
             }
             else {
                 sender.sendMessage(Utils.colorize("&c&lServer> &fEl jugador especificado ha de estar conectado"));

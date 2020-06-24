@@ -6,6 +6,7 @@ import io.clonalejandro.DivecraftsCore.cmd.SCmd;
 import io.clonalejandro.DivecraftsCore.idiomas.Languaje;
 import io.clonalejandro.DivecraftsCore.utils.BungeeMensager;
 import io.clonalejandro.DivecraftsCore.utils.Utils;
+
 import net.divecrafts.UHC.Main;
 import net.divecrafts.UHC.minigame.Game;
 import net.divecrafts.UHC.minigame.Lobby;
@@ -15,10 +16,8 @@ import net.divecrafts.UHC.minigame.modes.ModeType;
 import net.divecrafts.UHC.task.GameCountDown;
 import net.divecrafts.UHC.utils.Api;
 import net.divecrafts.UHC.utils.Scoreboard;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.GameMode;
-import org.bukkit.Material;
+
+import org.bukkit.*;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -73,7 +72,11 @@ public class LobbyEvents implements Listener {
     public void onPlayerJoin(PlayerJoinEvent e){
         if (Api.getState() == State.LOBBY) {
             whilePlayerCanJoin(e);
-            Game.playerSpawn.put(e.getPlayer(), Arena.genRandomSpawn(63));
+            if (Game.playerSpawn.get(e.getPlayer()) == null){
+                final Location spawn = Arena.genRandomSpawn(63);
+                Game.playerSpawn.put(e.getPlayer(), spawn);
+                spawn.getChunk().load();
+            }
         }
     }
 
@@ -229,9 +232,7 @@ public class LobbyEvents implements Listener {
 
         event.setJoinMessage(null);
 
-        Bukkit.getOnlinePlayers().forEach(p ->
-                p.sendMessage(Languaje.getLangMsg(user.getUserData().getLang(), "UHC.join").replace("%player%", player.getDisplayName()))
-        );
+        Bukkit.getOnlinePlayers().forEach(p -> p.sendMessage(Languaje.getLangMsg(user.getUserData().getLang(), "UHC.join").replace("%player%", player.getDisplayName())));
 
         Scoreboard.lobbyScoreboard(player); // Set scoreboard to a player join
         Scoreboard.updateScoreboard("onlineplayers", Api.translator("&f" + (Api.getOnline())));

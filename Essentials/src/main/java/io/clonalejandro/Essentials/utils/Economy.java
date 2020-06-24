@@ -63,9 +63,12 @@ public class Economy {
     public void deposit(double amount){
         if (getPlayer() != null && getPlayer().getName() != null){
             final SUser user = SServer.getUser(getPlayer());
+
+            final SServer.GameID gameID = SServer.GameID.valueOf(Main.instance.getConfig().getString("server").toUpperCase());
+
             final List<SBooster> boosters = user.getUserData().getBoosters()
                     .stream()
-                    .filter(booster -> booster.getGameID() == SServer.GameID.SURVIVAL)
+                    .filter(booster -> booster.getGameID() == gameID)
                     .collect(Collectors.toList());
 
             if (boosters.size() > 0){
@@ -173,7 +176,7 @@ public class Economy {
 
 
     public static List<Economy> balanceTop(int limit) throws SQLException {
-        final PreparedStatement statement = MysqlManager.getConnection().prepareStatement(String.format("SELECT * FROM economy WHERE name != '' order by amount desc limit %s", limit));
+        final PreparedStatement statement = MysqlManager.getConnection().prepareStatement("SELECT * FROM economy WHERE name != '' AND name not like 'town%' order by amount desc limit " + limit);
         final List<Economy> top = new ArrayList<>();
 
         try {

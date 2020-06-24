@@ -56,7 +56,7 @@ public class PlayerEvents implements Listener {
     }
 
     public void correrRun(){
-        runId = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, this::registerHologramas, 0, 400L);
+        //runId = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, this::registerHologramas, 0, 400L);
     }
 
     private void registerHologramas() {

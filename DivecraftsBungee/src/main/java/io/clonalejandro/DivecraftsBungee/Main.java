@@ -11,18 +11,17 @@ import io.clonalejandro.DivecraftsBungee.systems.ConfigManager;
 import io.clonalejandro.DivecraftsBungee.systems.ServerManager;
 import io.clonalejandro.DivecraftsBungee.utils.MySQL;
 import io.clonalejandro.DivecraftsBungee.utils.Payloads;
+
 import lombok.Getter;
+
 import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.event.ServerKickEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.event.EventHandler;
 
-
 import java.io.IOException;
 import java.util.*;
-import java.util.logging.Level;
-import java.util.stream.Collectors;
 
 public class Main extends Plugin implements Listener {
 

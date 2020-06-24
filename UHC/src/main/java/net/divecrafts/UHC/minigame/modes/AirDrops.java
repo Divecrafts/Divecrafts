@@ -81,16 +81,16 @@ class AirDrops implements Listener {
     }
 
     @EventHandler
-    public void itemDropped(EntityChangeBlockEvent e) {
-        if (e.getEntity() instanceof FallingBlock) {
-            final FallingBlock fallingBlock = (FallingBlock) e.getEntity();
+    public void itemDropped(EntityChangeBlockEvent event) {
+        if (event.getEntity() instanceof FallingBlock) {
+            final FallingBlock fallingBlock = (FallingBlock) event.getEntity();
             fallingBlock.setDropItem(false);
 
             if (fallingBlock.getMaterial() == Material.CHEST && fallingBlock.hasMetadata("supplyDrop")) {
-                e.getBlock().setType(Material.CHEST);
-                final Chest chest = (Chest) e.getBlock().getState();
+                event.getBlock().setType(Material.CHEST);
+                final Chest chest = (Chest) event.getBlock().getState();
                 genDropContent().forEach(drop -> chest.getBlockInventory().addItem(drop.getItem()));
-                e.setCancelled(true);
+                event.setCancelled(true);
             }
         }
     }
@@ -122,6 +122,8 @@ class AirDrops implements Listener {
                     final String coord = String.format("(x: %s, y: %s, z: %s)", (int) location.getX(), (int) location.getY(), (int) location.getZ());
                     p.sendMessage(Languaje.getLangMsg(user.getUserData().getLang(), "UHC.airdrop").replace("%coord%", coord));
                 });
+
+                super.getChest().getLocation().getWorld().strikeLightning(super.getChest().getLocation());
                 Api.playSound(Bukkit.getWorld("Normal_tmp"), Sound.BLAZE_DEATH, 3.0F, 0.533F);
             }
         };

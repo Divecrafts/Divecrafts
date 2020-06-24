@@ -50,7 +50,6 @@ public abstract class AirDropsTask extends BukkitRunnable implements ITask {
 
     @Override
     public void kill(){
-        onEnd();
         cancel();
     }
 

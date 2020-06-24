@@ -34,17 +34,27 @@ public class Cmd {
         return false;
     }
 
+    public boolean checkPermissionsWithoutMessage(Player player, SCmd.Rank rank){
+        final SUser user = SServer.getUser(player.getUniqueId());
+        return user.getUserData().getRank().getRank() < rank.getRank();
+    }
+
+    public boolean checkPermissionsWithoutMessage(CommandSender sender, SCmd.Rank rank){
+        if  (sender instanceof Player) return checkPermissionsWithoutMessage((Player) sender, rank);
+        return false;
+    }
+
     public boolean checkPermissions(CommandSender sender, SCmd.Rank rank){
         if  (sender instanceof Player) return checkPermissions((Player) sender, rank);
         return false;
     }
 
-    private boolean sendErrMessage(CommandSender sender){
+    public boolean sendErrMessage(CommandSender sender){
         sender.sendMessage(Utils.colorize("&c&lServer> &fNo tienes permisos para hacer eso!"));
         return true;
     }
 
-    private boolean sendErrMessage(Player player){
+    public boolean sendErrMessage(Player player){
         player.sendMessage(Utils.colorize("&c&lServer> &fNo tienes permisos para hacer eso!"));
         return true;
     }

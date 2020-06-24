@@ -38,11 +38,12 @@ public class DecirCMD extends SCmd {
 
     @Override
     public void run(SUser user, String lbl, String[] args) {
-        SUser target = SServer.getUser(Main.getInstance().getServer().getPlayer(args[0]));
-
         if (args.length <= 1){
             return;
         }
+
+        SUser target = SServer.getUser(Main.getInstance().getServer().getPlayer(args[0]));
+
         if (user == target) {
             user.getPlayer().sendMessage(Languaje.getLangMsg(user.getUserData().getLang(), "Msg.noatimismo"));
             return;
@@ -58,18 +59,18 @@ public class DecirCMD extends SCmd {
         lastPlayerMsg.put(target.getPlayer(), user.getPlayer());
 
         sendPrivateMessage(target, user, user.getUserData().getRank().getRank() > 0 ?
-                Utils.colorize(Utils.buildString(args)) :
+                Utils.colorize(Utils.buildString(Arrays.copyOfRange(args, 1, args.length))) :
                 Utils.buildString(Arrays.copyOfRange(args, 1, args.length))
         );
     }
 
     @Override
     public void run(ConsoleCommandSender sender, String lbl, String[] args) {
-        SUser target = SServer.getUser(Main.getInstance().getServer().getPlayer(args[0]));
-
         if (args.length == 1){
             return;
         }
+
+        SUser target = SServer.getUser(Main.getInstance().getServer().getPlayer(args[0]));
 
         if (target == null || !target.isOnline()) {
             sender.sendMessage(Languaje.getLangMsg(Languaje.Lang.ES.getId(), "Global.noconectado"));
