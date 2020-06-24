@@ -144,12 +144,12 @@ public class Scoreboard {
         }
 
         //Register teams
-        host.addEntry(Api.translator(hostS));
-        time.addEntry(Api.translator(timeS));
-        players.addEntry(Api.translator(playerS));
-        distance.addEntry(Api.translator(distanceS));
-        borders.addEntry(Api.translator(borderS));
-        spectator.addEntry(Api.translator(spectatorS));
+        host.addEntry(hostS);
+        time.addEntry(timeS);
+        players.addEntry(playerS);
+        distance.addEntry(distanceS);
+        borders.addEntry(borderS);
+        spectator.addEntry(spectatorS);
 
         //Set values of the teams
         host.setSuffix(Api.getHost() != null ? Api.getHost() : "Divecrafts");

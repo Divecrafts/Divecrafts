@@ -3,25 +3,23 @@ package net.divecrafts.UHC.listeners;
 import io.clonalejandro.DivecraftsCore.api.SServer;
 import io.clonalejandro.DivecraftsCore.api.SUser;
 import io.clonalejandro.DivecraftsCore.idiomas.Languaje;
+
 import net.divecrafts.UHC.Main;
 import net.divecrafts.UHC.minigame.Lobby;
 import net.divecrafts.UHC.minigame.State;
 import net.divecrafts.UHC.utils.Api;
 import net.divecrafts.UHC.utils.Scoreboard;
+
 import org.bukkit.*;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityPortalEnterEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.*;
-import org.bukkit.event.server.ServerListPingEvent;
-import org.bukkit.event.world.PortalCreateEvent;
 import org.bukkit.inventory.meta.FireworkMeta;
 
-import java.util.Random;
 
 /**
  * Created by alejandrorioscalera
@@ -54,7 +52,7 @@ public class GameEvents implements Listener {
     @EventHandler
     public void onPlayerQuitEvent(PlayerQuitEvent e){
         if (Api.getState() == State.RUNNING) checkEndGame();
-        if (Api.getState() == State.ENDING || Api.getState() == State.RUNNING) whilePlayerCanLeave(e);
+        if (Api.getState() == State.ENDING || Api.getState() == State.RUNNING) whilePlayerCanLeave(e.getPlayer());
     }
 
 
@@ -72,14 +70,10 @@ public class GameEvents implements Listener {
 
     @EventHandler
     public void onPlayerKickEvent(PlayerKickEvent e){
-        if (Api.getState() == State.RUNNING)
+        if (Api.getState() == State.RUNNING) {
+            whilePlayerCanLeave(e.getPlayer());
             checkEndGame();
-    }
-
-    @EventHandler
-    public void serverListPing(ServerListPingEvent event){
-        if (Api.getState() == State.RUNNING)
-            event.setMotd("Running");
+        }
     }
 
 
@@ -92,25 +86,18 @@ public class GameEvents implements Listener {
     private void whilePlayerCanJoin(PlayerJoinEvent e){
         final Player player = e.getPlayer();
         e.setJoinMessage(null);
-        player.kickPlayer(Api.translator("&c&lUHC> &fThe game is started :("));
-    }
-
-
-    /**
-     * This function execute the onPlayerKickEvent order while state is "Running" or "Ending"
-     * @param e
-     */
-    private void whilePlayerCanLeave(PlayerKickEvent e){
-        Api.ALIVE_PLAYERS.remove(e.getPlayer());
+        //player.kickPlayer(Api.translator("&c&lUHC> &fThe game is started :("));
     }
 
 
     /**
      * This function execute the onPlayerQuitEvent order while state is "Running" or "Ending"
-     * @param e
+     * @param player
      */
-    private void whilePlayerCanLeave(PlayerQuitEvent e){
-        Api.ALIVE_PLAYERS.remove(e.getPlayer());
+    private void whilePlayerCanLeave(Player player){
+        Api.ALIVE_PLAYERS.remove(player);
+        if (Bukkit.getOnlinePlayers().size() > 0)
+            Scoreboard.updateScoreboard("aliveplayers", String.valueOf(Api.ALIVE_PLAYERS.size()));
     }
 
 

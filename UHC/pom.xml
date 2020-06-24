@@ -29,11 +29,20 @@
             <id>repo</id>
             <url>https://minleynetwork.github.io/Spigot/</url>
         </repository>
+        <repository>
+            <id>ReflectionAPI-Repo</id>
+            <url>https://clonalejandro.github.io/ReflectionAPI/</url>
+        </repository>
     </repositories>
 
 
     <!-- APIS -->
     <dependencies>
+        <dependency>
+            <groupId>me.clonalejandro</groupId>
+            <artifactId>ReflectionAPI</artifactId>
+            <version>1.0</version>
+        </dependency>
         <dependency>
             <groupId>es.minley.repo</groupId>
             <artifactId>repo</artifactId>
