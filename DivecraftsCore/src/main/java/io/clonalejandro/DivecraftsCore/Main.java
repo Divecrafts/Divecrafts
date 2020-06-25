@@ -128,7 +128,7 @@ public class Main extends JavaPlugin {
         }
         Hologramas.hologramas.clear();
 
-        String pprompt = "Holograms.hol1.msg";
+        String pprompt = "Holograms.hol0.msg";
         String res = getConfig().getString(pprompt);
 
         while (res != null){

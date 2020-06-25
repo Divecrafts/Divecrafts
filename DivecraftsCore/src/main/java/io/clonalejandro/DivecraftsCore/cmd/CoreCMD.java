@@ -2,6 +2,7 @@ package io.clonalejandro.DivecraftsCore.cmd;
 
 import io.clonalejandro.DivecraftsCore.Main;
 import io.clonalejandro.DivecraftsCore.api.SUser;
+import io.clonalejandro.DivecraftsCore.utils.Utils;
 
 public class CoreCMD extends SCmd {
 
@@ -26,7 +27,7 @@ public class CoreCMD extends SCmd {
     }
 
     private void def(SUser user) {
-        user.getPlayer().sendMessage(Main.getPREFIX() + "§cServer " + "§7v" + plugin.getDescription().getVersion());
+        user.getPlayer().sendMessage(Utils.colorize(Main.getPREFIX() + "&cServer " + "&7v" + plugin.getDescription().getVersion()));
     }
 
     private void reloadConfig(SUser user) {

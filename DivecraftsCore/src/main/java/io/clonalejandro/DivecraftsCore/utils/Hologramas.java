@@ -16,6 +16,13 @@ public class Hologramas {
             ArmorStand e = Bukkit.getWorld(worldName).spawn(l, ArmorStand.class);
             e.setVisible(false);
 
+            if (ReflectionAPI.getVersion().contains("1.15.2")){
+                e.setCustomNameVisible(true);
+                e.setCustomName(Utils.colorize(msg));
+                hologramas.add(e);
+                return;
+            }
+
             final Object entity = ReflectionAPI.getHandle(e);
             Object tag = entity.getClass().getMethod("getNBTTag").invoke(entity);
 
