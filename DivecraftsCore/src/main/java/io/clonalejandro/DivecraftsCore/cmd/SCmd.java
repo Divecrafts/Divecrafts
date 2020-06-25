@@ -68,7 +68,7 @@ public abstract class SCmd {
         POSEIDON(5, "POSEIDON"),
         YOUTUBER(6, "YT"),
         TMOD(7, "MOD"),
-        BUILDER(8, "BTD"),
+        BUILDER(8, "BUILDER"),
         MOD(9, "MOD"),
         SMOD(10, "SMOD"),
         DEV(11, "DEV"),
