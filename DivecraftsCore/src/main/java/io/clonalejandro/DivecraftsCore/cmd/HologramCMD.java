@@ -42,7 +42,7 @@ public class HologramCMD extends SCmd {
             Hologramas.crearHolo(Utils.colorize(args[0]), user.getPlayer().getLocation(), user.getPlayer().getLocation().getWorld().getName());
 
             final Configuration con = Main.getInstance().getConfig();
-            String pprompt = "Holograms.hol1.msg";
+            String pprompt = "Holograms.hol0.msg";
             String result = con.getString(pprompt);
             String id = "hol0";
 
