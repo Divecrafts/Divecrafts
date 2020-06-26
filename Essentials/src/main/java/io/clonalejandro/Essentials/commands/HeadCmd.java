@@ -1,5 +1,6 @@
 package io.clonalejandro.Essentials.commands;
 
+import io.clonalejandro.DivecraftsCore.utils.ReflectionAPI;
 import io.clonalejandro.DivecraftsCore.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -36,7 +37,7 @@ public class HeadCmd extends Cmd implements CommandExecutor {
         if (args.length > 1){
             final Player player = Bukkit.getPlayer(sender.getName());
             final String name = args[0];
-            final String owner = args[1];
+            final String owner =  Bukkit.getOfflinePlayer(args[1]).getName();
 
             player.getInventory().addItem(createSkull(name, owner, new ArrayList<>()));
         }
@@ -46,12 +47,16 @@ public class HeadCmd extends Cmd implements CommandExecutor {
 
 
     public static ItemStack createSkull(String displayName, String owner, List<String> lores){
-        ItemStack i = new ItemStack(Material.LEGACY_SKULL_ITEM, 1 ,(byte)3);
-        SkullMeta im = (SkullMeta) i.getItemMeta();
+        final Material skull = Material.valueOf(ReflectionAPI.getVersion().contains("1.15.2") ? "LEGACY_SKULL_ITEM" : "SKULL_ITEM");
+        final ItemStack i = new ItemStack(skull, 1 ,(byte)3);
+        final SkullMeta im = (SkullMeta) i.getItemMeta();
+
         im.setDisplayName(Utils.colorize(displayName));
         im.setOwner(owner);
         im.setLore(lores);
+
         i.setItemMeta(im);
+
         return i;
     }
 }
