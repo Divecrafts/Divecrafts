@@ -121,8 +121,9 @@ public class PlayerEvents implements Listener {
                             break;
                         case 11:
                             BungeeMensager.conectarExacto(p, "ffa");
+                            break;
                         case 12:
-                            BungeeMensager.conectarExacto(p, "uhc");
+                            BungeeMensager.conectarA(p, "uhc");
                             break;
                         case 13:
                             BungeeMensager.conectarExacto(p, "skyblock");

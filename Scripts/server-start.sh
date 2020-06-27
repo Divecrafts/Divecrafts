@@ -1,5 +1,20 @@
 #!/bin/bash
 
+setcolor() {
+  printf $1
+}
+
+resetcolors() {
+  printf "\e[39m"
+}
+
+startserver() {
+  setcolor "\e[95m"
+  echo "Starting $1..."
+  resetcolors
+  screen -dmS $1 /home/minecraft/$1/iniciar.sh
+}
+
 checkroot(){
     if [ $(id -u) -ne 0 ]; then
         setcolor "\e[31m"
@@ -50,3 +65,4 @@ startserver "BTD"
 
 setcolor "\e[96m"
 echo "Script by clonalejandro"
+resetcolors
