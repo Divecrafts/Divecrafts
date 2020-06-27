@@ -4,6 +4,7 @@ import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteStreams;
 import io.clonalejandro.DivecraftsBungee.Main;
 import io.clonalejandro.DivecraftsBungee.managers.idiomas.Languaje;
+import io.clonalejandro.DivecraftsBungee.utils.TextUtils;
 import net.md_5.bungee.api.Callback;
 import net.md_5.bungee.api.ServerPing;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -50,6 +51,10 @@ public class SvListener implements Listener {
 
              if (server != null)
                  getMotd(server, (res, err) -> {
+                     if (err != null) {
+                         p.sendMessage(TextUtils.formatText("&c&lServer> &fServer is down"));
+                         return;
+                     }
                      if (!isInGame(p, TextComponent.toLegacyText(res.getDescriptionComponent())))
                          p.connect(server);
                  });
