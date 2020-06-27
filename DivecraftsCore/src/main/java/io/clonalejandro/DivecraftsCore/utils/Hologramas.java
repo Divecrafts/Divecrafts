@@ -16,7 +16,7 @@ public class Hologramas {
             ArmorStand e = Bukkit.getWorld(worldName).spawn(l, ArmorStand.class);
             e.setVisible(false);
 
-            if (ReflectionAPI.getVersion().contains("1.15.2")){
+            if (ReflectionAPI.getVersion().replaceAll("_", ".").contains("1.15")){
                 e.setCustomNameVisible(true);
                 e.setCustomName(Utils.colorize(msg));
                 hologramas.add(e);
