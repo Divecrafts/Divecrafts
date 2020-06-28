@@ -21,6 +21,7 @@ import org.bukkit.*;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
@@ -29,6 +30,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
@@ -56,23 +58,27 @@ import java.util.ArrayList;
 public class LobbyEvents implements Listener {
 
 
-    /** SMALL CONSTRUCTORS **/
+    /**
+     * SMALL CONSTRUCTORS
+     **/
 
     private final Main plugin;
     private Lobby lobby;
 
-    public LobbyEvents(Main instance){
+    public LobbyEvents(Main instance) {
         plugin = instance;
     }
 
 
-    /** REST **/
+    /**
+     * REST
+     **/
 
     @EventHandler
-    public void onPlayerJoin(PlayerJoinEvent e){
+    public void onPlayerJoin(PlayerJoinEvent e) {
         if (Api.getState() == State.LOBBY) {
             whilePlayerCanJoin(e);
-            if (Game.playerSpawn.get(e.getPlayer()) == null){
+            if (Game.playerSpawn.get(e.getPlayer()) == null) {
                 final Location spawn = Arena.genRandomSpawn(63);
                 Game.playerSpawn.put(e.getPlayer(), spawn);
                 spawn.getChunk().load();
@@ -81,8 +87,13 @@ public class LobbyEvents implements Listener {
     }
 
     @EventHandler
-    public void onPlayerInteract(PlayerInteractEvent event){
-        if (Api.getState() == State.LOBBY && (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK)){
+    public void onOpenInventory(InventoryOpenEvent event) {
+        event.setCancelled(Api.getState() == State.LOBBY && !event.getInventory().getTitle().equalsIgnoreCase("Mode"));
+    }
+
+    @EventHandler
+    public void onPlayerInteract(PlayerInteractEvent event) {
+        if (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
             if (event.getMaterial() == Material.AIR) return;
             if (event.getItem() == null) return;
 
@@ -106,14 +117,14 @@ public class LobbyEvents implements Listener {
                     Api.PLAYERS_WAITING_TELEPORT.put(user.getPlayer(), Bukkit.getScheduler().runTaskLater(Main.instance, () -> BungeeMensager.conectarA(event.getPlayer(), "lobby"), 20L * time));
                     break;
             }
-
-            event.setCancelled(true);
         }
+
+        event.setCancelled(Api.getState() == State.LOBBY);
     }
 
     @EventHandler
-    public void onInventoryClick(InventoryClickEvent event){
-        if (Api.getState() == State.LOBBY && event.getClickedInventory() != null && event.getClickedInventory().getTitle().equalsIgnoreCase("Mode")){
+    public void onInventoryClick(InventoryClickEvent event) {
+        if (Api.getState() == State.LOBBY && event.getClickedInventory() != null && event.getClickedInventory().getTitle().equalsIgnoreCase("Mode")) {
             if (event.getCurrentItem() == null) return;
             if (event.getCurrentItem().getItemMeta() == null) return;
 
@@ -151,19 +162,19 @@ public class LobbyEvents implements Listener {
     }
 
     @EventHandler
-    public void onPlayerMoves(PlayerMoveEvent event){
+    public void onPlayerMoves(PlayerMoveEvent event) {
         if (Api.getState() == State.LOBBY && Api.PLAYERS_WAITING_TELEPORT.get(event.getPlayer()) != null)
             Api.PLAYERS_WAITING_TELEPORT.get(event.getPlayer()).cancel();
     }
 
     @EventHandler
-    public void foodLevelChange(FoodLevelChangeEvent e){
+    public void foodLevelChange(FoodLevelChangeEvent e) {
         if (Api.getState() == State.LOBBY)
             e.setCancelled(true);
     }
 
     @EventHandler
-    public void onPlayerDeath(PlayerRespawnEvent e){
+    public void onPlayerDeath(PlayerRespawnEvent e) {
         if (Api.getState() == State.LOBBY)
             e.getPlayer().teleport(lobby.getLocation());
     }
@@ -179,7 +190,13 @@ public class LobbyEvents implements Listener {
     }
 
     @EventHandler
-    public void onPlayerQuit(PlayerQuitEvent e){
+    public void onVoid(PlayerMoveEvent event) {
+        if (Api.getState() == State.LOBBY && event.getFrom().getY() < 5)
+            event.getPlayer().teleport(new Lobby().getLocation());
+    }
+
+    @EventHandler
+    public void onPlayerQuit(PlayerQuitEvent e) {
         if (Api.getState() == State.LOBBY) onQuit();
         e.setQuitMessage(Api.NULL);
     }
@@ -195,13 +212,13 @@ public class LobbyEvents implements Listener {
     }
 
     @EventHandler
-    public void onPlayerKick(PlayerKickEvent e){
+    public void onPlayerKick(PlayerKickEvent e) {
         if (Api.getState() == State.LOBBY) onQuit();
         e.setLeaveMessage(Api.NULL);
     }
 
     @EventHandler
-    public void onBreakBlock(BlockBreakEvent e){
+    public void onBreakBlock(BlockBreakEvent e) {
         final boolean isDefaultWorld = e.getPlayer().getWorld().getName().equalsIgnoreCase("world");
 
         if (Api.getState() == State.LOBBY && isDefaultWorld)
@@ -210,9 +227,9 @@ public class LobbyEvents implements Listener {
 
 
     @EventHandler
-    public void onPlayerDamage(EntityDamageByEntityEvent e){
+    public void onPlayerDamage(EntityDamageByEntityEvent e) {
         if ((Api.getState() == State.LOBBY || Api.getState() == State.ENDING) &&
-                e.getEntityType() == EntityType.PLAYER){
+                e.getEntityType() == EntityType.PLAYER) {
             e.setCancelled(true);
         }
     }
@@ -222,9 +239,10 @@ public class LobbyEvents implements Listener {
 
     /**
      * This function execute the onPlayerJoin order while state is "Lobby"
+     *
      * @param event
      */
-    private void whilePlayerCanJoin(PlayerJoinEvent event){
+    private void whilePlayerCanJoin(PlayerJoinEvent event) {
         final Player player = event.getPlayer();
         final SUser user = SServer.getUser(player);
 
@@ -250,20 +268,20 @@ public class LobbyEvents implements Listener {
     /**
      * This function execute the onPlayerKickEvent order while state is "Lobby"
      */
-    private void onQuit(){
-        Scoreboard.updateScoreboard("onlineplayers", Api.translator("&f" + (Api.getOnline() -1)));
+    private void onQuit() {
+        Scoreboard.updateScoreboard("onlineplayers", Api.translator("&f" + (Api.getOnline() - 1)));
     }
 
 
     /**
      * This function start a game count down
      */
-    private void startCountDown(){
+    private void startCountDown() {
         new GameCountDown(plugin, false).runTaskTimer(plugin, 1L, 20L);
     }
 
 
-    private ItemStack getVoteSelector(SUser user){
+    private ItemStack getVoteSelector(SUser user) {
         final ItemStack item = new ItemStack(Material.WATCH);
         final ItemMeta meta = item.getItemMeta();
 
@@ -275,7 +293,7 @@ public class LobbyEvents implements Listener {
         return item;
     }
 
-    private ItemStack getBedLobby(SUser user){
+    private ItemStack getBedLobby(SUser user) {
         final ItemStack item = new ItemStack(Material.BED);
         final ItemMeta meta = item.getItemMeta();
 
@@ -287,8 +305,8 @@ public class LobbyEvents implements Listener {
         return item;
     }
 
-    private Material resolverVoteMaterial(ModeType mode){
-        switch (mode){
+    private Material resolverVoteMaterial(ModeType mode) {
+        switch (mode) {
             default:
                 return Material.STONE;
             case SOUP:
@@ -340,10 +358,10 @@ public class LobbyEvents implements Listener {
         }
     }
 
-    private Inventory getVoteInventory(Player player){
+    private Inventory getVoteInventory(Player player) {
         final Inventory inventory = Bukkit.createInventory(player, 27, "Mode");
 
-        for (ModeType mode : ModeType.values()){
+        for (ModeType mode : ModeType.values()) {
             final String name = String.valueOf(mode.toString().charAt(0)).toUpperCase() + mode.toString().substring(1).toLowerCase();
             final Material material = resolverVoteMaterial(mode);
 
@@ -352,7 +370,7 @@ public class LobbyEvents implements Listener {
 
             String color = "&b";
 
-            if (Api.SELECTED_MODES.contains(mode)){
+            if (Api.SELECTED_MODES.contains(mode)) {
                 meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
                 meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
                 color = "&c";
@@ -363,7 +381,7 @@ public class LobbyEvents implements Listener {
 
             item.setItemMeta(meta);
 
-            if (Api.SELECTED_MODES.contains(mode)){
+            if (Api.SELECTED_MODES.contains(mode)) {
                 item.addUnsafeEnchantment(Enchantment.DURABILITY, 3);
             }
 
@@ -373,7 +391,7 @@ public class LobbyEvents implements Listener {
         return inventory;
     }
 
-    private void resetPlayer(Player player){
+    private void resetPlayer(Player player) {
         final SUser user = SServer.getUser(player);
 
         Bukkit.getScheduler().runTask(Main.instance, () -> {
@@ -391,10 +409,10 @@ public class LobbyEvents implements Listener {
         });
     }
 
-    private void addModeToScoreboard(ModeType mode){
+    private void addModeToScoreboard(ModeType mode) {
         final String name = String.valueOf(mode.toString().charAt(0)).toUpperCase() + mode.toString().substring(1).toLowerCase();
 
-        switch (Api.SELECTED_MODES.size()){
+        switch (Api.SELECTED_MODES.size()) {
             case 1:
                 Scoreboard.updateScoreboard("mode1", name);
                 break;
