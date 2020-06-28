@@ -243,7 +243,7 @@ public class ServerManager {
 
 				final HashMap<ServerInfo, String> motds = buildMotds(categorie);
 
-				if (motds.values().stream().anyMatch(motd -> motd.contains("Running")))
+				if (motds.values().stream().anyMatch(motd -> motd.toLowerCase().contains("running") || motd.toLowerCase().contains("ingame")))
 					while (motds.get(sF).contains("Running"))
 						sF = lobbiesListCat.get(categorie).get(new Random().nextInt(lobbiesListCat.get(categorie).size()));
 			}

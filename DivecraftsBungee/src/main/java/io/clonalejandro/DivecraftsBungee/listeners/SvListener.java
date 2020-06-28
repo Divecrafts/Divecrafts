@@ -71,7 +71,7 @@ public class SvListener implements Listener {
    }
 
    private boolean isInGame(ProxiedPlayer p, String motd){
-       if (motd.contains("Running")){
+       if (motd.toLowerCase().contains("running") || motd.toLowerCase().contains("ingame")){
            try {
                p.sendMessage(Languaje.getLangMsg(Languaje.getPlayerLang(p), "Global.enjuego"));
            }
