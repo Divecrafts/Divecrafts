@@ -1,0 +1,6 @@
+main: net.divecrafts.skywars.SkyWars
+version: 1.0
+name: Skywars
+author: clonalejandro
+softdepend:
+  - DivecraftsCore
