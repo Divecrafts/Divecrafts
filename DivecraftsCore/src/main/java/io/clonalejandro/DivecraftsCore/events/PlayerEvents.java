@@ -7,6 +7,7 @@ import io.clonalejandro.DivecraftsCore.api.SUser;
 import io.clonalejandro.DivecraftsCore.cmd.SCmd;
 import io.clonalejandro.DivecraftsCore.idiomas.Languaje;
 import io.clonalejandro.DivecraftsCore.utils.Disguise;
+import io.clonalejandro.DivecraftsCore.utils.ReflectionAPI;
 import io.clonalejandro.DivecraftsCore.utils.Utils;
 import lombok.AllArgsConstructor;
 import org.bukkit.Bukkit;
@@ -256,6 +257,8 @@ public class PlayerEvents implements Listener {
     }
 
     private void checkFly(SUser user){
+        if (!ReflectionAPI.getVersion().replaceAll("_", ".").contains("1.15") &&
+                (!Main.getInstance().getServer().getServerId().toLowerCase().contains("sw") && !Main.getInstance().getServer().getServerId().toLowerCase().contains("sg")))
         Bukkit.getScheduler().runTaskLater(plugin, () -> {
             try {
                 user.getPlayer().setAllowFlight(user.getUserData().getFly());

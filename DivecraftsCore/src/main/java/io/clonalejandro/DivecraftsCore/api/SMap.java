@@ -4,6 +4,7 @@ import com.google.common.io.Files;
 import lombok.Getter;
 import io.clonalejandro.DivecraftsCore.Main;
 import io.clonalejandro.DivecraftsCore.utils.Log;
+import org.bukkit.Bukkit;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,7 +15,7 @@ public class SMap {
     private static final Main plugin = Main.getInstance();
 
     private String worldName;
-    private String path = "~/worlds/";
+    private String path = "/home/minecraft/GlobalConfig/maps/";
     @Getter private File world;
 
 	/**
@@ -25,7 +26,8 @@ public class SMap {
 	 */
 	public SMap(String game, String worldName) {
         this.worldName = worldName;
-        world = new File(path + game + File.pathSeparator + worldName);
+        world = new File(path + game + "/" + worldName);
+        Bukkit.getConsoleSender().sendMessage(path + game + File.pathSeparator + worldName);
     }
 
     /**

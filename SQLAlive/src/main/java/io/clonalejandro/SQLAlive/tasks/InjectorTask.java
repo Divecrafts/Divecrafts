@@ -24,7 +24,7 @@ import java.sql.PreparedStatement;
 
 public class InjectorTask extends BukkitRunnable {
 
-    private int time = 60 * 12;//60 minutes multiply per 12 hours for get the minutes
+    private int time = 30;
 
     @Override
     public void run() {
@@ -32,7 +32,7 @@ public class InjectorTask extends BukkitRunnable {
             time--;
         }
         else {
-            time = 60 * 12;//Reset counter
+            time = 30;//Reset counter
             try {
                 final PreparedStatement statement = SQLAlive.getConnection().prepareStatement("SELECT 1=1");
                 statement.executeQuery();
