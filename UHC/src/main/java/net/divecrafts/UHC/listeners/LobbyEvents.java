@@ -175,8 +175,7 @@ public class LobbyEvents implements Listener {
 
     @EventHandler
     public void onPlayerDeath(PlayerRespawnEvent e) {
-        if (Api.getState() == State.LOBBY)
-            e.getPlayer().teleport(lobby.getLocation());
+        e.getPlayer().teleport(lobby.getLocation());
     }
 
     @EventHandler
