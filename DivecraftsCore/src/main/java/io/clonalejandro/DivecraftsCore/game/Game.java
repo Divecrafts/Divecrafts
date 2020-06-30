@@ -126,7 +126,7 @@ public abstract class Game implements Listener {
      */
     public SUser checkWinner() {
         if (!isInGame()) return null;
-        if (playersInGame.size() > 2) return null;
+        if (playersInGame.size() > 1) return null;
         SUser winner = playersInGame.get(0);
 
         GameState.state = GameState.ENDING;
