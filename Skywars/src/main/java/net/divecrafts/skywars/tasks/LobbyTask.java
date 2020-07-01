@@ -6,10 +6,14 @@ import io.clonalejandro.DivecraftsCore.game.GamesTask;
 import io.clonalejandro.DivecraftsCore.utils.Utils;
 
 import net.divecrafts.skywars.SkyWars;
-import net.divecrafts.skywars.game.GameArena;
+import net.divecrafts.skywars.game.*;
 
+import net.divecrafts.skywars.game.votes.*;
 import org.bukkit.Sound;
 
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class LobbyTask extends GamesTask {
@@ -57,7 +61,11 @@ public class LobbyTask extends GamesTask {
 
             case 0:
                 game.setDamageOnFall(false);
+
+                GameArena.setDifficulty(resolveMode().getId());
                 game.fillChests();
+                game.getArena().getArenaData().getWorld().setTime(resolveTime().getTime());
+                game.getArena().getArenaData().getWorld().setStorm(resolveBiome().isRaining());
                 end();
                 break;
         }
@@ -68,5 +76,32 @@ public class LobbyTask extends GamesTask {
     protected void end() {
         new GameTask(plugin).runTaskTimer(plugin, 0, 20);
         cancel();
+    }
+
+    private ModeType resolveMode(){
+        return new ArrayList<>(VoteMode.getVotes().entrySet()
+                .stream()
+                .sorted(Map.Entry.comparingByValue())
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (acc, e) -> acc, LinkedHashMap::new))
+                .keySet())
+                .get(0);
+    }
+
+    private TimeType resolveTime(){
+        return new ArrayList<>(VoteTime.getVotes().entrySet()
+                .stream()
+                .sorted(Map.Entry.comparingByValue())
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (acc, e) -> acc, LinkedHashMap::new))
+                .keySet())
+                .get(0);
+    }
+
+    private BiomeType resolveBiome(){
+        return new ArrayList<>(VoteBiome.getVotes().entrySet()
+                .stream()
+                .sorted(Map.Entry.comparingByValue())
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (acc, e) -> acc, LinkedHashMap::new))
+                .keySet())
+                .get(0);
     }
 }

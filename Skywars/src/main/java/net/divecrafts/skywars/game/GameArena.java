@@ -1,7 +1,5 @@
 package net.divecrafts.skywars.game;
 
-import io.clonalejandro.DivecraftsCore.Main;
-import io.clonalejandro.DivecraftsCore.api.SUser;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,6 +13,7 @@ import io.clonalejandro.DivecraftsCore.utils.ItemMaker;
 import net.divecrafts.skywars.SkyWars;
 import net.divecrafts.skywars.api.SkyIsland;
 import net.divecrafts.skywars.api.SkyUser;
+import net.divecrafts.skywars.game.votes.*;
 import net.divecrafts.skywars.tasks.LobbyTask;
 import net.divecrafts.skywars.utils.Menus;
 
@@ -59,7 +58,7 @@ public class GameArena extends Game {
 
     private Menus menus;
 
-    @Getter
+    @Getter @Setter
     private static int difficulty = 1; // 0-> Facil | 1-> Normal | 2-> Dificil
 
     public GameArena() {
@@ -222,13 +221,13 @@ public class GameArena extends Game {
                 e.setCancelled(true);
                 switch (e.getSlot()) {
                     case 1:
-                        setDifficulty(0);
+                        new VoteMode(ModeType.EASY);//TODO: Alert
                         break;
                     case 4:
-                        setDifficulty(1);
+                        new VoteMode(ModeType.NORMAL);//TODO: Alert
                         break;
                     case 7:
-                        setDifficulty(2);
+                        new VoteMode(ModeType.HARD);//TODO: Alert
                         break;
                 }
                 user.closeInventory();
@@ -238,13 +237,13 @@ public class GameArena extends Game {
                 e.setCancelled(true);
                 switch (e.getSlot()) {
                     case 1:
-                        user.getWorld().setTime(450);
+                        new VoteTime(TimeType.DAY);//TODO: Alert
                         break;
                     case 4:
-                        user.getWorld().setTime(12000);
+                        new VoteTime(TimeType.AFTERNOON);//TODO: Alert
                         break;
                     case 7:
-                        user.getWorld().setTime(13800);
+                        new VoteTime(TimeType.NIGHT);//TODO: Alert
                         break;
                 }
                 user.closeInventory();
@@ -255,10 +254,10 @@ public class GameArena extends Game {
                 e.setCancelled(true);
                 switch (e.getSlot()) {
                     case 2:
-                        user.getWorld().setStorm(false);
+                        new VoteBiome(BiomeType.CLEAR);//TODO: Alert
                         break;
                     case 6:
-                        user.getWorld().setStorm(true);
+                        new VoteBiome(BiomeType.RAINING);//TODO: Alert
                         break;
                 }
                 user.closeInventory();
@@ -266,26 +265,6 @@ public class GameArena extends Game {
         }
 
         e.setCancelled(true);
-    }
-
-    private void setDifficulty(int diff) {
-        difficulty = diff;
-
-        getPlayersInGame().forEach(p -> {
-            String d = "Normal";
-
-            switch (diff) {
-                case 0:
-                    d = "Facil";
-                    break;
-                case 1:
-                    d = "Normal";
-                    break;
-                case 2:
-                    d = "Dificil";
-                    break;
-            }
-        });
     }
 
     @Override
@@ -296,7 +275,6 @@ public class GameArena extends Game {
 
     @Override
     public List<Kit> availableKits() {
-        List<Kit> kits = new ArrayList<>();
 
         Kit builder = new Kit("Builder");
         builder.addInvItem(new ItemMaker(Material.BRICK, 32).build());
@@ -304,8 +282,7 @@ public class GameArena extends Game {
         Kit sword = new Kit("Espadachín");
         sword.addInvItem(new ItemMaker(Material.IRON_SWORD).build());
 
-        kits.addAll(Arrays.asList(builder, sword));
-        return kits;
+        return Arrays.asList(builder, sword);
     }
 
     @Override

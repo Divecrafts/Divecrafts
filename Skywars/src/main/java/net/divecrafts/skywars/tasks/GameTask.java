@@ -35,7 +35,7 @@ public class GameTask extends GamesTask {
         noPlayers();
         checkWinner();
 
-        if (timePlayed) game.getPlayersInGame().forEach(p -> p.sendActionBar("&2Tiempo jugado: &d" + count));
+        if (timePlayed) game.getPlayersInGame().forEach(p -> p.sendActionBar("&eTiempo jugado: &b" + count));
 
         switch (count) {
             case 0:
@@ -57,7 +57,7 @@ public class GameTask extends GamesTask {
                 timePlayed = true;
                 break;
 
-            case 5:
+            case 10:
                 game.setDamageOnFall(true);
                 break;
         }
