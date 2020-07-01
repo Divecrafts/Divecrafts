@@ -66,14 +66,14 @@ public class SkyIsland {
 
     public void buildCapsule(Material material, byte data){
         //build floor
-        setBlock(new Location(this.spawn.getWorld(), this.spawn.getX(), this.spawn.getY() -2.2, this.spawn.getZ()), material, data);
+        setBlock(new Location(this.spawn.getWorld(), this.spawn.getX(), this.spawn.getY() -2, this.spawn.getZ()), material, data);
 
         //Corners
         for (int i = 1; i <= 3; i++){
-            setBlock(new Location(this.spawn.getWorld(), this.spawn.getX(), (this.spawn.getY() - 2.2) + i, this.spawn.getZ() + 1), material, data);
-            setBlock(new Location(this.spawn.getWorld(), this.spawn.getX(), (this.spawn.getY() - 2.2) + i, this.spawn.getZ() - 1), material, data);
-            setBlock(new Location(this.spawn.getWorld(), this.spawn.getX() +1, (this.spawn.getY() - 2.2) + i, this.spawn.getZ()), material, data);
-            setBlock(new Location(this.spawn.getWorld(), this.spawn.getX() -1, (this.spawn.getY() - 2.2) + i, this.spawn.getZ()), material, data);
+            setBlock(new Location(this.spawn.getWorld(), this.spawn.getX(), (this.spawn.getY() - 2) + i, this.spawn.getZ() + 1), material, data);
+            setBlock(new Location(this.spawn.getWorld(), this.spawn.getX(), (this.spawn.getY() - 2) + i, this.spawn.getZ() - 1), material, data);
+            setBlock(new Location(this.spawn.getWorld(), this.spawn.getX() +1, (this.spawn.getY() - 2) + i, this.spawn.getZ()), material, data);
+            setBlock(new Location(this.spawn.getWorld(), this.spawn.getX() -1, (this.spawn.getY() - 2) + i, this.spawn.getZ()), material, data);
         }
     }
 
