@@ -129,9 +129,9 @@ public class Main extends JavaPlugin {
         Hologramas.hologramas.clear();
 
         String pprompt = "Holograms.hol0.msg";
-        String res = getConfig().getString(pprompt);
+        String res;
 
-        while (res != null){
+        do {
             pprompt = pprompt.replace(".msg", "");
 
             final Configuration con = getConfig();
@@ -145,5 +145,6 @@ public class Main extends JavaPlugin {
             pprompt = "Holograms." + "hol" + val  + ".msg";
             res = getConfig().getString(pprompt);
         }
+        while (res != null);
     }
 }
