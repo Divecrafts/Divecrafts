@@ -307,7 +307,7 @@ public class GameArena extends Game {
                     Inventory inv = chest.getBlockInventory();
                     inv.clear();
 
-                    ArrayList<ItemStack> aleatorios = new ArrayList<>();
+                    final ArrayList<ItemStack> aleatorios = new ArrayList<>();
 
                     switch (difficulty) {
                         case 0:
@@ -326,7 +326,6 @@ public class GameArena extends Game {
                             for (int i = 0; i < i4; i++)
                                 aleatorios.add(plugin.getChestItems().comida_basic.get(r.nextInt(plugin.getChestItems().comida_basic.size())));
                             break;
-
                         case 1:
                             int m1 = r.nextInt(plugin.getChestItems().items.size());
                             int m2 = r.nextInt(plugin.getChestItems().armaduras.size());
@@ -342,7 +341,6 @@ public class GameArena extends Game {
                             for (int i = 0; i < m4; i++)
                                 aleatorios.add(plugin.getChestItems().comida.get(r.nextInt(plugin.getChestItems().comida.size())));
                             break;
-
                         case 2:
                             int h1 = r.nextInt(plugin.getChestItems().items_op.size());
                             int h2 = r.nextInt(plugin.getChestItems().armaduras_op.size());
