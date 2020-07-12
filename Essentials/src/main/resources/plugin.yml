@@ -123,3 +123,5 @@ commands:
       - ec
   stack:
     usage: /<command>
+  rankup:
+    usage: /<command>
