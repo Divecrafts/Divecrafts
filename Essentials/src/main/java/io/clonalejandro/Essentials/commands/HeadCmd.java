@@ -1,7 +1,9 @@
 package io.clonalejandro.Essentials.commands;
 
+import io.clonalejandro.DivecraftsCore.cmd.SCmd;
 import io.clonalejandro.DivecraftsCore.utils.ReflectionAPI;
 import io.clonalejandro.DivecraftsCore.utils.Utils;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -34,6 +36,8 @@ public class HeadCmd extends Cmd implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String arg, String[] args) {
+        if (checkPermissions(sender, SCmd.Rank.MOD)) return true;
+
         if (args.length > 1){
             final Player player = Bukkit.getPlayer(sender.getName());
             final String name = args[0];
@@ -47,7 +51,7 @@ public class HeadCmd extends Cmd implements CommandExecutor {
 
 
     public static ItemStack createSkull(String displayName, String owner, List<String> lores){
-        final Material skull = Material.valueOf(ReflectionAPI.getVersion().contains("1.15.2") ? "LEGACY_SKULL_ITEM" : "SKULL_ITEM");
+        final Material skull = Material.valueOf(ReflectionAPI.getVersion().replaceAll("-", ".").contains("1.15.2") ? "LEGACY_SKULL_ITEM" : "SKULL_ITEM");
         final ItemStack i = new ItemStack(skull, 1 ,(byte)3);
         final SkullMeta im = (SkullMeta) i.getItemMeta();
 
