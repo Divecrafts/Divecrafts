@@ -20,8 +20,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.sql.SQLException;
-import java.util.Arrays;
-import java.util.HashMap;
+import java.util.*;
 
 public class Main extends JavaPlugin {
 
@@ -146,5 +145,18 @@ public class Main extends JavaPlugin {
             res = getConfig().getString(pprompt);
         }
         while (res != null);
+    }
+
+    public static void main(String[] args){
+        fizzBuzz(100, new TreeMap<>())
+                .forEach((n, val) -> System.out.println(n + ": " + val));
+    }
+
+    private static Map<Integer, String> fizzBuzz(int n, TreeMap<Integer, String> acc){
+        if (n % 3 == 0 && n % 5 == 0) acc.put(n, "FizzBuzz");
+        else if (n % 3 == 0) acc.put(n, "Fizz");
+        else if (n % 5 == 0) acc.put(n, "Buzz");
+        n--;
+        return n != 0 ? fizzBuzz(n, acc) : acc;
     }
 }
