@@ -63,8 +63,6 @@ public class Main extends JavaPlugin {
         registerEvents();
 
         new SQLAlive(this, this.getMySQL().getConnection());
-
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, this::parseHolograms, 0, 400L);
     }
 
     @Override
@@ -87,7 +85,7 @@ public class Main extends JavaPlugin {
     private void registerEvents() {
         PluginManager pm = getServer().getPluginManager();
 
-        pm.registerEvents(new PlayerEvents(instance), instance);
+        pm.registerEvents(new PlayerEvents(), instance);
     }
 
     @Override
@@ -121,28 +119,31 @@ public class Main extends JavaPlugin {
         }
     }
 
-    private void parseHolograms(){
+    public static void parseHolograms(){
         for (Entity e : Hologramas.hologramas) {
             e.remove();
         }
+
         Hologramas.hologramas.clear();
 
         String pprompt = "Holograms.hol0.msg";
         String res;
 
+        if (Main.getInstance().getConfig().get(pprompt) == null) return;
+
         do {
             pprompt = pprompt.replace(".msg", "");
 
-            final Configuration con = getConfig();
+            final Configuration con = Main.getInstance().getConfig();
             final String prompt = pprompt + ".", msg = Utils.colorize(con.getString(prompt + "msg"));
             final World world = Bukkit.getWorld(con.getString(prompt + "world"));
-            final double x = con.getDouble(prompt + "x"), y = con.getDouble(prompt + "y"), z = con.getDouble("z");
+            final double x = con.getDouble(prompt + "x"), y = con.getDouble(prompt + "y"), z = con.getDouble(prompt + "z");
 
             Hologramas.crearHolo(msg, new Location(world, x, y, z), world.getName());
 
             int val = Integer.parseInt(pprompt.replace("Holograms.hol", "").replace(".msg", "")) + 1;
             pprompt = "Holograms." + "hol" + val  + ".msg";
-            res = getConfig().getString(pprompt);
+            res = Main.getInstance().getConfig().getString(pprompt);
         }
         while (res != null);
     }

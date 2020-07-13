@@ -58,10 +58,14 @@ public class DecirCMD extends SCmd {
             lastPlayerMsg.remove(target.getPlayer());
         lastPlayerMsg.put(target.getPlayer(), user.getPlayer());
 
-        sendPrivateMessage(target, user, user.getUserData().getRank().getRank() > 0 ?
-                Utils.colorize(Utils.buildString(Arrays.copyOfRange(args, 1, args.length))) :
-                Utils.buildString(Arrays.copyOfRange(args, 1, args.length))
-        );
+        final String message = user.getUserData().getRank().getRank() > 0 ? Utils.colorize(Utils.buildString(Arrays.copyOfRange(args, 1, args.length))) : Utils.buildString(Arrays.copyOfRange(args, 1, args.length));
+
+        if (message.matches("\\d{1,3}(\\.\\d{1,3}){3}|.+\\.[a-zA-Z]{2,3}")){
+            user.getPlayer().sendMessage(Languaje.getLangMsg(user.getUserData().getLang(), "Chat.noips"));
+            return;
+        }
+
+        sendPrivateMessage(target, user, message);
     }
 
     @Override
