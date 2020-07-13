@@ -4,6 +4,7 @@ import io.clonalejandro.DivecraftsCore.Main;
 import io.clonalejandro.DivecraftsCore.api.SServer;
 import io.clonalejandro.DivecraftsCore.api.SUser;
 import io.clonalejandro.DivecraftsCore.utils.Utils;
+
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -43,7 +44,7 @@ public class SetGroupCMD extends SCmd {
             user.getUserData().setRank(Rank.values()[i]);
             user.save();
 
-            if (user.getPlayer().isOnline()){
+            if (user.isOnline()){
                 Utils.loadPermissions(user.getPlayer());
                 Utils.updateUserColor(user);
             }
@@ -75,7 +76,7 @@ public class SetGroupCMD extends SCmd {
             target.getUserData().setRank(Rank.values()[i]);
             target.save();
 
-            if (target.getPlayer().isOnline()){
+            if (target.isOnline()){
                 Utils.loadPermissions(target.getPlayer());
                 Utils.updateUserColor(target);
             }
@@ -105,12 +106,12 @@ public class SetGroupCMD extends SCmd {
             target.getUserData().setRank(Rank.values()[i]);
             target.save();
 
-            if (target.getPlayer().isOnline()){
+            if (target.isOnline()){
                 Utils.loadPermissions(target.getPlayer());
                 Utils.updateUserColor(target);
             }
 
-            sender.sendMessage(Utils.colorize(Main.getPREFIX() + "*§3Rango cambiado a §c" + target.getName() + " §3: §" + Rank.groupColor(Rank.values()[i]) + target.getUserData().getRank().toString()));
+            sender.sendMessage(Utils.colorize(Main.getPREFIX() + "*&3Rango cambiado a &c" + target.getName() + " &3: &" + Rank.groupColor(Rank.values()[i]) + target.getUserData().getRank().toString()));
         }
     }
 
