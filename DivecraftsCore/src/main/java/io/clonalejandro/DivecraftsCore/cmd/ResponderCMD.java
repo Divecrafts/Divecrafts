@@ -70,7 +70,14 @@ public class ResponderCMD extends SCmd {
             DecirCMD.getLastPlayerMsg().remove(target.getPlayer());
         DecirCMD.getLastPlayerMsg().put(target.getPlayer(), user.getPlayer());
 
-        sendPrivateMessage(target, user, user.getUserData().getRank().getRank() > 0 ? Utils.colorize(Utils.buildString(args)) : Utils.buildString(args));
+        final String message = user.getUserData().getRank().getRank() > 0 ? Utils.colorize(Utils.buildString(args)) : Utils.buildString(args);
+
+        if (message.matches("\\d{1,3}(\\.\\d{1,3}){3}|.+\\.[a-zA-Z]{2,3}")){
+            user.getPlayer().sendMessage(Languaje.getLangMsg(user.getUserData().getLang(), "Chat.noips"));
+            return;
+        }
+
+        sendPrivateMessage(target, user, message);
     }
 
     @Override

@@ -25,16 +25,15 @@ import org.bukkit.event.weather.WeatherChangeEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
-@AllArgsConstructor
 public class PlayerEvents implements Listener {
 
-    private final Main plugin;
+    private final Main plugin = Main.getInstance();
     private final List<String> nulledWords = new ArrayList<>();
-    private final List<String> bannedCmds = Arrays.asList("/plugins", "/version", "/ver", "/me");
+    private final HashMap<Player, List<String>> chatHistory = new HashMap<>();
+    private final List<String> bannedCmds = Arrays.asList("/plugins", "/version", "/ver", "/me", "//calc", "/about", "/pl", "/minecraft", "/icanhasbukkit");
+    private boolean first = true;
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerLogin(PlayerLoginEvent e) {
@@ -44,6 +43,11 @@ public class PlayerEvents implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerJoin(PlayerJoinEvent e) {
+        if (first){
+            first = false;
+            Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, Main::parseHolograms, 0, 400L);
+        }
+
         SUser u = SServer.getUser(e.getPlayer());
 
         // Update
@@ -195,8 +199,6 @@ public class PlayerEvents implements Listener {
         final Player player = event.getPlayer();
         final SUser user = SServer.getUser(player);
         final SCmd.Rank rank = user.getUserData().getRank();
-        final String[] domains = new String[]{".com", ".net", ".es", ".org", ".com.ar", ".ar", ".mx"};
-        final boolean containsDomain = String.join("", Arrays.asList(domains)).contains(event.getMessage());
 
         if (!user.getUserData().getChat()) {
             user.getPlayer().sendMessage(Languaje.getLangMsg(user.getUserData().getLang(), "Chat.desabilitado"));
@@ -215,11 +217,17 @@ public class PlayerEvents implements Listener {
             }
         }
 
-        for (String domain : domains){
-            if (event.getMessage().contains(domain)){
-                user.getPlayer().sendMessage(Languaje.getLangMsg(user.getUserData().getLang(), "Chat.noips"));
+        if (event.getMessage().matches("\\d{1,3}(\\.\\d{1,3}){3}|.+\\.[a-zA-Z]{2,3}")){
+            user.getPlayer().sendMessage(Languaje.getLangMsg(user.getUserData().getLang(), "Chat.noips"));
+            event.setCancelled(true);
+        }
+
+        if (!chatHistory.containsKey(player))
+            chatHistory.put(player, Collections.singletonList(event.getMessage()));
+        else {
+            if (chatHistory.get(player).get(0).equalsIgnoreCase(event.getMessage()))
                 event.setCancelled(true);
-            }
+            else chatHistory.remove(player);
         }
 
         if (rank.getRank() > 0) event.setFormat(Utils.colorize(player.getDisplayName() + ": &f" + event.getMessage()));
@@ -247,7 +255,6 @@ public class PlayerEvents implements Listener {
                     cancel();
                     return;
                 }
-
                 user.getUserData().getBoosters().forEach(SBooster::isExpired);
             }
         };
