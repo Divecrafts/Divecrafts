@@ -18,31 +18,32 @@ public class Hologramas {
 
             if (ReflectionAPI.getVersion().replaceAll("_", ".").contains("1.15")){
                 e.setCustomNameVisible(true);
+                e.setGravity(false);
+                e.setMarker(true);
                 e.setCustomName(Utils.colorize(msg));
-                hologramas.add(e);
-                return;
             }
+            else {
+                final Object entity = ReflectionAPI.getHandle(e);
+                Object tag = entity.getClass().getMethod("getNBTTag").invoke(entity);
 
-            final Object entity = ReflectionAPI.getHandle(e);
-            Object tag = entity.getClass().getMethod("getNBTTag").invoke(entity);
+                if (tag == null){
+                    tag = ReflectionAPI.getNmsClass("NBTTagCompound").newInstance();
+                }
 
-            if (tag == null){
-                tag = ReflectionAPI.getNmsClass("NBTTagCompound").newInstance();
+                entity.getClass().getMethod("c", tag.getClass()).invoke(entity, tag);
+
+                final Method setInt = tag.getClass().getMethod("setInt", String.class, int.class);
+                final Method setString = tag.getClass().getMethod("setString", String.class, String.class);
+
+                setString.invoke(tag, "CustomName", Utils.colorize(msg));
+
+                setInt.invoke(tag, "Invisible", 1);
+                setInt.invoke(tag, "NoGravity", 1);
+                setInt.invoke(tag, "Marker", 1);
+                setInt.invoke(tag, "CustomNameVisible", 1);
+
+                entity.getClass().getMethod("f", tag.getClass()).invoke(entity, tag);
             }
-
-            entity.getClass().getMethod("c", tag.getClass()).invoke(entity, tag);
-
-            final Method setInt = tag.getClass().getMethod("setInt", String.class, int.class);
-            final Method setString = tag.getClass().getMethod("setString", String.class, String.class);
-
-            setString.invoke(tag, "CustomName", Utils.colorize(msg));
-
-            setInt.invoke(tag, "Invisible", 1);
-            setInt.invoke(tag, "NoGravity", 1);
-            setInt.invoke(tag, "Marker", 1);
-            setInt.invoke(tag, "CustomNameVisible", 1);
-
-            entity.getClass().getMethod("f", tag.getClass()).invoke(entity, tag);
             hologramas.add(e);
         }
         catch (Exception ex){

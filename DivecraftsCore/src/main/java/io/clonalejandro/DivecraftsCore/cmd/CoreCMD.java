@@ -4,10 +4,12 @@ import io.clonalejandro.DivecraftsCore.Main;
 import io.clonalejandro.DivecraftsCore.api.SUser;
 import io.clonalejandro.DivecraftsCore.utils.Utils;
 
+import java.util.Arrays;
+
 public class CoreCMD extends SCmd {
 
     public CoreCMD() {
-        super("Server", Rank.USUARIO, "core");
+        super("Server", Rank.USUARIO, Arrays.asList("core", "dcore"));
     }
 
     @Override
