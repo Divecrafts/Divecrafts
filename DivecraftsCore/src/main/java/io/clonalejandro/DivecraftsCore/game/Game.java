@@ -3,12 +3,14 @@ package io.clonalejandro.DivecraftsCore.game;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
+
 import io.clonalejandro.DivecraftsCore.Main;
 import io.clonalejandro.DivecraftsCore.api.SServer;
 import io.clonalejandro.DivecraftsCore.api.SUser;
 import io.clonalejandro.DivecraftsCore.cmd.SCmd;
 import io.clonalejandro.DivecraftsCore.kits.Kit;
 import io.clonalejandro.DivecraftsCore.utils.Log;
+
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -126,7 +128,7 @@ public abstract class Game implements Listener {
      */
     public SUser checkWinner() {
         if (!isInGame()) return null;
-        if (playersInGame.size() > 1) return null;
+        if (playersInGame.size() != 1) return null;
         SUser winner = playersInGame.get(0);
 
         GameState.state = GameState.ENDING;

@@ -17,10 +17,7 @@ import net.divecrafts.skywars.game.votes.*;
 import net.divecrafts.skywars.tasks.LobbyTask;
 import net.divecrafts.skywars.utils.Menus;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Chunk;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Chest;
 import org.bukkit.entity.Player;
@@ -93,7 +90,7 @@ public class GameArena extends Game {
     public void onPlayerDamageEvent(EntityDamageEvent e) {
         if (!(e.getEntity() instanceof Player)) return;
         SkyUser u = SkyWars.getUser((Player) e.getEntity());
-        if (GameState.state == GameState.LOBBY) e.setCancelled(true);
+        if (GameState.state == GameState.LOBBY ) e.setCancelled(true);
         if (!damageOnFall) e.setCancelled(true);
     }
 
@@ -186,6 +183,7 @@ public class GameArena extends Game {
     public void onDeath(PlayerDeathEvent e){
         this.getPlayersInGame().remove(SkyWars.getUser(e.getEntity()));
         Bukkit.getScheduler().runTask(plugin, () -> this.arena.teleportToLobby(SkyWars.getUser(e.getEntity())));
+        e.getEntity().setGameMode(GameMode.SPECTATOR);
     }
 
     @EventHandler
@@ -221,13 +219,22 @@ public class GameArena extends Game {
                 e.setCancelled(true);
                 switch (e.getSlot()) {
                     case 1:
-                        new VoteMode(ModeType.EASY);//TODO: Alert
+                        if (!VoteMode.getVotedPlayers().contains(user.getPlayer())){
+                            new VoteMode(ModeType.EASY, user.getPlayer());//TODO: Alert
+                        }
+                        //else Alert you cant
                         break;
                     case 4:
-                        new VoteMode(ModeType.NORMAL);//TODO: Alert
+                        if (!VoteMode.getVotedPlayers().contains(user.getPlayer())) {
+                            new VoteMode(ModeType.NORMAL, user.getPlayer());//TODO: Alert
+                        }
+                        //else Alert you cant
                         break;
                     case 7:
-                        new VoteMode(ModeType.HARD);//TODO: Alert
+                        if (!VoteMode.getVotedPlayers().contains(user.getPlayer())) {
+                            new VoteMode(ModeType.HARD, user.getPlayer());//TODO: Alert
+                        }
+                        //else Alert you cant
                         break;
                 }
                 user.closeInventory();
@@ -237,13 +244,22 @@ public class GameArena extends Game {
                 e.setCancelled(true);
                 switch (e.getSlot()) {
                     case 1:
-                        new VoteTime(TimeType.DAY);//TODO: Alert
+                        if (!VoteTime.getVotedPlayers().contains(user.getPlayer())) {
+                            new VoteTime(TimeType.DAY, user.getPlayer());//TODO: Alert
+                        }
+                        //else Alert you cant
                         break;
                     case 4:
-                        new VoteTime(TimeType.AFTERNOON);//TODO: Alert
+                        if (!VoteTime.getVotedPlayers().contains(user.getPlayer())) {
+                            new VoteTime(TimeType.AFTERNOON, user.getPlayer());//TODO: Alert
+                        }
+                        //else Alert you cant
                         break;
                     case 7:
-                        new VoteTime(TimeType.NIGHT);//TODO: Alert
+                        if (!VoteTime.getVotedPlayers().contains(user.getPlayer())) {
+                            new VoteTime(TimeType.NIGHT, user.getPlayer());//TODO: Alert
+                        }
+                        //else Alert you cant
                         break;
                 }
                 user.closeInventory();
@@ -254,10 +270,16 @@ public class GameArena extends Game {
                 e.setCancelled(true);
                 switch (e.getSlot()) {
                     case 2:
-                        new VoteBiome(BiomeType.CLEAR);//TODO: Alert
+                        if (!VoteBiome.getVotedPlayers().contains(user.getPlayer())) {
+                            new VoteBiome(BiomeType.CLEAR, user.getPlayer());//TODO: Alert
+                        }
+                        //else Alert you can
                         break;
                     case 6:
-                        new VoteBiome(BiomeType.RAINING);//TODO: Alert
+                        if (!VoteBiome.getVotedPlayers().contains(user.getPlayer())) {
+                            new VoteBiome(BiomeType.RAINING, user.getPlayer());//TODO: Alert
+                        }
+                        //else Alert you can
                         break;
                 }
                 user.closeInventory();

@@ -1,13 +1,18 @@
 package io.clonalejandro.DivecraftsCore.api;
 
 import com.google.common.io.Files;
+
 import lombok.Getter;
+
 import io.clonalejandro.DivecraftsCore.Main;
 import io.clonalejandro.DivecraftsCore.utils.Log;
+
 import org.bukkit.Bukkit;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class SMap {
@@ -55,9 +60,14 @@ public class SMap {
 	}
 
 	private File getRandomMap(String currentMap){
-		File[] dir = new File(path).listFiles(File::isDirectory);
-		File[] maps = {};
-		for (int x = 0; x < dir.length; x++) if (!dir[x].getName().equalsIgnoreCase(currentMap)) maps[x] = dir[x];
-		return maps[new Random().nextInt(dir.length)];
+		final File[] dir = new File(path).listFiles(File::isDirectory);
+		final List<File> maps = new ArrayList<>();
+
+		if (dir == null) return null;
+
+		for (File file : dir)
+			if (!file.getName().equalsIgnoreCase(currentMap))
+				maps.add(file);
+		return (File) maps.toArray()[new Random().nextInt(dir.length)];
 	}
 }

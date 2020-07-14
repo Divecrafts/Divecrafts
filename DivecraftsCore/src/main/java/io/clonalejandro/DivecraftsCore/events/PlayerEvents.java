@@ -9,7 +9,7 @@ import io.clonalejandro.DivecraftsCore.idiomas.Languaje;
 import io.clonalejandro.DivecraftsCore.utils.Disguise;
 import io.clonalejandro.DivecraftsCore.utils.ReflectionAPI;
 import io.clonalejandro.DivecraftsCore.utils.Utils;
-import lombok.AllArgsConstructor;
+
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
