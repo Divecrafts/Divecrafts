@@ -1,8 +1,11 @@
 package net.divecrafts.skywars.game.votes;
 
 import lombok.Getter;
+import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by Alex
@@ -24,11 +27,14 @@ public class VoteTime {
 
     @Getter private static final HashMap<TimeType, Integer> votes = new HashMap<>();
     @Getter private final TimeType type;
+    @Getter private static final List<Player> votedPlayers = new ArrayList<>();
 
-    public VoteTime(TimeType type){
+    public VoteTime(TimeType type, Player player){
         this.type = type;
 
         if (!votes.containsKey(type)) votes.put(type, 1);
         else votes.replace(type, votes.get(type) +1);
+
+        votedPlayers.add(player);
     }
 }
