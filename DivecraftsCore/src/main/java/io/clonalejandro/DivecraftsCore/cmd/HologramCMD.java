@@ -55,7 +55,7 @@ public class HologramCMD extends SCmd {
             final String prompt = "Holograms.hol" + val + ".";
 
             con.set(prompt.substring(prompt.length() -1), null);
-            con.set(prompt + "msg", args[0]);
+            con.set(prompt + "msg", String.join(" ", args));
             con.set(prompt + "world", user.getPlayer().getLocation().getWorld().getName());
             con.set(prompt + "x", user.getPlayer().getLocation().getX());
             con.set(prompt + "y", user.getPlayer().getLocation().getY());
