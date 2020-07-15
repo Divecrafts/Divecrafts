@@ -37,7 +37,7 @@ public class HologramCMD extends SCmd {
     @Override
     public void run(SUser user, String lbl, String[] args) {
         if (args.length > 0){
-            Hologramas.crearHolo(Utils.colorize(args[0]), user.getPlayer().getLocation(), user.getPlayer().getLocation().getWorld().getName());
+            Hologramas.crearHolo(Utils.colorize(String.join(" ", args)), user.getPlayer().getLocation(), user.getPlayer().getLocation().getWorld().getName());
 
             final Configuration con = Main.getInstance().getConfig();
             String pprompt = "Holograms.hol0.msg";
