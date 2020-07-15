@@ -3,7 +3,6 @@ package io.clonalejandro.DivecraftsLobby;
 import lombok.Getter;
 import io.clonalejandro.DivecraftsCore.SCommands;
 import io.clonalejandro.DivecraftsLobby.api.LobbyUser;
-import io.clonalejandro.DivecraftsLobby.commands.CMD_ClearChat;
 import io.clonalejandro.DivecraftsLobby.cosmetics.CosmeticManager;
 import io.clonalejandro.DivecraftsLobby.events.PlayerEvents;
 import io.clonalejandro.DivecraftsLobby.events.WorldEvents;
@@ -49,7 +48,6 @@ public class Main extends JavaPlugin {
     }
 
     private void registerClasses() {
-        SCommands.register(new CMD_ClearChat());
         try {
             cosmeticManager = new CosmeticManager();
         } catch (CosmeticRegisteredException e) {

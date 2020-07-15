@@ -42,6 +42,7 @@ public class SCommands implements TabCompleter {
         cmds.add(new BroadcastCMD());
         cmds.add(new HologramCMD());
         cmds.add(new CoreCMD());
+        cmds.add(new ClearChatCMD());
 
         ucmds = new SCommands();
         cmds.forEach(SCommands::register);
