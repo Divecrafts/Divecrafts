@@ -128,6 +128,11 @@ public class Main extends JavaPlugin {
     }
 
     public static void parseHolograms(){
+        String pprompt = "Holograms.hol0.msg";
+        String res;
+
+        if (Main.getInstance().getConfig().get(pprompt) == null) return;
+
         for (LivingEntity e : Hologramas.hologramas) {
             e.damage(e.getHealth());
             e.setHealth(0D);
@@ -135,12 +140,7 @@ public class Main extends JavaPlugin {
         }
 
         Hologramas.hologramas.clear();
-
-        String pprompt = "Holograms.hol0.msg";
-        String res;
-
-        if (Main.getInstance().getConfig().get(pprompt) == null) return;
-
+        
         do {
             pprompt = pprompt.replace(".msg", "");
 
