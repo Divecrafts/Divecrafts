@@ -3,13 +3,14 @@ package io.clonalejandro.DivecraftsCore.utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.LivingEntity;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 
 public class Hologramas {
 
-    public static ArrayList<org.bukkit.entity.Entity> hologramas = new ArrayList<>();
+    public static ArrayList<LivingEntity> hologramas = new ArrayList<>();
 
     public static void crearHolo(String msg, Location l, String worldName){
         try {

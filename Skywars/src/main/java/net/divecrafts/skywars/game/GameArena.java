@@ -1,5 +1,7 @@
 package net.divecrafts.skywars.game;
 
+import io.clonalejandro.DivecraftsCore.idiomas.Languaje;
+import io.clonalejandro.DivecraftsCore.utils.Utils;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -40,23 +42,18 @@ import java.util.stream.Collectors;
 
 public class GameArena extends Game {
 
-    @Getter
-    private SkyWars plugin = SkyWars.getInstance();
+    @Getter private SkyWars plugin = SkyWars.getInstance();
 
-    @Getter
-    private ArrayList<SkyIsland> islands;
+    @Getter private ArrayList<SkyIsland> islands;
 
-    @Getter
-    private Arena arena;
+    @Getter private Arena arena;
 
-    @Getter
-    @Setter
-    private boolean damageOnFall = true;
+    @Getter @Setter public static boolean canMoves = true;
+    @Getter @Setter private boolean damageOnFall = true;
 
     private Menus menus;
 
-    @Getter @Setter
-    private static int difficulty = 1; // 0-> Facil | 1-> Normal | 2-> Dificil
+    @Getter @Setter private static int difficulty = 1; // 0-> Facil | 1-> Normal | 2-> Dificil
 
     public GameArena() {
         super(SServer.GameID.SKYWARS, "SkyWars");
@@ -115,7 +112,7 @@ public class GameArena extends Game {
 
         islands.add(island);
 
-        user.getInventory().setItem(1, new ItemMaker(Material.EMERALD).setName("&aVotar &7(Haz Click)").buildComplete());
+        user.getInventory().setItem(1, new ItemMaker(Material.EMERALD).setName("&aVotar &7(Haz Click)").buildComplete());//TODO
         user.getPlayer().updateInventory();
 
         if (canStart()) new LobbyTask(plugin).runTaskTimer(plugin, 0, 20);
@@ -187,6 +184,11 @@ public class GameArena extends Game {
     }
 
     @EventHandler
+    public void onPlayerMove(PlayerMoveEvent e){
+        e.setCancelled(!isCanMoves());
+    }
+
+    @EventHandler
     public void onRespawn(PlayerRespawnEvent e){
         Bukkit.getScheduler().runTask(plugin, () -> this.arena.teleportToLobby(SkyWars.getUser(e.getPlayer())));
     }
@@ -219,50 +221,70 @@ public class GameArena extends Game {
                 e.setCancelled(true);
                 switch (e.getSlot()) {
                     case 1:
-                        if (!VoteMode.getVotedPlayers().contains(user.getPlayer())){
-                            new VoteMode(ModeType.EASY, user.getPlayer());//TODO: Alert
+                        if (!VoteMode.getVotedPlayers().containsKey(user.getPlayer())){
+                            new VoteMode(ModeType.EASY, user.getPlayer());
                         }
-                        //else Alert you cant
+                        else {
+                            final ModeType type = VoteMode.getVotedPlayers().get(user.getPlayer()).getType();
+                            VoteMode.getVotes().put(type, VoteMode.getVotes().get(type) - 1);
+                        }
                         break;
                     case 4:
-                        if (!VoteMode.getVotedPlayers().contains(user.getPlayer())) {
-                            new VoteMode(ModeType.NORMAL, user.getPlayer());//TODO: Alert
+                        if (!VoteMode.getVotedPlayers().containsKey(user.getPlayer())) {
+                            new VoteMode(ModeType.NORMAL, user.getPlayer());
                         }
-                        //else Alert you cant
+                        else {
+                            final ModeType type = VoteMode.getVotedPlayers().get(user.getPlayer()).getType();
+                            VoteMode.getVotes().put(type, VoteMode.getVotes().get(type) - 1);
+                        }
                         break;
                     case 7:
-                        if (!VoteMode.getVotedPlayers().contains(user.getPlayer())) {
-                            new VoteMode(ModeType.HARD, user.getPlayer());//TODO: Alert
+                        if (!VoteMode.getVotedPlayers().containsKey(user.getPlayer())) {
+                            new VoteMode(ModeType.HARD, user.getPlayer());
                         }
-                        //else Alert you cant
+                        else {
+                            final ModeType type = VoteMode.getVotedPlayers().get(user.getPlayer()).getType();
+                            VoteMode.getVotes().put(type, VoteMode.getVotes().get(type) - 1);
+                        }
                         break;
                 }
                 user.closeInventory();
+                user.getPlayer().sendMessage(Utils.colorize(Languaje.getLangMsg(user.getUserData().getLang(), "SW.votedmode").replace("%modo%", VoteMode.getVotedPlayers().get(user.getPlayer()).getType().toString())));
                 return;
             }
             case "Horario": {
                 e.setCancelled(true);
                 switch (e.getSlot()) {
                     case 1:
-                        if (!VoteTime.getVotedPlayers().contains(user.getPlayer())) {
-                            new VoteTime(TimeType.DAY, user.getPlayer());//TODO: Alert
+                        if (!VoteTime.getVotedPlayers().containsKey(user.getPlayer())) {
+                            new VoteTime(TimeType.DAY, user.getPlayer());
                         }
-                        //else Alert you cant
+                        else {
+                            final TimeType type = VoteTime.getVotedPlayers().get(user.getPlayer()).getType();
+                            VoteTime.getVotes().put(type, VoteTime.getVotes().get(type) - 1);
+                        }
                         break;
                     case 4:
-                        if (!VoteTime.getVotedPlayers().contains(user.getPlayer())) {
-                            new VoteTime(TimeType.AFTERNOON, user.getPlayer());//TODO: Alert
+                        if (!VoteTime.getVotedPlayers().containsKey(user.getPlayer())) {
+                            new VoteTime(TimeType.AFTERNOON, user.getPlayer());
                         }
-                        //else Alert you cant
+                        else {
+                            final TimeType type = VoteTime.getVotedPlayers().get(user.getPlayer()).getType();
+                            VoteTime.getVotes().put(type, VoteTime.getVotes().get(type) - 1);
+                        }
                         break;
                     case 7:
-                        if (!VoteTime.getVotedPlayers().contains(user.getPlayer())) {
-                            new VoteTime(TimeType.NIGHT, user.getPlayer());//TODO: Alert
+                        if (!VoteTime.getVotedPlayers().containsKey(user.getPlayer())) {
+                            new VoteTime(TimeType.NIGHT, user.getPlayer());
                         }
-                        //else Alert you cant
+                        else {
+                            final TimeType type = VoteTime.getVotedPlayers().get(user.getPlayer()).getType();
+                            VoteTime.getVotes().put(type, VoteTime.getVotes().get(type) - 1);
+                        }
                         break;
                 }
                 user.closeInventory();
+                user.getPlayer().sendMessage(Utils.colorize(Languaje.getLangMsg(user.getUserData().getLang(), "SW.votedtime").replace("%tiempo%", VoteTime.getVotedPlayers().get(user.getPlayer()).getType().toString())));
                 user.getWorld().setGameRuleValue("doDaylightCycle", "false");
                 return;
             }
@@ -270,19 +292,26 @@ public class GameArena extends Game {
                 e.setCancelled(true);
                 switch (e.getSlot()) {
                     case 2:
-                        if (!VoteBiome.getVotedPlayers().contains(user.getPlayer())) {
-                            new VoteBiome(BiomeType.CLEAR, user.getPlayer());//TODO: Alert
+                        if (!VoteBiome.getVotedPlayers().containsKey(user.getPlayer())) {
+                            new VoteBiome(BiomeType.CLEAR, user.getPlayer());
                         }
-                        //else Alert you can
+                        else {
+                            final BiomeType type = VoteBiome.getVotedPlayers().get(user.getPlayer()).getType();
+                            VoteBiome.getVotes().put(type, VoteBiome.getVotes().get(type) - 1);
+                        }
                         break;
                     case 6:
-                        if (!VoteBiome.getVotedPlayers().contains(user.getPlayer())) {
-                            new VoteBiome(BiomeType.RAINING, user.getPlayer());//TODO: Alert
+                        if (!VoteBiome.getVotedPlayers().containsKey(user.getPlayer())) {
+                            new VoteBiome(BiomeType.RAINING, user.getPlayer());
                         }
-                        //else Alert you can
+                        else {
+                            final BiomeType type = VoteBiome.getVotedPlayers().get(user.getPlayer()).getType();
+                            VoteBiome.getVotes().put(type, VoteBiome.getVotes().get(type) - 1);
+                        }
                         break;
                 }
                 user.closeInventory();
+                user.getPlayer().sendMessage(Utils.colorize(Languaje.getLangMsg(user.getUserData().getLang(), "SW.votedbiome").replace("%bioma%", VoteBiome.getVotedPlayers().get(user.getPlayer()).getType().toString())));
             }
         }
 
@@ -297,11 +326,10 @@ public class GameArena extends Game {
 
     @Override
     public List<Kit> availableKits() {
-
-        Kit builder = new Kit("Builder");
+        Kit builder = new Kit("Builder");//TODO
         builder.addInvItem(new ItemMaker(Material.BRICK, 32).build());
 
-        Kit sword = new Kit("Espadachín");
+        Kit sword = new Kit("Espadachín");//TODO
         sword.addInvItem(new ItemMaker(Material.IRON_SWORD).build());
 
         return Arrays.asList(builder, sword);

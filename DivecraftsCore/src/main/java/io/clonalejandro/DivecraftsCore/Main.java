@@ -13,6 +13,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionAttachment;
 import org.bukkit.plugin.PluginManager;
@@ -62,6 +63,8 @@ public class Main extends JavaPlugin {
         registerClasses();
         registerEvents();
 
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, Main::parseHolograms, 0, 400L);
+
         new SQLAlive(this, this.getMySQL().getConnection());
     }
 
@@ -70,6 +73,11 @@ public class Main extends JavaPlugin {
         awd.disable();
         try {
             mySQL.getConnection().close();
+            for (LivingEntity e : Hologramas.hologramas) {
+                e.damage(e.getHealth());
+                e.setHealth(0D);
+                e.remove();
+            }
         }
         catch (SQLException ex) {
             ex.printStackTrace();
@@ -120,17 +128,20 @@ public class Main extends JavaPlugin {
     }
 
     public static void parseHolograms(){
-        for (Entity e : Hologramas.hologramas) {
-            e.remove();
-        }
-
-        Hologramas.hologramas.clear();
-
         String pprompt = "Holograms.hol0.msg";
         String res;
 
         if (Main.getInstance().getConfig().get(pprompt) == null) return;
 
+        for (LivingEntity e : Hologramas.hologramas) {
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "/minecraft:kill @e[type=ArmorStand,name=" + e.getCustomName() + "]");
+            e.damage(e.getHealth());
+            e.setHealth(0D);
+            e.remove();
+        }
+
+        Hologramas.hologramas.clear();
+        
         do {
             pprompt = pprompt.replace(".msg", "");
 

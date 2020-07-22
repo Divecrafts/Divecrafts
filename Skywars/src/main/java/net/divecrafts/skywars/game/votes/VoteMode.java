@@ -27,7 +27,7 @@ public class VoteMode {
 
     @Getter private static final HashMap<ModeType, Integer> votes = new HashMap<>();
     @Getter private final ModeType type;
-    @Getter private static final List<Player> votedPlayers = new ArrayList<>();
+    @Getter private static final HashMap<Player, VoteMode> votedPlayers = new HashMap<>();
 
     public VoteMode(ModeType type, Player player){
         this.type = type;
@@ -35,6 +35,6 @@ public class VoteMode {
         if (!votes.containsKey(type)) votes.put(type, 1);
         else votes.replace(type, votes.get(type) +1);
 
-        votedPlayers.add(player);
+        votedPlayers.put(player, this);
     }
 }

@@ -33,7 +33,6 @@ public class PlayerEvents implements Listener {
     private final List<String> nulledWords = new ArrayList<>();
     private final HashMap<Player, List<String>> chatHistory = new HashMap<>();
     private final List<String> bannedCmds = Arrays.asList("/plugins", "/version", "/ver", "/me", "//calc", "/about", "/pl", "/minecraft", "/icanhasbukkit");
-    private boolean first = true;
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerLogin(PlayerLoginEvent e) {
@@ -43,11 +42,6 @@ public class PlayerEvents implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerJoin(PlayerJoinEvent e) {
-        if (first){
-            first = false;
-            Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, Main::parseHolograms, 0, 400L);
-        }
-
         SUser u = SServer.getUser(e.getPlayer());
 
         // Update

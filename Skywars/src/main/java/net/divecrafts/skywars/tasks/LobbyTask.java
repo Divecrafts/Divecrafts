@@ -3,6 +3,7 @@ package net.divecrafts.skywars.tasks;
 import io.clonalejandro.DivecraftsCore.Main;
 import io.clonalejandro.DivecraftsCore.game.GameState;
 import io.clonalejandro.DivecraftsCore.game.GamesTask;
+import io.clonalejandro.DivecraftsCore.idiomas.Languaje;
 import io.clonalejandro.DivecraftsCore.utils.Utils;
 
 import net.divecrafts.skywars.SkyWars;
@@ -36,11 +37,11 @@ public class LobbyTask extends GamesTask {
             return;
         }
 
-        game.getPlayersInGame().forEach(p -> p.sendActionBar(Main.getPREFIX() + "&a&lEl juego empieza en: " + count));
+        game.getPlayersInGame().forEach(u -> u.sendActionBar(Utils.colorize(Languaje.getLangMsg(u.getUserData().getLang(), "SW.brstarttime").replace("a", String.valueOf(count)))));
 
         switch (count) {
             case 30:
-                Utils.broadcastMsg("Games.start");
+                game.getPlayersInGame().forEach(u -> u.getPlayer().sendMessage(Utils.colorize(Languaje.getLangMsg(u.getUserData().getLang(), "SW.brstarttime").replace("a", String.valueOf(count)))));
                 break;
             case 6:
                 game.getPlayersInGame().forEach(user ->
@@ -49,13 +50,14 @@ public class LobbyTask extends GamesTask {
                                 .collect(Collectors.toList())
                                 .get(0).getSpawn())
                 );
+                GameArena.setCanMoves(false);
                 break;
             case 5:
             case 4:
             case 3:
             case 2:
             case 1:
-                Utils.broadcastMsg("Games.start");
+                game.getPlayersInGame().forEach(u -> u.getPlayer().sendMessage(Utils.colorize(Languaje.getLangMsg(u.getUserData().getLang(), "SW.brstarttime").replace("a", String.valueOf(count)))));
                 game.getPlayersInGame().forEach(p -> p.getPlayer().playSound(p.getLoc(), Sound.NOTE_PLING, 1F, 1F));
                 break;
 

@@ -3,8 +3,10 @@ package net.divecrafts.skywars.tasks;
 import io.clonalejandro.DivecraftsCore.api.SMap;
 import io.clonalejandro.DivecraftsCore.game.GamesTask;
 
+import io.clonalejandro.DivecraftsCore.idiomas.Languaje;
 import net.divecrafts.skywars.SkyWars;
 import net.divecrafts.skywars.api.SkyIsland;
+import net.divecrafts.skywars.api.SkyUser;
 import net.divecrafts.skywars.game.GameArena;
 
 public class ShutdownTask extends GamesTask {
@@ -21,11 +23,12 @@ public class ShutdownTask extends GamesTask {
 
     @Override
     public void run() {
-        plugin.getServer().getOnlinePlayers().forEach(pl -> pl.sendMessage("Volverás al lobby en: " + count));
+        plugin.getServer().getOnlinePlayers().forEach(p -> p.sendMessage(Languaje.getLangMsg(SkyWars.getUser(p).getUserData().getLang(), "SW.backtolobby").replace("%time%", String.valueOf(count))));
         if (count == 0) {
             plugin.getServer().getOnlinePlayers().forEach(p -> {
-                p.sendMessage("Servidor desconectado");
-                SkyWars.getUser(p).sendToServer("lobby");
+                final SkyUser user = SkyWars.getUser(p);
+                p.sendMessage(Languaje.getLangMsg(user.getUserData().getLang(), "SW.disconnected"));
+                user.sendToServer("lobby");//TODO: lsw
             });
             plugin.getGameArena().getIslands().forEach(SkyIsland::destroyCapsule);
             plugin.getServer().unloadWorld(plugin.getServer().getWorlds().get(0), false);
