@@ -4,6 +4,7 @@ import io.clonalejandro.DivecraftsCore.api.SServer;
 import io.clonalejandro.DivecraftsCore.api.SUser;
 import io.clonalejandro.DivecraftsCore.game.GameState;
 import io.clonalejandro.DivecraftsCore.game.GamesTask;
+import io.clonalejandro.DivecraftsCore.idiomas.Languaje;
 import io.clonalejandro.DivecraftsCore.utils.Title;
 import io.clonalejandro.DivecraftsCore.utils.Utils;
 
@@ -35,7 +36,7 @@ public class GameTask extends GamesTask {
         noPlayers();
         checkWinner();
 
-        if (timePlayed) game.getPlayersInGame().forEach(p -> p.sendActionBar("&eTiempo jugado: &b" + count));
+        if (timePlayed) game.getPlayersInGame().forEach(p -> p.sendActionBar(Languaje.getLangMsg(p.getUserData().getLang(), "timeplayed").replace("%time%", String.valueOf(count))));
 
         switch (count) {
             case 0:
@@ -43,7 +44,7 @@ public class GameTask extends GamesTask {
                 game.getPlayersInGame().forEach(player -> {
                     final Player p = player.getPlayer();
 
-                    Title.sendTitle(p, 1, 7, 1, "", "&e¡Elimina al resto de enemigos!");
+                    Title.sendTitle(p, 1, 7, 1, "", Languaje.getLangMsg(player.getUserData().getLang(), "SW.titlestart"));
                     p.playSound(p.getLocation(), Sound.EXPLODE, 1F, 1F);
                     p.setScoreboard(plugin.getServer().getScoreboardManager().getNewScoreboard());
 
@@ -54,6 +55,7 @@ public class GameTask extends GamesTask {
                     user.save();
                 });
                 game.getIslands().forEach(SkyIsland::destroyCapsule);
+                GameArena.setCanMoves(true);
                 timePlayed = true;
                 break;
 
@@ -78,9 +80,10 @@ public class GameTask extends GamesTask {
         Bukkit.getOnlinePlayers().forEach(player -> {
             final SkyUser p = SkyWars.getUser(player);
             p.getPlayer().playSound(p.getLoc(), Sound.LEVEL_UP, 1F, 1F);
-            Title.sendTitle(p.getPlayer(), 1, 7, 1, "&a" + winner.getName(), "&3ha ganado la partida!");
+            String[] titleMsg = Languaje.getLangMsg(p.getUserData().getLang(), "SW.titlewinner").replace("%player%", winner.getName()).split("\n");
+            Title.sendTitle(p.getPlayer(), 1, 7, 1, titleMsg[0], titleMsg[1]);
+            player.sendMessage(Utils.colorize(Languaje.getLangMsg(p.getUserData().getLang(), "SW.brwinner")));
         });
-        Utils.broadcastMsg("Game.winner");
 
         winner.getUserData().addWin(SServer.GameID.SKYWARS);
         winner.save();

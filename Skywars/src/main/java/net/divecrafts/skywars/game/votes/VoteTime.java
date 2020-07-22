@@ -27,7 +27,7 @@ public class VoteTime {
 
     @Getter private static final HashMap<TimeType, Integer> votes = new HashMap<>();
     @Getter private final TimeType type;
-    @Getter private static final List<Player> votedPlayers = new ArrayList<>();
+    @Getter private static final HashMap<Player, VoteTime> votedPlayers = new HashMap<>();
 
     public VoteTime(TimeType type, Player player){
         this.type = type;
@@ -35,6 +35,6 @@ public class VoteTime {
         if (!votes.containsKey(type)) votes.put(type, 1);
         else votes.replace(type, votes.get(type) +1);
 
-        votedPlayers.add(player);
+        votedPlayers.put(player, this);
     }
 }

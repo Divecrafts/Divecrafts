@@ -134,6 +134,7 @@ public class Main extends JavaPlugin {
         if (Main.getInstance().getConfig().get(pprompt) == null) return;
 
         for (LivingEntity e : Hologramas.hologramas) {
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "/minecraft:kill @e[type=ArmorStand,name=" + e.getCustomName() + "]");
             e.damage(e.getHealth());
             e.setHealth(0D);
             e.remove();

@@ -27,7 +27,7 @@ public class VoteBiome {
 
     @Getter private static final HashMap<BiomeType, Integer> votes = new HashMap<>();
     @Getter private final BiomeType type;
-    @Getter private static final List<Player> votedPlayers = new ArrayList<>();
+    @Getter private static final HashMap<Player, VoteBiome> votedPlayers = new HashMap<>();
 
     public VoteBiome(BiomeType type, Player player){
         this.type = type;
@@ -35,6 +35,6 @@ public class VoteBiome {
         if (!votes.containsKey(type)) votes.put(type, 1);
         else votes.replace(type, votes.get(type) +1);
 
-        votedPlayers.add(player);
+        votedPlayers.put(player, this);
     }
 }
